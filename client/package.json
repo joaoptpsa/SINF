@@ -1,7 +1,6 @@
 {
   "name": "sinf",
   "version": "1.0.0",
-  "description": "- 60% of the global evaluation of the Information System lecture",
   "main": "index.js",
   "scripts": {
     "start": "react-scripts start",
@@ -20,9 +19,6 @@
   },
   "homepage": "https://github.com/jotapsa/SINF#readme",
   "dependencies": {
-    "express": "^4.16.4",
-    "mongoose": "^5.3.4",
-    "nodemon": "^1.18.4",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
     "react-router": "^4.3.1",
@@ -35,12 +31,5 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ],
-  "devDependencies": {
-    "eslint": "^5.7.0",
-    "eslint-config-airbnb": "^17.1.0",
-    "eslint-plugin-import": "^2.14.0",
-    "eslint-plugin-jsx-a11y": "^6.1.2",
-    "eslint-plugin-react": "^7.11.1"
-  }
+  ]
 }
