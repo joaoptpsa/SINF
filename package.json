@@ -20,11 +20,15 @@
   },
   "homepage": "https://github.com/jotapsa/SINF#readme",
   "dependencies": {
+    "express": "^4.16.4",
+    "mongoose": "^5.3.4",
+    "nodemon": "^1.18.4",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
-    "react-scripts": "^2.0.4"
+    "react-scripts": "^2.0.4",
+    "semantic-ui-react": "^0.82.5"
   },
   "browserslist": [
     ">0.2%",
