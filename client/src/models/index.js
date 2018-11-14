@@ -1,6 +1,4 @@
 import Header from './header'
-import Customer from './customer';
-import Product from './product';
-import Supplier from './supplier';
+import MasterFiles from './masterFiles'
 
-export  { Header, Customer, Product, Supplier }
+export  { Header, MasterFiles }
