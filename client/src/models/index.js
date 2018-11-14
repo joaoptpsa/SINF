@@ -1,5 +1,30 @@
-import Header from './header'
-import parseMasterFiles from './masterFiles'
+import Header from './header';
+import parseMasterFiles from './masterFiles';
 import GeneralLedgerEntries from './generalLedgerEntries';
 
-export  { Header, parseMasterFiles, GeneralLedgerEntries}
+class AuditFile {
+    header;
+    masterFiles;
+    generalLedgerEntries;
+    sourceDocuments;
+
+    constructor(XMLElement){
+        // parse header
+        this.header = new Header(XMLElement.Header[0]);
+                
+        // parse MasterFiles
+        this.masterfiles = parseMasterFiles(XMLElement.MasterFiles[0]);
+        
+        // parse general ledger entries
+        if (XMLElement.GeneralLedgerEntries){
+            this.generalLedgerEntries = new GeneralLedgerEntries(XMLElement.GeneralLedgerEntries[0]);
+        }
+
+        // TODO: Parse source documents
+        if (XMLElement.SourceDocuments){
+            console.log(XMLElement.SourceDocuments)
+        }
+    }
+}
+
+export default AuditFile;
