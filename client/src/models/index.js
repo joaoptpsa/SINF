@@ -1,6 +1,7 @@
 import Header from './header';
 import parseMasterFiles from './masterFiles';
 import GeneralLedgerEntries from './generalLedgerEntries';
+import parseSourceDocuments from './sourceDocuments';
 
 class AuditFile {
     header;
@@ -22,7 +23,7 @@ class AuditFile {
 
         // TODO: Parse source documents
         if (XMLElement.SourceDocuments){
-            console.log(XMLElement.SourceDocuments)
+            this.sourceDocuments = parseSourceDocuments(XMLElement.SourceDocuments[0]);
         }
     }
 }
