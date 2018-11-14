@@ -1,4 +1,4 @@
 import Header from './header'
-import MasterFiles from './masterFiles'
+import parseMasterFiles from './masterFiles'
 
-export  { Header, MasterFiles }
+export  { Header, parseMasterFiles }

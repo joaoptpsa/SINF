@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { parseString } from 'xml2js'
-import { Header, MasterFiles } from './models'
+import { Header, parseMasterFiles } from './models'
 
 const input = () => {
     const handleChange = (e) => {
@@ -16,11 +16,10 @@ const input = () => {
                 // parse header
                 const header = new Header(AuditFile.Header[0]);
 
-                // TODO: parse MasterFiles
-                const masterFilesXML = AuditFile.MasterFiles[0];
-                const masterfiles = new MasterFiles(masterFilesXML);
-               
-                console.log(masterfiles)
+                // parse MasterFiles
+                const masterfiles = parseMasterFiles(AuditFile.MasterFiles[0]);
+
+                console.log(masterfiles);
             })
         }
 

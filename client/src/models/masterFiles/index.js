@@ -2,40 +2,50 @@ import Customer from './customer';
 import Supplier from './supplier';
 import Product from './product';
 import GeneralLedger from './generalLedger';
+import TaxTableEntry from './taxTableEntry';
 
-class MasterFiles {
-    constructor(XMLMasterFiles){
-        let masterfiles = [];
-        
-        for(const element in XMLMasterFiles){
-            const XMLElement = XMLMasterFiles[element][0];
-            
-            switch(element){
-                case 'Customer':
-                masterfiles.push(new Customer(XMLElement));
-                break;
-                case 'Product':
-                masterfiles.push(new Product(XMLElement));
-                break;
-                case 'TaxTable':
-                // TODO:
-                break;
-                case 'GeneralLedger':
-                masterfiles.push(new GeneralLedger(XMLElement));
-                break;
-                case 'Supplier':
-                masterfiles.push(new Supplier(XMLElement));
-                break;
-                case '$':
-                break;
-                default:
-                console.log('Error: index not parsed ' + element);
-                break;
-            }
-        }
-        
-        this.files = masterfiles;
+const parseTaxTable = (XMLElement) => {
+    let taxTable = [];
+    
+    for (const taxElement in XMLElement.TaxType){
+        taxTable.push(new TaxTableEntry(XMLElement.TaxType[taxElement]))
     }
+    
+    return taxTable;
 }
 
-export default MasterFiles;
+const parseMasterFiles = XMLMasterFiles =>  {
+    let masterfiles = [];
+    
+    for(const element in XMLMasterFiles){
+        const XMLElement = XMLMasterFiles[element][0];
+        
+        switch(element){
+            case 'Customer':
+            masterfiles.push(new Customer(XMLElement));
+            break;
+            case 'Product':
+            masterfiles.push(new Product(XMLElement));
+            break;
+            case 'TaxTable':
+            masterfiles.push(parseTaxTable(XMLElement));
+            break;
+            case 'GeneralLedger':
+            masterfiles.push(new GeneralLedger(XMLElement));
+            break;
+            case 'Supplier':
+            masterfiles.push(new Supplier(XMLElement));
+            break;
+            case '$':
+            break;
+            default:
+            console.log('Error: index not parsed ' + element);
+            break;
+        }
+    }
+    
+    return masterfiles
+    
+}
+
+export default parseMasterFiles;
