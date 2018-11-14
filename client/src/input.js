@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { parseString } from 'xml2js'
-import { Header, Customer } from './models'
+import { Header, Customer, Product } from './models'
 
 const input = () => {
     const handleChange = (e) => {
@@ -20,11 +20,14 @@ const input = () => {
                 const masterFilesXML = AuditFile.MasterFiles[0];
                 let masterfiles = [];
                 for(const element in masterFilesXML){
+                    const XMLElement = masterFilesXML[element][0];
+
                     switch(element){
                         case 'Customer':
-                        masterfiles.push(new Customer(masterFilesXML[element][0]));
+                        masterfiles.push(new Customer(XMLElement));
                         break;
                         case 'Product':
+                        masterfiles.push(new Product(XMLElement));
                         break;
                         case 'TaxTable':
                         break;
