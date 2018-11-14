@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { parseString } from 'xml2js'
-import { Header } from './models'
+import { Header, Customer } from './models'
 
 const input = () => {
     const handleChange = (e) => {
@@ -15,6 +15,30 @@ const input = () => {
 
                 // parse header
                 const header = new Header(AuditFile.Header[0]);
+
+                // TODO: parse MasterFiles
+                const masterFilesXML = AuditFile.MasterFiles[0];
+                let masterfiles = [];
+                for(const element in masterFilesXML){
+                    switch(element){
+                        case 'Customer':
+                        masterfiles.push(new Customer(masterFilesXML[element][0]));
+                        break;
+                        case 'Product':
+                        break;
+                        case 'TaxTable':
+                        break;
+                        case 'GeneralLedger':
+                        break;
+                        case 'Supplier':
+                        break;
+                        case '$':
+                        break;
+                        default:
+                        console.log('Error: index not parsed ' + element);
+                        break;
+                    }
+                }
             })
         }
 
