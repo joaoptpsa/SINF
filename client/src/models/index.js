@@ -1,4 +1,5 @@
 import Header from './header'
 import parseMasterFiles from './masterFiles'
+import GeneralLedgerEntries from './generalLedgerEntries';
 
-export  { Header, parseMasterFiles }
+export  { Header, parseMasterFiles, GeneralLedgerEntries}
