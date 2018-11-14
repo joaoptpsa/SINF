@@ -1,6 +1,39 @@
 import * as React from 'react'
 import { parseString } from 'xml2js'
-import { Header, Customer, Product } from './models'
+import { Header, Customer, Product, Supplier } from './models'
+
+const parseMasterFiles = (masterFilesXML) => {
+    let masterfiles = [];
+
+    for(const element in masterFilesXML){
+        const XMLElement = masterFilesXML[element][0];
+
+        switch(element){
+            case 'Customer':
+            masterfiles.push(new Customer(XMLElement));
+            break;
+            case 'Product':
+            masterfiles.push(new Product(XMLElement));
+            break;
+            case 'TaxTable':
+            // TODO:
+            break;
+            case 'GeneralLedger':
+            // TODO:
+            break;
+            case 'Supplier':
+            masterfiles.push(new Supplier(XMLElement));
+            break;
+            case '$':
+            break;
+            default:
+            console.log('Error: index not parsed ' + element);
+            break;
+        }
+    }
+
+    return masterfiles;
+}
 
 const input = () => {
     const handleChange = (e) => {
@@ -18,30 +51,9 @@ const input = () => {
 
                 // TODO: parse MasterFiles
                 const masterFilesXML = AuditFile.MasterFiles[0];
-                let masterfiles = [];
-                for(const element in masterFilesXML){
-                    const XMLElement = masterFilesXML[element][0];
-
-                    switch(element){
-                        case 'Customer':
-                        masterfiles.push(new Customer(XMLElement));
-                        break;
-                        case 'Product':
-                        masterfiles.push(new Product(XMLElement));
-                        break;
-                        case 'TaxTable':
-                        break;
-                        case 'GeneralLedger':
-                        break;
-                        case 'Supplier':
-                        break;
-                        case '$':
-                        break;
-                        default:
-                        console.log('Error: index not parsed ' + element);
-                        break;
-                    }
-                }
+                const masterfiles = parseMasterFiles(masterFilesXML);
+               
+                console.log(masterfiles)
             })
         }
 
