@@ -1,12 +1,12 @@
 class Tax {
-    constructor(XMLElement){
-        this.type = XMLElement.TaxType[0];
-        this.countryRegion = XMLElement.TaxCountryRegion[0];
-        if (XMLElement.TaxCode) this.code = XMLElement.TaxCode[0];
-        this.description = XMLElement.Description[0];
-        if (XMLElement.TaxExpirationDate) this.expirationDate = XMLElement.TaxExpirationDate[0];
-        if (XMLElement.TaxPercentage) this.taxPercentage = XMLElement.TaxPercentage[0];
-        if (XMLElement.TaxAmount) this.taxAmount = XMLElement.TaxAmount[0];
+    constructor({TaxType, TaxCountryRegion, TaxCode, Description, TaxExpirationDate, TaxPercentage, TaxAmount }){
+        if (TaxType) this.type = TaxType[0];
+        if (TaxCountryRegion) this.countryRegion = TaxCountryRegion[0];
+        if (TaxCode) this.code = TaxCode[0];
+        if (Description) this.description = Description[0];
+        if (TaxExpirationDate) this.expirationDate = TaxExpirationDate[0];
+        if (TaxPercentage) this.taxPercentage = TaxPercentage[0];
+        if (TaxAmount) this.taxAmount = TaxAmount[0];
     }   
 }
 

@@ -120,10 +120,4 @@ class SalesInvoices {
     }
 }
 
-export default (XMLElement) => {
-    const salesInvoices = new SalesInvoices(XMLElement.SalesInvoices[0]);
-
-    console.log(salesInvoices, XMLElement.SalesInvoices[0]);
-    
-    return salesInvoices;
-}
+export default SalesInvoices;

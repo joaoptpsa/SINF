@@ -1,7 +1,7 @@
 import Header from './header';
 import parseMasterFiles from './masterFiles';
 import GeneralLedgerEntries from './generalLedgerEntries';
-import parseSourceDocuments from './sourceDocuments';
+import SalesInvoices from './sourceDocuments';
 
 class AuditFile {
     header;
@@ -23,7 +23,8 @@ class AuditFile {
 
         // parse source documents
         if (XMLElement.SourceDocuments){
-            this.sourceDocuments = parseSourceDocuments(XMLElement.SourceDocuments[0]);
+            const salesInvoicesXML = XMLElement.SourceDocuments[0].SalesInvoices[0];
+            this.sourceDocuments = new SalesInvoices(salesInvoicesXML);
         }
     }
 }
