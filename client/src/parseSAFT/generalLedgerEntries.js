@@ -1,12 +1,4 @@
 class Line {
-    recordID;
-    accontID;
-    sourceDocumentID;
-    systemEntryDate;
-    description;
-    debitAmount;
-    creditAmount;
-
     constructor(XMLElement){
         this.recordID = XMLElement.RecordID[0];
         this.accontID = XMLElement.AccountID[0];

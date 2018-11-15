@@ -8,12 +8,6 @@ class OrderReference {
     }
 }
 
-class Reference {
-    constructor(XMLElement){
-
-    }
-}
-
 class Line {
     constructor(XMLElement){
         this.lineNumber = XMLElement.LineNumber[0];
@@ -31,12 +25,13 @@ class Line {
         this.taxPointDate = XMLElement.TaxPointDate[0];
         
         // TODO: Parse References
+        if (XMLElement.References) this.references = XMLElement.References[0];
         
         this.description = XMLElement.Description[0];
         this.debitAmount = XMLElement.DebitAmount[0];
         this.creditAmount = XMLElement.CreditAmount[0];
         
-        // TODO: Parse tax
+        // tax
         this.taxes = []
         for (const index in XMLElement.Tax){
             this.taxes.push(new Tax(XMLElement.Tax[index]));
@@ -82,19 +77,7 @@ class DocumentTotal {
     }
 }
 
-class Invoice {
-    number;
-    status;
-    hash;
-    hashControl;
-    period;
-    date;
-    type;
-    selfBillingIndicator;
-    systemEntryDate;
-    transactionID;
-    customerID;
-    
+class Invoice {    
     constructor(XMLElement){
         this.number = XMLElement.InvoiceNo[0];
         if  (XMLElement.InvoiceStatus) this.status = XMLElement.InvoiceStatus[0];
@@ -125,11 +108,6 @@ class Invoice {
 }
 
 class SalesInvoices {
-    numberOfEntries;
-    totalDebit;
-    totalCredit;
-    invoices;
-    
     constructor(XMLElement){
         this.numberOfEntries = XMLElement.NumberOfEntries[0];
         this.totalDebit = XMLElement.TotalDebit[0];
@@ -143,9 +121,9 @@ class SalesInvoices {
 }
 
 export default (XMLElement) => {
-    const salesInvoices = new SalesInvoices(XMLElement.SalesInvoices[0])
+    const salesInvoices = new SalesInvoices(XMLElement.SalesInvoices[0]);
 
-    console.log(salesInvoices, XMLElement.SalesInvoices[0])
+    console.log(salesInvoices, XMLElement.SalesInvoices[0]);
     
-    return salesInvoices
+    return salesInvoices;
 }
