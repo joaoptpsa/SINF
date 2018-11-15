@@ -1,5 +1,5 @@
 import Address from './address';
-import TaxTableEntry from './masterFiles/taxTableEntry';
+import Tax from './tax';
 
 class OrderReference {
     constructor(XMLElement){
@@ -39,7 +39,7 @@ class Line {
         // TODO: Parse tax
         this.taxes = []
         for (const index in XMLElement.Tax){
-            this.taxes.push(new TaxTableEntry(XMLElement.Tax[index]));
+            this.taxes.push(new Tax(XMLElement.Tax[index]));
         }
         
         if (XMLElement.TaxExemptionReason) this.taxExemptionReason = XMLElement.TaxExemptionReason[0];

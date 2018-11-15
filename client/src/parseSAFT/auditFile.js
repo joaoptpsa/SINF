@@ -21,7 +21,7 @@ class AuditFile {
             this.generalLedgerEntries = new GeneralLedgerEntries(XMLElement.GeneralLedgerEntries[0]);
         }
 
-        // TODO: Parse source documents
+        // parse source documents
         if (XMLElement.SourceDocuments){
             this.sourceDocuments = parseSourceDocuments(XMLElement.SourceDocuments[0]);
         }

@@ -1,9 +1,4 @@
 class GeneralLedger {
-    accountID;
-    accountDescription;
-    openingDebitBalance;
-    openingCreditBalance;
-
     constructor(XMLElement){
         this.accountID = XMLElement.AccountID[0];
         this.accountDescription = XMLElement.AccountDescription[0];

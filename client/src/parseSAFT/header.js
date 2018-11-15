@@ -1,29 +1,6 @@
 import Address from './address';
 
 class Header {
-    auditFileVersion = null;
-    companyID = null;
-    taxRegistrationNumber = null;
-    taxAccountingBasis = null;
-    companyName = null;
-    businessName = null;
-    companyAddress = null;
-    fiscalYear = null;
-    startDate = null;
-    endDate = null;
-    currencyCode = null;
-    dateCreated = null;
-    taxEntity = null;
-    productCompanyTaxID = null;
-    softwareCertificateNumber = null;
-    productId = null;
-    productVersion = null;
-    headerComment = null;
-    telephone = null;
-    fax = null;
-    email = null;
-    website = null;
-
     constructor(XMLElement){
         this.auditFileVersion = XMLElement.AuditFileVersion[0];
         this.companyID = XMLElement.CompanyID[0];

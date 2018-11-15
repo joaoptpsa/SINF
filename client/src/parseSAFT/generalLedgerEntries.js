@@ -19,18 +19,6 @@ class Line {
 }
 
 class Transaction {
-    id;
-    period;
-    date;
-    sourceID;
-    description;
-    docArchivalNumber;
-    type;
-    glPostingDate;
-    customerID;
-    supplierID;
-    lines;
-    
     constructor(XMLElement){
         this.id = XMLElement.TransactionID[0];
         this.period = XMLElement.Period[0];
@@ -51,15 +39,10 @@ class Transaction {
 }
 
 class Journal {
-    id;
-    description;
-    transactions;
-    
     constructor(XMLElement){
         this.id = XMLElement.JournalID[0];
         this.description = XMLElement.Description[0];
         this.transactions = [];
-        
 
         for (const index in XMLElement.Transaction){
             this.transactions.push(new Transaction(XMLElement.Transaction[index]))
@@ -68,10 +51,6 @@ class Journal {
 }
 
 class GeneralLedgerEntries {
-    numberOfEntries;
-    totalDebit;
-    totalCredit;
-    
     constructor(XMLElement){
         this.numberOfEntries = XMLElement.NumberOfEntries[0];
         this.totalCredit = XMLElement.TotalCredit[0];

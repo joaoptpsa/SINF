@@ -2,13 +2,13 @@ import Customer from './customer';
 import Supplier from './supplier';
 import Product from './product';
 import GeneralLedger from './generalLedger';
-import TaxTableEntry from './taxTableEntry';
+import Tax from '../tax';
 
 const parseTaxTable = (XMLElement) => {
     let taxTable = [];
     
     for (const taxElement in XMLElement.TaxType){
-        taxTable.push(new TaxTableEntry(XMLElement.TaxType[taxElement]))
+        taxTable.push(new Tax(XMLElement.TaxType[taxElement]))
     }
     
     return taxTable;

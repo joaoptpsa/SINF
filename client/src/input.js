@@ -1,6 +1,5 @@
 import * as React from 'react'
-import { parseString } from 'xml2js'
-import AuditFile, { Header, parseMasterFiles, GeneralLedgerEntries } from './models'
+import parseSAFT from './parseSAFT'
 
 const input = () => {
     const handleChange = (e) => {
@@ -10,11 +9,11 @@ const input = () => {
             const text = reader.result;
             
             /* parse xml */
-            const xmlDoc = parseString(text, (err, xmlFile) => {
+            parseSAFT(text, (err, auditFile) => {
                 if (err) return alert(err);
                 
-                // parse xml audit file
-                const auditFile = new AuditFile(xmlFile.AuditFile);
+                console.log('Parsed Audit File:');
+                console.log(auditFile);
             })
         }
         

@@ -1,0 +1,13 @@
+class Tax {
+    constructor(XMLElement){
+        this.type = XMLElement.TaxType[0];
+        this.countryRegion = XMLElement.TaxCountryRegion[0];
+        if (XMLElement.TaxCode) this.code = XMLElement.TaxCode[0];
+        this.description = XMLElement.Description[0];
+        if (XMLElement.TaxExpirationDate) this.expirationDate = XMLElement.TaxExpirationDate[0];
+        if (XMLElement.TaxPercentage) this.taxPercentage = XMLElement.TaxPercentage[0];
+        if (XMLElement.TaxAmount) this.taxAmount = XMLElement.TaxAmount[0];
+    }   
+}
+
+export default Tax
