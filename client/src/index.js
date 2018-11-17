@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Input from './input';
+import App from './app';
+import 'semantic-ui-css/semantic.min.css';
 
-ReactDOM.render(<Input />, document.getElementById('root'));
+ReactDOM.render(<App />, document.getElementById('root'));
