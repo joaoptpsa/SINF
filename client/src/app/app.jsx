@@ -23,12 +23,13 @@ class App extends React.Component {
     render() {
       const { SAFT } = this.state;
 
-      if (!SAFT) {
+
+      /* TODO: if (!SAFT) {
         return (
           <Container>
             <FileInput handleFile={this.handleFile} />
           </Container>);
-      }
+      } */
       return <Dashboard saft={SAFT} />;
     }
 }
