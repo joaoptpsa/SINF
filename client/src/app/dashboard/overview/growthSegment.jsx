@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Segment, Header, Statistic, Icon,
+  Segment, Statistic, Icon,
 } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 

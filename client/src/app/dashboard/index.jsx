@@ -14,7 +14,7 @@ const Dashboard = () => (
       <Grid.Column width={2} style={{ backgroundColor: '#504249', minHeight: '100%', padding: '33px' }}>
         <Header style={{ color: 'white' }}>
           <Icon name="dashboard" />
-  360 Company Dashboard
+          360 Company Dashboard
         </Header>
         <Menu text vertical>
           <Menu.Item name="Overview" style={menuItemStyle} />
