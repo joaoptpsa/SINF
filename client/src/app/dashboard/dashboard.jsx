@@ -24,7 +24,7 @@ const Dashboard = () => (
           <Menu.Item name="Finances" style={menuItemStyle} />
         </Menu>
       </Grid.Column>
-      <Grid.Column width={14} style={{ backgroundColor: '#D8D8D8', padding: '20px' }}>
+      <Grid.Column width={14} style={{ backgroundColor: '#D8D8D8', paddingTop: '30px', paddingRight: '30px' }}>
         <Overview />
       </Grid.Column>
     </Grid>
