@@ -36,7 +36,7 @@ class App extends React.Component {
             </Segment>
           </Container>);
       }
-      return <Dashboard saft={SAFT} />;
+      return <Dashboard SAFT={SAFT} />;
     }
 }
 

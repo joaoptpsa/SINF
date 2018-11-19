@@ -5,6 +5,7 @@ import {
 import {
   BarChart, Bar, Legend, Tooltip, CartesianGrid, XAxis, YAxis, PieChart, Pie,
 } from 'recharts';
+import PropTypes from 'prop-types';
 import GrowthSegment from './growthSegment';
 
 const options = [{
@@ -38,7 +39,7 @@ const data = [
 
 const pieData = [{ name: 'Cellphones', value: 30 }, { name: 'PCs', value: 20 }, { name: 'Hardware', value: 15 }, { name: 'Others', value: 5 }];
 
-const Overview = () => (
+const Overview = ({ SAFT }) => (
   <Segment>
     <Select placeholder="Select time" options={options} style={selectStyle} />
     <Divider />
@@ -94,5 +95,9 @@ const Overview = () => (
     </Grid>
   </Segment>
 );
+
+Overview.propTypes = {
+  SAFT: PropTypes.object.isRequired,
+};
 
 export default Overview;
