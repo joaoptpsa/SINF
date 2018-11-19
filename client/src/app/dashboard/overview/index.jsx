@@ -39,6 +39,8 @@ const data = [
 
 const pieData = [{ name: 'Cellphones', value: 30 }, { name: 'PCs', value: 20 }, { name: 'Hardware', value: 15 }, { name: 'Others', value: 5 }];
 
+// TODO: Show SAFT data
+
 const Overview = ({ SAFT }) => (
   <Segment>
     <Select placeholder="Select time" options={options} style={selectStyle} />
