@@ -14,7 +14,7 @@ const FileInput = ({ handleFile }) => {
       handleFile(text);
     };
 
-    reader.readAsText(e.target.files[0]);
+    reader.readAsText(e.target.files[0], 'windows-1252');
   };
 
   return (

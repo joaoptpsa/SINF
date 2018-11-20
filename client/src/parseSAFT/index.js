@@ -1,5 +1,5 @@
 import { parseString } from 'xml2js';
-import AuditFile from './auditFile';
+import AuditFile from './models';
 
 /**
  * Parses SAF-T Document
@@ -9,8 +9,6 @@ import AuditFile from './auditFile';
 const parseSAFT = (text, callback) => {
   parseString(text, (err, xmlFile) => {
     if (err) return callback(err, null);
-
-    console.log(xmlFile);
 
     const auditFile = new AuditFile(xmlFile.AuditFile);
 

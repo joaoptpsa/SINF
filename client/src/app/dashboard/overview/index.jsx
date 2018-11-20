@@ -140,9 +140,7 @@ const Overview = ({ SAFT }) => {
     SAFT.sourceDocuments.invoices,
     SAFT.masterFiles.costumers,
   );
-
-  console.log(top5Costumers);
-
+  
   return (
     <Segment>
       <Select placeholder="Select time" options={options} style={selectStyle} />
