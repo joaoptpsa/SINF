@@ -6,44 +6,44 @@ import Tax from '../tax';
 
 const parseTaxTable = (XMLElement) => {
   const taxTable = [];
-
+  
   for (const taxElement in XMLElement.TaxType) {
     taxTable.push(new Tax(XMLElement.TaxType[taxElement]));
   }
-
+  
   return taxTable;
 };
 
 const parseMasterFiles = (XMLMasterFiles) => {
   const masterfiles = [];
-
+  
   for (const element in XMLMasterFiles) {
     const XMLElement = XMLMasterFiles[element][0];
-
+    
     switch (element) {
       case 'Customer':
-        masterfiles.push(new Customer(XMLElement));
-        break;
+      masterfiles.push(new Customer(XMLElement));
+      break;
       case 'Product':
-        masterfiles.push(new Product(XMLElement));
-        break;
+      masterfiles.push(new Product(XMLElement));
+      break;
       case 'TaxTable':
-        masterfiles.push(parseTaxTable(XMLElement));
-        break;
+      masterfiles.push(parseTaxTable(XMLElement));
+      break;
       case 'GeneralLedger':
-        masterfiles.push(new GeneralLedger(XMLElement));
-        break;
+      masterfiles.push(new GeneralLedger(XMLElement));
+      break;
       case 'Supplier':
-        masterfiles.push(new Supplier(XMLElement));
-        break;
+      masterfiles.push(new Supplier(XMLElement));
+      break;
       case '$':
-        break;
+      break;
       default:
-        console.error(`Error: index not parsed ${element}`);
-        break;
+      console.log(`Error: index not parsed ${element}`);
+      break;
     }
   }
-
+  
   return masterfiles;
 };
 

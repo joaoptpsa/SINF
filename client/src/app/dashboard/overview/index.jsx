@@ -106,8 +106,9 @@ const getCustumersGrossTotal = (invoices) => {
   const customers = {};
 
   invoices.forEach((invoice) => {
-    if (customers[invoice.customerID]) customers[invoice.customerID] += invoice.documentTotals.grossTotal;
-    else customers[invoice.customerID] = invoice.documentTotals.grossTotal;
+    if (customers[invoice.customerID]) {
+      customers[invoice.customerID] += invoice.documentTotals.grossTotal;
+    } else customers[invoice.customerID] = invoice.documentTotals.grossTotal;
   });
 
   return customers;
