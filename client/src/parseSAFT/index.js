@@ -1,20 +1,21 @@
-import AuditFile from './auditFile'
-import { parseString } from 'xml2js'
-
+import { parseString } from 'xml2js';
+import AuditFile from './auditFile';
 
 /**
  * Parses SAF-T Document
- * @param {string} text 
- * @param {(Error, AuditFile) => void} callback 
+ * @param {string} text
+ * @param {(Error, AuditFile) => void} callback
  */
 const parseSAFT = (text, callback) => {
-    parseString(text, (err, xmlFile) => {
-        if (err) return callback(err, null);
+  parseString(text, (err, xmlFile) => {
+    if (err) return callback(err, null);
 
-        const auditFile = new AuditFile(xmlFile.AuditFile);
+    console.log(xmlFile);
 
-        return callback(null, auditFile);
-    });
-}
+    const auditFile = new AuditFile(xmlFile.AuditFile);
 
-export default parseSAFT
+    return callback(null, auditFile);
+  });
+};
+
+export default parseSAFT;

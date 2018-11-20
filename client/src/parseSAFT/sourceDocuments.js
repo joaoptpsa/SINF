@@ -28,7 +28,7 @@ class Line {
     if (XMLElement.References) this.references = XMLElement.References[0];
 
     this.description = XMLElement.Description[0];
-    this.debitAmount = XMLElement.DebitAmount[0];
+    if (XMLElement.DebitAmount) this.debitAmount = XMLElement.DebitAmount[0];
     this.creditAmount = XMLElement.CreditAmount[0];
 
     // tax
