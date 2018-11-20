@@ -85,18 +85,18 @@ const getSoldProducts = (invoices) => {
   return products;
 };
 
-const getTop5SoldProducts = (invoices) => {
+const getTop5SoldProducts = (invoices, productList) => {
   // get all sold products
   const products = getSoldProducts(invoices);
 
   // get codes of the top 5 most sold products
   const sortedKeys = Object.keys(products)
     .sort((a, b) => products[b] - products[a])
-    .splice(0, 4);
+    .splice(0, 5);
 
   const top5products = [];
   sortedKeys.forEach((key) => {
-    top5products.push({ code: key, quantity: products[key] });
+    top5products.push({ quantity: products[key], ...productList[key] });
   });
 
   return top5products;
@@ -114,25 +114,34 @@ const getCustumersGrossTotal = (invoices) => {
   return customers;
 };
 
-const getTop5GrossTotalCostumers = (invoices) => {
+// TODO: fix
+const getTop5GrossTotalCostumers = (invoices, costumerList) => {
   const customers = getCustumersGrossTotal(invoices);
 
   // get codes of the top 5 gross total with customers
   const sortedKeys = Object.keys(customers)
     .sort((a, b) => customers[b] - customers[a])
-    .splice(0, 4);
+    .splice(0, 5);
 
   const top5costumers = [];
   sortedKeys.forEach((key) => {
-    top5costumers.push({ code: key, quantity: customers[key] });
+    top5costumers.push({ quantity: customers[key], ...costumerList[key] });
   });
 
   return top5costumers;
 };
 
 const Overview = ({ SAFT }) => {
-  const top5Products = getTop5SoldProducts(SAFT.sourceDocuments.invoices);
-  const top5Costumers = getTop5GrossTotalCostumers(SAFT.sourceDocuments.invoices);
+  const top5Products = getTop5SoldProducts(
+    SAFT.sourceDocuments.invoices,
+    SAFT.masterFiles.products,
+  );
+  const top5Costumers = getTop5GrossTotalCostumers(
+    SAFT.sourceDocuments.invoices,
+    SAFT.masterFiles.costumers,
+  );
+
+  console.log(top5Costumers);
 
   return (
     <Segment>
@@ -172,7 +181,7 @@ const Overview = ({ SAFT }) => {
                 }}
               >
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="code" />
+                <XAxis dataKey="companyName" />
                 <YAxis />
                 <Tooltip />
                 <Legend />
@@ -184,7 +193,7 @@ const Overview = ({ SAFT }) => {
             <Segment compact>
               <Header>Best seller products</Header>
               <PieChart width={400} height={300}>
-                <Pie data={top5Products} dataKey="quantity" nameKey="code" label>
+                <Pie data={top5Products} dataKey="quantity" nameKey="description" label>
                   {data.map((entry, index) => (
                     <Cell key="index" fill={COLORS[index]} />
                   ))}

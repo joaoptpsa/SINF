@@ -28,6 +28,7 @@ class AuditFile {
     if (XMLElement.SourceDocuments) {
       const salesInvoicesXML = XMLElement.SourceDocuments[0].SalesInvoices[0];
       this.sourceDocuments = new SalesInvoices(salesInvoicesXML);
+      // TODO: OTHER SOURCE DOCUMENTS = ex movement of goods.
     }
   }
 }
