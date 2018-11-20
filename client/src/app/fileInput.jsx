@@ -21,7 +21,7 @@ const FileInput = ({ handleFile }) => {
     <Segment placeholder>
       <Header icon>
         <Icon name="cloud upload" />
-    Upload SAF-T
+        Upload SAF-T
       </Header>
       <Segment.Inline>
         <Input type="file" accept=".xml" onChange={handleChange} />
@@ -33,6 +33,5 @@ const FileInput = ({ handleFile }) => {
 FileInput.propTypes = {
   handleFile: PropTypes.func.isRequired,
 };
-
 
 export default FileInput;

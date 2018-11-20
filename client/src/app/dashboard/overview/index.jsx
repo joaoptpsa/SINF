@@ -3,16 +3,31 @@ import {
   Divider, Select, Grid, Segment, Header,
 } from 'semantic-ui-react';
 import {
-  BarChart, Bar, Legend, Tooltip, CartesianGrid, XAxis, YAxis, PieChart, Pie,
+  BarChart,
+  Bar,
+  Legend,
+  Tooltip,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  PieChart,
+  Pie,
 } from 'recharts';
 import PropTypes from 'prop-types';
 import GrowthSegment from './growthSegment';
 
-const options = [{
-  key: 'lastMonth', value: 'lastMonth', text: 'Last month',
-}, {
-  key: 'lastSemester', value: 'lastSemester', text: 'Last semester',
-}];
+const options = [
+  {
+    key: 'lastMonth',
+    value: 'lastMonth',
+    text: 'Last month',
+  },
+  {
+    key: 'lastSemester',
+    value: 'lastSemester',
+    text: 'Last semester',
+  },
+];
 
 const selectStyle = {
   backgroundColor: 'transparent',
@@ -21,23 +36,33 @@ const selectStyle = {
 
 const data = [
   {
-    name: 'Apple', value: 100,
+    name: 'Apple',
+    value: 100,
   },
   {
-    name: 'Microsoft', value: 200,
+    name: 'Microsoft',
+    value: 200,
   },
   {
-    name: 'Google', value: 300,
+    name: 'Google',
+    value: 300,
   },
   {
-    name: 'Github', value: 150,
+    name: 'Github',
+    value: 150,
   },
   {
-    name: 'Others', value: 30,
+    name: 'Others',
+    value: 30,
   },
 ];
 
-const pieData = [{ name: 'Cellphones', value: 30 }, { name: 'PCs', value: 20 }, { name: 'Hardware', value: 15 }, { name: 'Others', value: 5 }];
+const pieData = [
+  { name: 'Cellphones', value: 30 },
+  { name: 'PCs', value: 20 },
+  { name: 'Hardware', value: 15 },
+  { name: 'Others', value: 5 },
+];
 
 // TODO: Show SAFT data
 
@@ -72,7 +97,10 @@ const Overview = ({ SAFT }) => (
               height={300}
               data={data}
               margin={{
-                top: 5, right: 30, left: 20, bottom: 5,
+                top: 5,
+                right: 30,
+                left: 20,
+                bottom: 5,
               }}
             >
               <CartesianGrid strokeDasharray="3 3" />

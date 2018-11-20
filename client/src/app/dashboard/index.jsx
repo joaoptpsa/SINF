@@ -12,7 +12,10 @@ const menuItemStyle = {
 const Dashboard = ({ SAFT }) => (
   <Container fluid style={{ height: '100%' }}>
     <Grid columns={2} style={{ minHeight: '100%' }}>
-      <Grid.Column width={2} style={{ backgroundColor: '#504249', minHeight: '100%', padding: '33px' }}>
+      <Grid.Column
+        width={2}
+        style={{ backgroundColor: '#504249', minHeight: '100%', padding: '33px' }}
+      >
         <Header style={{ color: 'white' }}>
           <Icon name="dashboard" />
           360 Company Dashboard
@@ -25,7 +28,10 @@ const Dashboard = ({ SAFT }) => (
           <Menu.Item name="Finances" style={menuItemStyle} />
         </Menu>
       </Grid.Column>
-      <Grid.Column width={14} style={{ backgroundColor: '#D8D8D8', paddingTop: '30px', paddingRight: '30px' }}>
+      <Grid.Column
+        width={14}
+        style={{ backgroundColor: '#D8D8D8', paddingTop: '30px', paddingRight: '30px' }}
+      >
         <Overview SAFT={SAFT} />
       </Grid.Column>
     </Grid>
