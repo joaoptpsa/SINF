@@ -39,7 +39,7 @@ const parseMasterFiles = (XMLMasterFiles) => {
       case '$':
         break;
       default:
-        console.log(`Error: index not parsed ${element}`);
+        console.error(`Error: index not parsed ${element}`);
         break;
     }
   }

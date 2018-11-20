@@ -102,10 +102,36 @@ const getTop5SoldProducts = (invoices) => {
   return top5products;
 };
 
+const getCustumersGrossTotal = (invoices) => {
+  const customers = {};
+
+  invoices.forEach((invoice) => {
+    if (customers[invoice.customerID]) customers[invoice.customerID] += invoice.documentTotals.grossTotal;
+    else customers[invoice.customerID] = invoice.documentTotals.grossTotal;
+  });
+
+  return customers;
+};
+
+const getTop5GrossTotalCostumers = (invoices) => {
+  const customers = getCustumersGrossTotal(invoices);
+
+  // get codes of the top 5 gross total with customers
+  const sortedKeys = Object.keys(customers)
+    .sort((a, b) => customers[b] - customers[a])
+    .splice(0, 4);
+
+  const top5costumers = [];
+  sortedKeys.forEach((key) => {
+    top5costumers.push({ code: key, quantity: customers[key] });
+  });
+
+  return top5costumers;
+};
+
 const Overview = ({ SAFT }) => {
   const top5Products = getTop5SoldProducts(SAFT.sourceDocuments.invoices);
-
-  console.log(top5Products);
+  const top5Costumers = getTop5GrossTotalCostumers(SAFT.sourceDocuments.invoices);
 
   return (
     <Segment>
@@ -136,7 +162,7 @@ const Overview = ({ SAFT }) => {
               <BarChart
                 width={600}
                 height={300}
-                data={data}
+                data={top5Costumers}
                 margin={{
                   top: 5,
                   right: 30,
@@ -145,17 +171,17 @@ const Overview = ({ SAFT }) => {
                 }}
               >
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
+                <XAxis dataKey="code" />
                 <YAxis />
                 <Tooltip />
                 <Legend />
-                <Bar dataKey="value" fill="#8884d8" />
+                <Bar name="Gross total" dataKey="quantity" fill="#8884d8" />
               </BarChart>
             </Segment>
           </Grid.Column>
           <Grid.Column>
             <Segment compact>
-              <Header>Best seller product</Header>
+              <Header>Best seller products</Header>
               <PieChart width={400} height={300}>
                 <Pie data={top5Products} dataKey="quantity" nameKey="code" label>
                   {data.map((entry, index) => (
