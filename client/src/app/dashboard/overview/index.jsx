@@ -36,29 +36,6 @@ const selectStyle = {
   color: 'black',
 };
 
-const data = [
-  {
-    name: 'Apple',
-    value: 100,
-  },
-  {
-    name: 'Microsoft',
-    value: 200,
-  },
-  {
-    name: 'Google',
-    value: 300,
-  },
-  {
-    name: 'Github',
-    value: 150,
-  },
-  {
-    name: 'Others',
-    value: 30,
-  },
-];
-
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#FF4444'];
 
 // TODO: Show SAFT data
@@ -108,8 +85,8 @@ const getCustumersGrossTotal = (invoices) => {
 
   invoices.forEach((invoice) => {
     if (customers[invoice.customerID]) {
-      customers[invoice.customerID] += invoice.documentTotals.grossTotal;
-    } else customers[invoice.customerID] = invoice.documentTotals.grossTotal;
+      customers[invoice.customerID] += parseFloat(invoice.documentTotals.grossTotal);
+    } else customers[invoice.customerID] = parseFloat(invoice.documentTotals.grossTotal);
   });
 
   return customers;
@@ -165,21 +142,13 @@ const Overview = ({ SAFT }) => {
           </Grid.Column>
         </Grid.Row>
         <Grid.Row columns={2}>
-          <Grid.Column>
+          <Grid.Column width={10}>
             <Segment>
               <Header>Most valuable costumers</Header>
               <ResponsiveContainer height={300} width="90%">
-                <BarChart
-                  data={top5Costumers}
-                  margin={{
-                    top: 5,
-                    right: 30,
-                    left: 20,
-                    bottom: 5,
-                  }}
-                >
+                <BarChart data={top5Costumers}>
                   <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="companyName" />
+                  <XAxis dataKey="companyName" interval="preserveStartEnd" />
                   <YAxis />
                   <Tooltip />
                   <Legend />
@@ -188,14 +157,14 @@ const Overview = ({ SAFT }) => {
               </ResponsiveContainer>
             </Segment>
           </Grid.Column>
-          <Grid.Column>
+          <Grid.Column width={6}>
             <Segment>
               <Header>Best seller products</Header>
               <ResponsiveContainer height={300} width="90%">
                 <PieChart>
                   <Pie data={top5Products} dataKey="quantity" nameKey="description" label>
-                    {data.map((entry, index) => (
-                      <Cell key="index" fill={COLORS[index]} />
+                    {top5Products.map((entry, index) => (
+                      <Cell key={index} fill={COLORS[index]} />
                     ))}
                   </Pie>
                   <Legend />

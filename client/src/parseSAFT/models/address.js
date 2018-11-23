@@ -1,5 +1,5 @@
 class Address {
-    constructor(XMLElement){
+    constructor(XMLElement) {
         this.detail = XMLElement.AddressDetail[0];
         this.city = XMLElement.City[0];
         this.country = XMLElement.Country[0];

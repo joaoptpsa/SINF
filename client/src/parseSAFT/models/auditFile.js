@@ -4,14 +4,6 @@ import GeneralLedgerEntries from './generalLedgerEntries';
 import SalesInvoices from './sourceDocuments';
 
 class AuditFile {
-  header;
-
-  masterFiles;
-
-  generalLedgerEntries;
-
-  sourceDocuments;
-
   constructor(XMLElement) {
     // parse header
     this.header = new Header(XMLElement.Header[0]);

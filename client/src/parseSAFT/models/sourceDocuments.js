@@ -51,7 +51,11 @@ class Shipment {
 }
 
 class Currency {
-  constructor({ CurrencyCode, CurrencyDebitAmount, CurrencyCreditAmount }) {
+  constructor({
+    CurrencyCode,
+    CurrencyDebitAmount,
+    CurrencyCreditAmount,
+  }) {
     if (CurrencyCode) this.code = CurrencyCode[0];
     if (CurrencyDebitAmount) this.debitAmount = CurrencyDebitAmount[0];
     if (CurrencyCreditAmount) this.creditAmount = CurrencyCreditAmount[0];
@@ -60,7 +64,10 @@ class Currency {
 
 class Settlement {
   constructor({
-    SettlementDiscount, SettlementAmount, SettlementDate, PaymentMechanism,
+    SettlementDiscount,
+    SettlementAmount,
+    SettlementDate,
+    PaymentMechanism,
   }) {
     if (SettlementDiscount) this.discount = SettlementDiscount[0];
     if (SettlementAmount) this.amount = SettlementAmount[0];
