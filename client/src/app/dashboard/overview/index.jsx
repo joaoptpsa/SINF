@@ -13,6 +13,7 @@ import {
   PieChart,
   Pie,
   Cell,
+  ResponsiveContainer,
 } from 'recharts';
 import PropTypes from 'prop-types';
 import GrowthSegment from './growthSegment';
@@ -140,7 +141,7 @@ const Overview = ({ SAFT }) => {
     SAFT.sourceDocuments.invoices,
     SAFT.masterFiles.costumers,
   );
-  
+
   return (
     <Segment>
       <Select placeholder="Select time" options={options} style={selectStyle} />
@@ -165,39 +166,41 @@ const Overview = ({ SAFT }) => {
         </Grid.Row>
         <Grid.Row columns={2}>
           <Grid.Column>
-            <Segment compact>
+            <Segment>
               <Header>Most valuable costumers</Header>
-              <BarChart
-                width={600}
-                height={300}
-                data={top5Costumers}
-                margin={{
-                  top: 5,
-                  right: 30,
-                  left: 20,
-                  bottom: 5,
-                }}
-              >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="companyName" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Bar name="Gross total" dataKey="quantity" fill="#8884d8" />
-              </BarChart>
+              <ResponsiveContainer height={300} width="90%">
+                <BarChart
+                  data={top5Costumers}
+                  margin={{
+                    top: 5,
+                    right: 30,
+                    left: 20,
+                    bottom: 5,
+                  }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="companyName" />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  <Bar name="Gross total" dataKey="quantity" fill="#8884d8" />
+                </BarChart>
+              </ResponsiveContainer>
             </Segment>
           </Grid.Column>
           <Grid.Column>
-            <Segment compact>
+            <Segment>
               <Header>Best seller products</Header>
-              <PieChart width={400} height={300}>
-                <Pie data={top5Products} dataKey="quantity" nameKey="description" label>
-                  {data.map((entry, index) => (
-                    <Cell key="index" fill={COLORS[index]} />
-                  ))}
-                </Pie>
-                <Legend />
-              </PieChart>
+              <ResponsiveContainer height={300} width="90%">
+                <PieChart>
+                  <Pie data={top5Products} dataKey="quantity" nameKey="description" label>
+                    {data.map((entry, index) => (
+                      <Cell key="index" fill={COLORS[index]} />
+                    ))}
+                  </Pie>
+                  <Legend />
+                </PieChart>
+              </ResponsiveContainer>
             </Segment>
           </Grid.Column>
         </Grid.Row>

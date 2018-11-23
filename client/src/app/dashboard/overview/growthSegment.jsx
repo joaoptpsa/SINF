@@ -1,14 +1,16 @@
 import React from 'react';
-import {
-  Segment, Statistic, Icon,
-} from 'semantic-ui-react';
+import { Segment, Statistic, Icon } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 
 const GrowthSegment = ({ text, number, isNegative }) => (
   <Segment textAlign="center" style={{ padding: '20px' }}>
     <Statistic>
       <Statistic.Value>
-        {isNegative ? <Icon color="red" name="arrow circle down" /> : <Icon color="green" name="arrow circle up" />}
+        {isNegative ? (
+          <Icon color="red" name="arrow circle down" />
+        ) : (
+          <Icon color="green" name="arrow circle up" />
+        )}
         {number}
       </Statistic.Value>
       <Statistic.Label>{text}</Statistic.Label>
