@@ -11,7 +11,7 @@ const menuItemStyle = {
 
 const Dashboard = ({ SAFT }) => (
   <Container fluid style={{ height: '100%' }}>
-    <Grid columns={2} style={{ minHeight: '100%' }}>
+    <Grid columns={2} style={{ minHeight: '100%' }} stackable>
       <Grid.Column
         width={2}
         style={{ backgroundColor: '#504249', minHeight: '100%', padding: '33px' }}
