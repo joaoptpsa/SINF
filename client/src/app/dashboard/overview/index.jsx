@@ -92,7 +92,6 @@ const getCustumersGrossTotal = (invoices) => {
   return customers;
 };
 
-// TODO: fix
 const getTop5GrossTotalCostumers = (invoices, costumerList) => {
   const customers = getCustumersGrossTotal(invoices);
 
@@ -109,6 +108,29 @@ const getTop5GrossTotalCostumers = (invoices, costumerList) => {
   return top5costumers;
 };
 
+const getGrossProfit = (invoices) => {
+  const costumersGrossTotal = getCustumersGrossTotal(invoices);
+  let total = 0;
+
+  Object.keys(costumersGrossTotal).forEach((key) => {
+    total += costumersGrossTotal[key];
+  });
+
+  return total;
+};
+
+const getNumSales = (invoices) => {
+  // get all sold products
+  const productsSold = getSoldProducts(invoices);
+  let numSales = 0;
+
+  Object.keys(productsSold).forEach((key) => {
+    numSales += productsSold[key];
+  });
+
+  return numSales;
+};
+
 const Overview = ({ SAFT }) => {
   const top5Products = getTop5SoldProducts(
     SAFT.sourceDocuments.invoices,
@@ -118,6 +140,10 @@ const Overview = ({ SAFT }) => {
     SAFT.sourceDocuments.invoices,
     SAFT.masterFiles.costumers,
   );
+
+  const grossProfit = getGrossProfit(SAFT.sourceDocuments.invoices);
+
+  const numSales = getNumSales(SAFT.sourceDocuments.invoices);
 
   return (
     <Segment>
@@ -129,13 +155,13 @@ const Overview = ({ SAFT }) => {
             <GrowthSegment text="Liquidity" number="100%" isNegative />
           </Grid.Column>
           <Grid.Column>
-            <GrowthSegment text="Total Sales" number="100%" />
+            <GrowthSegment text="Total Sales" number={`${numSales}`} />
           </Grid.Column>
           <Grid.Column>
             <GrowthSegment text="Total Purchases" number="100%" isNegative />
           </Grid.Column>
           <Grid.Column>
-            <GrowthSegment text="Gross Profit" number="100%" />
+            <GrowthSegment text="Gross Profit" number={`${grossProfit.toFixed(2)}`} />
           </Grid.Column>
           <Grid.Column>
             <GrowthSegment text="Total Stock Value" number="100%" isNegative />
