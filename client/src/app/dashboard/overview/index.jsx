@@ -164,7 +164,7 @@ const Overview = ({ SAFT }) => {
                 <PieChart>
                   <Pie data={top5Products} dataKey="quantity" nameKey="description" label>
                     {top5Products.map((entry, index) => (
-                      <Cell key={index} fill={COLORS[index]} />
+                      <Cell key={entry.code} fill={COLORS[index]} />
                     ))}
                   </Pie>
                   <Legend />
