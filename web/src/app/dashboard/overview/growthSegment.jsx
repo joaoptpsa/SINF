@@ -2,30 +2,37 @@ import React from 'react';
 import { Segment, Statistic, Icon } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 
-const GrowthSegment = ({ text, number, isNegative }) => (
-  <Segment textAlign="center" style={{ padding: '20px' }}>
-    <Statistic>
-      <Statistic.Value>
-        {isNegative ? (
-          <Icon color="red" name="arrow circle down" />
-        ) : (
-          <Icon color="green" name="arrow circle up" />
-        )}
-        {number}
-      </Statistic.Value>
-      <Statistic.Label>{text}</Statistic.Label>
-    </Statistic>
-  </Segment>
-);
+const GrowthSegment = ({ text, number }) => {
+  let color;
+  let icon;
 
-GrowthSegment.defaultProps = {
-  isNegative: false,
+  if (number === 0) {
+    color = 'yellow';
+    icon = null;
+  } else if (number > 0) {
+    color = 'green';
+    icon = <Icon color="green" name="arrow circle up" />;
+  } else {
+    color = 'red';
+    icon = <Icon color="red" name="arrow circle down" />;
+  }
+
+  return (
+    <Segment textAlign="center" style={{ padding: '20px', minHeight: '140px', paddingTop: '35px' }}>
+      <Statistic size="small" color={color}>
+        <Statistic.Value>
+          {icon}
+          {`${number.toFixed(2)}%`}
+        </Statistic.Value>
+        <Statistic.Label>{text}</Statistic.Label>
+      </Statistic>
+    </Segment>
+  );
 };
 
 GrowthSegment.propTypes = {
   text: PropTypes.string.isRequired,
-  number: PropTypes.string.isRequired,
-  isNegative: PropTypes.bool,
+  number: PropTypes.number.isRequired,
 };
 
 export default GrowthSegment;
