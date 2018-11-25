@@ -40,6 +40,17 @@ const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#FF4444'];
 
 // TODO: Show SAFT data
 
+const getInvoices = ({ invoices }, fromDate, toDate) => invoices.filter((invoice) => {
+  const { date } = invoice;
+
+  // filter dates off bounds
+  if (date < fromDate || date > toDate) {
+    return false;
+  }
+
+  return true;
+});
+
 const getSourceDocumentLines = (invoices) => {
   const sourceDocumentLines = [];
 
@@ -132,18 +143,27 @@ const getNumSales = (invoices) => {
 };
 
 const Overview = ({ SAFT }) => {
-  const top5Products = getTop5SoldProducts(
-    SAFT.sourceDocuments.invoices,
-    SAFT.masterFiles.products,
-  );
-  const top5Costumers = getTop5GrossTotalCostumers(
-    SAFT.sourceDocuments.invoices,
-    SAFT.masterFiles.costumers,
-  );
+  const { endDate, startDate } = SAFT.header;
+  const semester = new Date(endDate);
+  semester.setMonth(semester.getMonth() - 6);
 
-  const grossProfit = getGrossProfit(SAFT.sourceDocuments.invoices);
+  console.log(startDate, endDate);
 
-  const numSales = getNumSales(SAFT.sourceDocuments.invoices);
+  const invoicesToday = getInvoices(SAFT.sourceDocuments, null, endDate);
+  const invoicesLastPeriod = getInvoices(SAFT.sourceDocuments, null, semester);
+
+  const top5Products = getTop5SoldProducts(invoicesToday, SAFT.masterFiles.products);
+  const top5Costumers = getTop5GrossTotalCostumers(invoicesToday, SAFT.masterFiles.costumers);
+
+  // calculate increase in gross profit
+  const grossProfitToday = getGrossProfit(invoicesToday);
+  const grossProfitLastPeriod = getGrossProfit(invoicesLastPeriod);
+  const grossProfit = (grossProfitToday / grossProfitLastPeriod - 1) * 100;
+
+  // calculate increase in number of sales
+  const numSalesToday = getNumSales(invoicesToday);
+  const numSalesLastPeriod = getNumSales(invoicesToday);
+  const numSales = (numSalesToday / numSalesLastPeriod - 1) * 100;
 
   return (
     <Segment>
@@ -155,13 +175,13 @@ const Overview = ({ SAFT }) => {
             <GrowthSegment text="Liquidity" number="100%" isNegative />
           </Grid.Column>
           <Grid.Column>
-            <GrowthSegment text="Total Sales" number={`${numSales}`} />
+            <GrowthSegment text="Total Sales" number={`${numSales.toFixed(2)}%`} />
           </Grid.Column>
           <Grid.Column>
             <GrowthSegment text="Total Purchases" number="100%" isNegative />
           </Grid.Column>
           <Grid.Column>
-            <GrowthSegment text="Gross Profit" number={`${grossProfit.toFixed(2)}`} />
+            <GrowthSegment text="Gross Profit" number={`${grossProfit.toFixed(2)}%`} />
           </Grid.Column>
           <Grid.Column>
             <GrowthSegment text="Total Stock Value" number="100%" isNegative />

@@ -51,11 +51,7 @@ class Shipment {
 }
 
 class Currency {
-  constructor({
-    CurrencyCode,
-    CurrencyDebitAmount,
-    CurrencyCreditAmount,
-  }) {
+  constructor({ CurrencyCode, CurrencyDebitAmount, CurrencyCreditAmount }) {
     if (CurrencyCode) this.code = CurrencyCode[0];
     if (CurrencyDebitAmount) this.debitAmount = CurrencyDebitAmount[0];
     if (CurrencyCreditAmount) this.creditAmount = CurrencyCreditAmount[0];
@@ -64,10 +60,7 @@ class Currency {
 
 class Settlement {
   constructor({
-    SettlementDiscount,
-    SettlementAmount,
-    SettlementDate,
-    PaymentMechanism,
+    SettlementDiscount, SettlementAmount, SettlementDate, PaymentMechanism,
   }) {
     if (SettlementDiscount) this.discount = SettlementDiscount[0];
     if (SettlementAmount) this.amount = SettlementAmount[0];
@@ -93,10 +86,10 @@ class Invoice {
     if (XMLElement.Hash) this.hash = XMLElement.Hash[0];
     if (XMLElement.HashControl) this.hashControl = XMLElement.HashControl[0];
     if (XMLElement.Period) this.period = XMLElement.Period[0];
-    this.date = XMLElement.InvoiceDate[0];
+    this.date = new Date(XMLElement.InvoiceDate[0]);
     this.type = XMLElement.InvoiceType[0];
     if (XMLElement.SelfBillingIndicator) this.selfBillingIndicator = XMLElement.SelfBillingIndicator[0];
-    this.systemEntryDate = XMLElement.SystemEntryDate[0];
+    this.systemEntryDate = new Date(XMLElement.SystemEntryDate[0]);
     if (XMLElement.TransactionID) this.transactionID = XMLElement.TransactionID[0];
     this.customerID = XMLElement.CustomerID[0];
 

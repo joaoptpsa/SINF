@@ -6,12 +6,12 @@ class Header {
     this.companyID = XMLElement.CompanyID[0];
     this.companyName = XMLElement.CompanyName[0];
     this.currencyCode = XMLElement.CurrencyCode[0];
-    this.dateCreated = XMLElement.DateCreated[0];
-    this.endDate = XMLElement.EndDate[0];
+    this.dateCreated = new Date(XMLElement.DateCreated[0]);
+    this.endDate = new Date(XMLElement.EndDate[0]);
     this.fiscalYear = XMLElement.FiscalYear[0];
     this.productId = XMLElement.ProductID[0];
     this.productVersion = XMLElement.ProductVersion[0];
-    this.startDate = XMLElement.StartDate[0];
+    this.startDate = new Date(XMLElement.StartDate[0]);
     this.taxRegistrationNumber = XMLElement.TaxRegistrationNumber[0];
     this.taxAccountingBasis = XMLElement.TaxAccountingBasis[0];
 
