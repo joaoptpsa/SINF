@@ -43,7 +43,7 @@ const Dashboard = ({ SAFT }) => (
           {/* Overview page */}
           <Route path="/" exact render={props => <Overview SAFT={SAFT} {...props} />} />
           {/* Sales page */}
-          <Route path="/sales/" component={null} />
+          <Route path="/sales/" component={Overview} />
           {/* */}
         </Grid.Column>
       </Grid>
