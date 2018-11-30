@@ -14,6 +14,7 @@ import dashboardPage from '../dashboardPage';
 import GrowthSegment from '../growthSegment';
 import MostValuableCostumersSegment from '../mostValuableCostumersSegment';
 import TopProductsPiechartSegment from '../topProductsPiechartSegment';
+import MonthlyChart from './monthlyChart';
 
 const Sales = (props) => {
   const {
