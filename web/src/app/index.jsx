@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Container, Segment } from 'semantic-ui-react';
+import parseSAFT from 'saft2js';
 import FileInput from './fileInput';
-import parseSAFT from '../parseSAFT';
 import Dashboard from './dashboard';
 
 class App extends React.Component {
