@@ -1,10 +1,10 @@
 import React from 'react';
 import { Grid } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
-import BestSellerProductsSegment from './bestSellerProductsSegment';
 import GrowthSegment from '../growthSegment';
-import dashboardPage from '../dashboardPage';
+import TopProductsPiechartSegment from '../topProductsPiechartSegment';
 import MostValuableCostumersSegment from '../mostValuableCostumersSegment';
+import dashboardPage from '../dashboardPage';
 
 const Products = (props) => {
   const {
@@ -32,7 +32,7 @@ const Products = (props) => {
           <MostValuableCostumersSegment top5Costumers={top5Costumers} />
         </Grid.Column>
         <Grid.Column width={6}>
-          <BestSellerProductsSegment top5Products={top5Products} />
+          <TopProductsPiechartSegment title="Top stocked products" top5Products={top5Products} />
         </Grid.Column>
       </Grid.Row>
       <Grid.Row columns={2}>
@@ -40,7 +40,7 @@ const Products = (props) => {
           <MostValuableCostumersSegment top5Costumers={top5Costumers} />
         </Grid.Column>
         <Grid.Column width={6}>
-          <BestSellerProductsSegment top5Products={top5Products} />
+          <TopProductsPiechartSegment title="Top stocked products" top5Products={top5Products} />
         </Grid.Column>
       </Grid.Row>
     </Grid>
