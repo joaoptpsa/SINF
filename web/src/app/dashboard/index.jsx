@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import Overview from './overview';
 import Sales from './sales';
+import Products from './products';
 
 const menuItemStyle = {
   color: 'gray',
@@ -31,7 +32,9 @@ const Dashboard = ({ SAFT }) => (
               <Link to="/sales/">Sales</Link>
             </Menu.Item>
             <Menu.Item name="Purchases" style={menuItemStyle} />
-            <Menu.Item name="Inventory" style={menuItemStyle} />
+            <Menu.Item name="Inventory" style={menuItemStyle}>
+              <Link to="/products">Products</Link>
+            </Menu.Item>
             <Menu.Item name="Finances" style={menuItemStyle}>
               <Link to="/finances/">Finances</Link>
             </Menu.Item>
@@ -45,6 +48,8 @@ const Dashboard = ({ SAFT }) => (
           <Route path="/" exact render={props => <Overview SAFT={SAFT} {...props} />} />
           {/* Sales page */}
           <Route path="/sales/" render={props => <Sales SAFT={SAFT} {...props} />} />
+          {/* Prodcuts page */}
+          <Route path="/products/" render={props => <Products SAFT={SAFT} {...props} />} />
           {/* */}
         </Grid.Column>
       </Grid>
