@@ -13,8 +13,7 @@ import {
 import dashboardPage from '../dashboardPage';
 import GrowthSegment from '../growthSegment';
 import MostValuableCostumersSegment from '../mostValuableCostumersSegment';
-import BestSellerProductsSegment from '../bestSellerProductsSegment';
-import MonthlyChart from './monthlyChart';
+import TopProductsPiechartSegment from '../topProductsPiechartSegment';
 
 const Sales = (props) => {
   const {
@@ -40,7 +39,7 @@ const Sales = (props) => {
           <MostValuableCostumersSegment top5Costumers={top5Costumers} />
         </Grid.Column>
         <Grid.Column width={6}>
-          <BestSellerProductsSegment top5Products={top5Products} />
+          <TopProductsPiechartSegment title="Best seller products" top5Products={top5Products} />
         </Grid.Column>
       </Grid.Row>
       <Grid.Row columns={2}>
