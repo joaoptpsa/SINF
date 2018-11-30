@@ -17,7 +17,7 @@ import BestSellerProductsSegment from '../bestSellerProductsSegment';
 
 const Sales = (props) => {
   const {
-    numSales, grossProfit, top5Costumers, top5Products,
+    numSales, grossProfit, top5Costumers, top5Products, numCostumers,
   } = props;
 
   return (
@@ -28,10 +28,10 @@ const Sales = (props) => {
           <GrowthSegment text="Number of sales" number={numSales} />
         </Grid.Column>
         <Grid.Column>
-          <GrowthSegment text="Number of clients" number={100} />
+          <GrowthSegment text="Number of costumers" number={numCostumers} />
         </Grid.Column>
         <Grid.Column>
-          <GrowthSegment text="Sales gross profit" number={100} />
+          <GrowthSegment text="Sales gross profit" number={grossProfit} />
         </Grid.Column>
       </Grid.Row>
       <Grid.Row columns={2}>

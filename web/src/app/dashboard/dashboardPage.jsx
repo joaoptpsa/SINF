@@ -121,6 +121,16 @@ const getNumSales = (invoices) => {
   return numSales;
 };
 
+const getNumCostumers = (invoices) => {
+  const costumers = {};
+
+  invoices.forEach((invoice) => {
+    costumers[invoice.costumerID] = true;
+  });
+
+  return Object.keys(costumers).length;
+};
+
 const dashboardPage = WrappedComponent => class extends React.Component {
   constructor(props) {
     super(props);
@@ -225,12 +235,18 @@ const dashboardPage = WrappedComponent => class extends React.Component {
       const numSalesLastPeriod = getNumSales(invoicesLastPeriod);
       const numSales = this.calculateDiff(numSalesLastPeriod, numSalesThisPeriod);
 
+      // calculate increase in number of clients
+      const numCostumersThisPeriod = getNumCostumers(invoicesThisPeriod);
+      const numCostumersLastPeriod = getNumCostumers(invoicesLastPeriod);
+      const numCostumers = this.calculateDiff(numCostumersLastPeriod, numCostumersThisPeriod);
+
       const dashboardPageProps = {
         numSales,
         grossProfit,
         top5Costumers,
         top5Products,
         period,
+        numCostumers,
       };
 
       return (
