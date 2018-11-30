@@ -5,6 +5,7 @@ import {
 import PropTypes from 'prop-types';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import Overview from './overview';
+import Sales from './sales';
 
 const menuItemStyle = {
   color: 'gray',
@@ -43,7 +44,7 @@ const Dashboard = ({ SAFT }) => (
           {/* Overview page */}
           <Route path="/" exact render={props => <Overview SAFT={SAFT} {...props} />} />
           {/* Sales page */}
-          <Route path="/sales/" component={Overview} />
+          <Route path="/sales/" render={props => <Sales SAFT={SAFT} {...props} />} />
           {/* */}
         </Grid.Column>
       </Grid>
