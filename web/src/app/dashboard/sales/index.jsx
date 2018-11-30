@@ -14,10 +14,11 @@ import dashboardPage from '../dashboardPage';
 import GrowthSegment from '../growthSegment';
 import MostValuableCostumersSegment from '../mostValuableCostumersSegment';
 import BestSellerProductsSegment from '../bestSellerProductsSegment';
+import MonthlyChart from './monthlyChart';
 
 const Sales = (props) => {
   const {
-    numSales, grossProfit, top5Costumers, top5Products, numCostumers,
+    SAFT, numSales, grossProfit, top5Costumers, top5Products, numCostumers,
   } = props;
 
   return (
@@ -44,19 +45,7 @@ const Sales = (props) => {
       </Grid.Row>
       <Grid.Row columns={2}>
         <Grid.Column>
-          <Segment>
-            <Header>Line Graph</Header>
-            <ResponsiveContainer height={300} width="90%">
-              <LineChart>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Line type="monotone" dataKey="pv" stroke="#8884d8" />
-              </LineChart>
-            </ResponsiveContainer>
-          </Segment>
+          <MonthlyChart invoices={SAFT.sourceDocuments.invoices} />
         </Grid.Column>
         <Grid.Column>
           <Segment>Sales location</Segment>
