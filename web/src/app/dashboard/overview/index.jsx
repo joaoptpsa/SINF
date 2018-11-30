@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import GrowthSegment from '../growthSegment';
 import dashboardPage from '../dashboardPage';
 import MostValuableCostumersSegment from '../mostValuableCostumersSegment';
-import BestSellerProductsSegment from '../bestSellerProductsSegment';
+import TopProductsPiechartSegment from '../topProductsPiechartSegment';
 
 const Overview = (props) => {
   const {
@@ -35,7 +35,7 @@ const Overview = (props) => {
           <MostValuableCostumersSegment top5Costumers={top5Costumers} />
         </Grid.Column>
         <Grid.Column width={6}>
-          <BestSellerProductsSegment top5Products={top5Products} />
+          <TopProductsPiechartSegment title="Best seller products" top5Products={top5Products} />
         </Grid.Column>
       </Grid.Row>
     </Grid>

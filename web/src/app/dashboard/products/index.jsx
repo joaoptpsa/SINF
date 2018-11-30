@@ -1,10 +1,10 @@
 import React from 'react';
 import { Grid } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
+import BestSellerProductsSegment from './bestSellerProductsSegment';
 import GrowthSegment from '../growthSegment';
 import dashboardPage from '../dashboardPage';
 import MostValuableCostumersSegment from '../mostValuableCostumersSegment';
-import BestSellerProductsSegment from '../bestSellerProductsSegment';
 
 const Products = (props) => {
   const {
