@@ -138,7 +138,7 @@ class MonthlyChart extends React.Component {
         </Menu>
 
         <ResponsiveContainer height={300} width="100%">
-          <LineChart data={this.data[selectedYear]}>
+          <LineChart data={[...this.data[selectedYear]]}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="name" />
             <YAxis />
