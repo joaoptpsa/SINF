@@ -1,11 +1,10 @@
 import React from 'react';
-import {
-  Grid, List, Segment, Header, Icon, Label,
-} from 'semantic-ui-react';
+import { Grid, Input, Segment, List, Header, Icon, Label } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import GrowthSegment from '../growthSegment';
 import TopProductsPiechartSegment from '../topProductsPiechartSegment';
 import MostValuableCostumersSegment from '../mostValuableCostumersSegment';
+import ProductsTable from './productsTable';
 import dashboardPage from '../dashboardPage';
 
 const Products = (props) => {
@@ -39,7 +38,14 @@ const Products = (props) => {
       </Grid.Row>
       <Grid.Row columns={2}>
         <Grid.Column width={10}>
-          <MostValuableCostumersSegment top5Costumers={top5Costumers} />
+        <Segment>
+        <Grid.Row>
+            <Input action='Search' placeholder='Search...' fluid='true' />
+        </Grid.Row>
+        <Grid.Row>
+          <ProductsTable />
+        </Grid.Row>  
+        </Segment>
         </Grid.Column>
         <Grid.Column width={6}>
           <Segment style={{ height: '100%' }}>
