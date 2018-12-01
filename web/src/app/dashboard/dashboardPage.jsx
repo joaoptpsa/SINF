@@ -98,7 +98,7 @@ const getTop5GrossTotalCostumers = (invoices, costumerList) => {
   return top5costumers;
 };
 
-const getGrossProfit = (invoices) => {
+const getGrossProfitFromInvoices = (invoices) => {
   const costumersGrossTotal = getCustumersGrossTotal(invoices);
   let total = 0;
 
@@ -140,7 +140,7 @@ const dashboardPage = WrappedComponent => class extends React.Component {
 
     setPeriod = (period) => {
       const { SAFT } = this.props;
-      const { endDate, startDate } = SAFT.header;
+      const { endDate } = SAFT.header;
 
       const lastPeriodEndDate = new Date(endDate);
       const lastPeriodStartDate = new Date(endDate);
@@ -226,8 +226,8 @@ const dashboardPage = WrappedComponent => class extends React.Component {
       );
 
       // calculate increase in gross profit
-      const grossProfitThisPeriod = getGrossProfit(invoicesThisPeriod);
-      const grossProfitLastPeriod = getGrossProfit(invoicesLastPeriod);
+      const grossProfitThisPeriod = getGrossProfitFromInvoices(invoicesThisPeriod);
+      const grossProfitLastPeriod = getGrossProfitFromInvoices(invoicesLastPeriod);
       const grossProfit = this.calculateDiff(grossProfitLastPeriod, grossProfitThisPeriod);
 
       // calculate increase in number of sales
@@ -247,6 +247,9 @@ const dashboardPage = WrappedComponent => class extends React.Component {
         top5Products,
         period,
         numCostumers,
+        getGrossProfitFromInvoices,
+        getNumCostumers,
+        getNumSales,
       };
 
       return (
