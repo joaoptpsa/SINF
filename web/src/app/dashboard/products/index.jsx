@@ -1,5 +1,7 @@
 import React from 'react';
-import { Grid } from 'semantic-ui-react';
+import {
+  Grid, List, Segment, Header, Icon, Label,
+} from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import GrowthSegment from '../growthSegment';
 import TopProductsPiechartSegment from '../topProductsPiechartSegment';
@@ -40,7 +42,26 @@ const Products = (props) => {
           <MostValuableCostumersSegment top5Costumers={top5Costumers} />
         </Grid.Column>
         <Grid.Column width={6}>
-          <TopProductsPiechartSegment title="Top stocked products" top5Products={top5Products} />
+          <Segment style={{ height: '100%' }}>
+            <Header as="h5" textAlign="center" style={{ margin: 'auto', width: '50%' }}>
+              <Icon size="small" name="bell" circular />
+              <Header.Content>Most Urgent Buys</Header.Content>
+            </Header>
+            <List divided verticalAlign="middle">
+              <List.Item>
+                <List.Content floated="left">Chips</List.Content>
+                <List.Content floated="right">
+                  <Label color="blue">17</Label>
+                </List.Content>
+              </List.Item>
+              <List.Item>
+                <List.Content floated="left">Chips</List.Content>
+                <List.Content floated="right">
+                  <Label color="blue">17</Label>
+                </List.Content>
+              </List.Item>
+            </List>
+          </Segment>
         </Grid.Column>
       </Grid.Row>
     </Grid>
