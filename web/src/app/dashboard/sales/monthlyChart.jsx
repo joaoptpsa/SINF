@@ -49,28 +49,34 @@ const getInvoicesByDate = (invoices) => {
 };
 
 class MonthlyChart extends React.Component {
-  state = { option: 'grossProfit' };
+  constructor(props) {
+    super(props);
+    const {
+      invoices, getGrossProfitFromInvoices, getNumCostumers, getNumSales,
+    } = props;
 
-  renderLines = () => {};
+    const invoicesByYear = getInvoicesByDate(invoices);
 
-  generateGraphData = (invoicesLastYear) => {
-    const { getGrossProfitFromInvoices, getNumSales, getNumCostumers } = this.props;
+    // create data object
+    this.data = {};
+    Object.keys(invoicesByYear).forEach((year) => {
+      const invoicesInYear = invoicesByYear[year];
+      this.data[year] = [];
 
-    const data = [];
+      Object.keys(invoicesInYear).forEach((month) => {
+        const invoicesInMonth = invoicesInYear[month];
 
-    Object.keys(invoicesLastYear).forEach((month) => {
-      const invoicesInMonth = invoicesLastYear[month];
-
-      data.push({
-        name: monthNames[month],
-        grossProfit: getGrossProfitFromInvoices(invoicesInMonth),
-        costumers: getNumCostumers(invoicesInMonth),
-        sales: getNumSales(invoicesInMonth),
+        this.data[year].push({
+          name: monthNames[month],
+          grossProfit: getGrossProfitFromInvoices(invoicesInMonth),
+          costumers: getNumCostumers(invoicesInMonth),
+          sales: getNumSales(invoicesInMonth),
+        });
       });
     });
 
-    return data;
-  };
+    this.state = { option: 'grossProfit', selectedYear: Object.keys(this.data)[0] };
+  }
 
   renderLine = () => {
     const { option } = this.state;
@@ -89,18 +95,30 @@ class MonthlyChart extends React.Component {
     }
   };
 
+  renderYearMenu = () => {
+    const { selectedYear } = this.state;
+    const items = [];
+
+    Object.keys(this.data).forEach((year) => {
+      items.push(
+        <Menu.Item
+          key={`${year}`}
+          name={`${year}`}
+          active={selectedYear === year}
+          onClick={() => this.setState({ selectedYear: year })}
+        />,
+      );
+    });
+
+    return <Menu>{items}</Menu>;
+  };
+
   render() {
-    const { invoices } = this.props;
-    const { option } = this.state;
-    const invoicesByYear = getInvoicesByDate(invoices);
-
-    const lastYear = Object.keys(invoicesByYear)[Object.keys(invoicesByYear).length - 1];
-    const invoicesLastYear = invoicesByYear[lastYear];
-
-    const data = this.generateGraphData(invoicesLastYear);
+    const { option, selectedYear } = this.state;
 
     return (
       <Segment>
+        {this.renderYearMenu()}
         <Menu>
           <Menu.Item
             name="Gross profit"
@@ -119,8 +137,8 @@ class MonthlyChart extends React.Component {
           />
         </Menu>
 
-        <ResponsiveContainer height={300} width="90%">
-          <LineChart data={data}>
+        <ResponsiveContainer height={300} width="100%">
+          <LineChart data={this.data[selectedYear]}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="name" />
             <YAxis />
