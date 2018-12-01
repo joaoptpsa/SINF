@@ -8,6 +8,7 @@ import TopProductsPiechartSegment from '../topProductsPiechartSegment';
 import MostValuableCostumersSegment from '../mostValuableCostumersSegment';
 import ProductsTable from './productsTable';
 import dashboardPage from '../dashboardPage';
+import MostUrgentBuysList from './mostUrgentBuys';
 
 class Products extends React.Component {
   state = { text: '' };
@@ -70,20 +71,7 @@ class Products extends React.Component {
                 <Icon size="small" name="bell" circular />
                 <Header.Content>Most Urgent Buys</Header.Content>
               </Header>
-              <List divided verticalAlign="middle">
-                <List.Item>
-                  <List.Content floated="left">Chips</List.Content>
-                  <List.Content floated="right">
-                    <Label color="blue">17</Label>
-                  </List.Content>
-                </List.Item>
-                <List.Item>
-                  <List.Content floated="left">Chips</List.Content>
-                  <List.Content floated="right">
-                    <Label color="blue">17</Label>
-                  </List.Content>
-                </List.Item>
-              </List>
+              <MostUrgentBuysList />
             </Segment>
           </Grid.Column>
         </Grid.Row>

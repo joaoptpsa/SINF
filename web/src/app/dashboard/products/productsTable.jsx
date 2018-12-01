@@ -1,7 +1,7 @@
 import React from 'react';
-import { Label, Table } from 'semantic-ui-react';
+import { Table } from 'semantic-ui-react';
 
-const ProductsTable = () => {
+const ProductsTable = (props) => {
 
     return (
         <Table celled>
@@ -34,7 +34,7 @@ const ProductsTable = () => {
                     <Table.Cell>Cell</Table.Cell>
                 </Table.Row>
             </Table.Body>
-    </Table>
+        </Table>
     );
 };
 
