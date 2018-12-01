@@ -1,5 +1,7 @@
 import React from 'react';
 import { Grid, Segment, Header } from 'semantic-ui-react';
+import PropTypes from 'prop-types';
+
 import dashboardPage from '../dashboardPage';
 import GrowthSegment from '../growthSegment';
 import MostValuableCostumersSegment from '../mostValuableCostumersSegment';
@@ -53,6 +55,11 @@ const Sales = (props) => {
       </Grid.Row>
     </Grid>
   );
+};
+
+
+Sales.propTypes = {
+  SAFT: PropTypes.object.isRequired,
 };
 
 export default dashboardPage(Sales);

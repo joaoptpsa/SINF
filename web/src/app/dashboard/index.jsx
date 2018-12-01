@@ -4,9 +4,12 @@ import {
 } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+
 import Overview from './overview';
 import Sales from './sales';
+import Purchases from './purchases';
 import Products from './products';
+import Finances from './finances';
 
 const menuItemStyle = {
   color: 'gray',
@@ -31,7 +34,9 @@ const Dashboard = ({ SAFT }) => (
             <Menu.Item name="Sales" style={menuItemStyle}>
               <Link to="/sales/">Sales</Link>
             </Menu.Item>
-            <Menu.Item name="Purchases" style={menuItemStyle} />
+            <Menu.Item name="Purchases" style={menuItemStyle}>
+              <Link to="/purchases">Purchases</Link>
+            </Menu.Item>
             <Menu.Item name="Inventory" style={menuItemStyle}>
               <Link to="/products">Products</Link>
             </Menu.Item>
@@ -48,8 +53,12 @@ const Dashboard = ({ SAFT }) => (
           <Route path="/" exact render={props => <Overview SAFT={SAFT} {...props} />} />
           {/* Sales page */}
           <Route path="/sales/" render={props => <Sales SAFT={SAFT} {...props} />} />
-          {/* Prodcuts page */}
+          {/* Puchases page*/}
+          <Route path="/purchases/" render={props => <Purchases SAFT={SAFT} {...props} />} />
+          {/* Products page */}
           <Route path="/products/" render={props => <Products SAFT={SAFT} {...props} />} />
+          {/* Finances page */}
+          <Route path="/finances/" render={props => <Finances SAFT={SAFT} {...props} />} />
           {/* */}
         </Grid.Column>
       </Grid>
