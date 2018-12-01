@@ -10,15 +10,8 @@ import TopProductsPiechartSegment from '../topProductsPiechartSegment';
 
 const Purchases = (props) => {
     const {
-        SAFT,
-        numSales,
-        grossProfit,
         top5Costumers,
         top5Products,
-        numCostumers,
-        getNumSales,
-        getNumCostumers,
-        getGrossProfitFromInvoices,
     } = props;
 
     return (

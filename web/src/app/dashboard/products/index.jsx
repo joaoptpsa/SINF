@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Grid, Input, Segment, List, Header, Icon, Label,
+  Grid, Input, Segment, Header, Icon,
 } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import GrowthSegment from '../growthSegment';
@@ -21,7 +21,8 @@ class Products extends React.Component {
 
   render() {
     const {
-      SAFT, numSales, grossProfit, top5Costumers, top5Products, numCostumers,
+      top5Costumers,
+      top5Products,
     } = this.props;
 
     const { text } = this.state;

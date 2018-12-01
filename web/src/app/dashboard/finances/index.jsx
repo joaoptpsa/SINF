@@ -8,15 +8,7 @@ import MostValuableCostumersSegment from '../mostValuableCostumersSegment';
 
 const Finances = (props) => {
     const {
-        SAFT,
-        numSales,
-        grossProfit,
         top5Costumers,
-        top5Products,
-        numCostumers,
-        getNumSales,
-        getNumCostumers,
-        getGrossProfitFromInvoices,
     } = props;
 
     return (
