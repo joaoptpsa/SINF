@@ -3,7 +3,7 @@ import { Grid } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 
 import dashboardPage from '../dashboardPage';
-import GrowthSegment from '../growthSegment';
+import PercentageSegment from '../percentageSegment';
 import MonthlyFinancesChartLeft from './monthlyFinancesChartLeft';
 import MonthlyFinancesChartRight from './monthlyFinancesChartRight';
 
@@ -16,13 +16,13 @@ const Finances = (props) => {
     <Grid>
       <Grid.Row columns={3}>
         <Grid.Column>
-          <GrowthSegment text="Return on sales" number={100} />
+          <PercentageSegment text="Return on sales" number={100} />
         </Grid.Column>
         <Grid.Column>
-          <GrowthSegment text="Return on assets" number={100} />
+          <PercentageSegment text="Return on assets" number={100} />
         </Grid.Column>
         <Grid.Column>
-          <GrowthSegment text="Return on equity" number={100} />
+          <PercentageSegment text="Return on equity" number={100} />
         </Grid.Column>
       </Grid.Row>
       <Grid.Row columns={2}>
