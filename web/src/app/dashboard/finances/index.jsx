@@ -4,7 +4,8 @@ import PropTypes from 'prop-types';
 
 import dashboardPage from '../dashboardPage';
 import PercentageSegment from '../percentageSegment';
-import MonthlyFinancesChartLeft from './monthlyFinancesChartLeft';
+import ValueSegment from '../valueSegment';
+import OurSegment from '../ourSegment';
 import MonthlyFinancesChartRight from './monthlyFinancesChartRight';
 
 const Finances = (props) => {
@@ -14,26 +15,24 @@ const Finances = (props) => {
 
   return (
     <Grid>
-      <Grid.Row columns={3}>
+      <Grid.Row columns={5}>
         <Grid.Column>
-          <PercentageSegment text="Return on sales" number={100} />
+          <OurSegment text="Quick Ratio (ACID)" number={100} />
         </Grid.Column>
         <Grid.Column>
-          <PercentageSegment text="Return on assets" number={100} />
+          <PercentageSegment text="Return on Sales" number={100} />
         </Grid.Column>
         <Grid.Column>
-          <PercentageSegment text="Return on equity" number={100} />
+          <ValueSegment text="Net Sales" number={2323} />
+        </Grid.Column>
+        <Grid.Column>
+          <ValueSegment text="Total Purchases" number={1723} />
+        </Grid.Column>
+        <Grid.Column>
+          <ValueSegment text="Total Inventory Value" number={523} />
         </Grid.Column>
       </Grid.Row>
-      <Grid.Row columns={2}>
-        <Grid.Column>
-          <MonthlyFinancesChartLeft
-            invoices={SAFT.sourceDocuments.invoices}
-            getNumSales={getNumSales}
-            getNumCostumers={getNumCostumers}
-            getNetTotalFromInvoices={getNetTotalFromInvoices}
-          />
-        </Grid.Column>
+      <Grid.Row columns={1}>
         <Grid.Column>
           <MonthlyFinancesChartRight
             invoices={SAFT.sourceDocuments.invoices}

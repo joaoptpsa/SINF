@@ -29,19 +29,11 @@ const monthNames = [
 
 const options = {
   netTotal: {
-    name: 'Current Ratio',
-    key: 'netTotal',
-  },
-  costumers: {
     name: 'Quick Ratio (ACID)',
-    key: 'costumers',
+    key: 'netTotal',
   },
   sales: {
     name: 'Cash Ratio',
-    key: 'sales',
-  },
-  foo: {
-    name: 'Working Capital',
     key: 'sales',
   },
 };
@@ -164,19 +156,9 @@ class MonthlyChart extends React.Component {
             onClick={() => this.setState({ option: options.netTotal.key })}
           />
           <Menu.Item
-            name={options.costumers.name}
-            active={option === options.costumers.key}
-            onClick={() => this.setState({ option: options.costumers.key })}
-          />
-          <Menu.Item
             name={options.sales.name}
             active={option === options.sales.key}
             onClick={() => this.setState({ option: options.sales.key })}
-          />
-          <Menu.Item
-            name={options.foo.name}
-            active={option === options.foo.key}
-            onClick={() => this.setState({ option: options.foo.key })}
           />
         </Menu>
 

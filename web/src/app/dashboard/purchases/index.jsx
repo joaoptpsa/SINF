@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import dashboardPage from '../dashboardPage';
 import ValueSegment from '../valueSegment';
-import MostValuableCostumersSegment from '../mostValuableCostumersSegment';
+import MostValuableCostumersSegment from './mostValuableCostumersSegment';
 import TopProductsPiechartSegment from '../topProductsPiechartSegment';
 import MonthlyPurchasesChart from './monthlyPurchasesChart';
 
