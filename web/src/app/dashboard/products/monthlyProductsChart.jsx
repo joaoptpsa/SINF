@@ -153,7 +153,7 @@ class MonthlyChart extends React.Component {
     return (
       <Segment>
         {this.renderYearMenu()}
-        <Header> Total stock value </Header>
+        <Header> Total Inventory value </Header>
         <ResponsiveContainer height={300} width="100%">
           <LineChart data={[...this.data[selectedYear]]}>
             <CartesianGrid strokeDasharray="3 3" />

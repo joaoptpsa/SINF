@@ -1,33 +1,29 @@
 import React from 'react';
 import { Grid } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
-import GrowthSegment from '../growthSegment';
+import ValueSegment from '../valueSegment';
+import PercentageSegment from '../percentageSegment';
 import dashboardPage from '../dashboardPage';
 import MostValuableCostumersSegment from '../mostValuableCostumersSegment';
 import TopProductsPiechartSegment from '../topProductsPiechartSegment';
 
 const Overview = (props) => {
-  const {
-    numSales, netTotal, top5Costumers, top5Products,
-  } = props;
+  const { netTotal, top5Costumers, top5Products } = props;
 
   return (
     <Grid stackable>
-      <Grid.Row columns={5}>
+      <Grid.Row columns={4}>
         <Grid.Column>
-          <GrowthSegment text="Liquidity" number={100} />
+          <ValueSegment text="Net Sales" number={netTotal} />
         </Grid.Column>
         <Grid.Column>
-          <GrowthSegment text="Total Sales" number={numSales} />
+          <ValueSegment text="Total Purchases" number={100} />
         </Grid.Column>
         <Grid.Column>
-          <GrowthSegment text="Total Purchases" number={100} />
+          <ValueSegment text="Total Inventory Value" number={100} />
         </Grid.Column>
         <Grid.Column>
-          <GrowthSegment text="Net total" number={netTotal} />
-        </Grid.Column>
-        <Grid.Column>
-          <GrowthSegment text="Total Stock Value" number={100} />
+          <PercentageSegment text="Quick ratio" number={100} />
         </Grid.Column>
       </Grid.Row>
       <Grid.Row columns={2}>
@@ -45,7 +41,6 @@ const Overview = (props) => {
 Overview.propTypes = {
   SAFT: PropTypes.object.isRequired,
   netTotal: PropTypes.number.isRequired,
-  numSales: PropTypes.number.isRequired,
   top5Costumers: PropTypes.array.isRequired,
   top5Products: PropTypes.array.isRequired,
 };
