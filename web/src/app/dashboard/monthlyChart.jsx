@@ -29,7 +29,7 @@ const monthNames = [
 
 const options = {
   netTotal: {
-    name: 'Net total',
+    name: 'Net Sales',
     key: 'netTotal',
   },
   costumers: {

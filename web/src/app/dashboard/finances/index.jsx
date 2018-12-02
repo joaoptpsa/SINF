@@ -14,7 +14,7 @@ const Finances = (props) => {
 
   return (
     <Grid>
-      <Grid.Row columns={4}>
+      <Grid.Row columns={3}>
         <Grid.Column>
           <GrowthSegment text="Return on sales" number={100} />
         </Grid.Column>
@@ -23,9 +23,6 @@ const Finances = (props) => {
         </Grid.Column>
         <Grid.Column>
           <GrowthSegment text="Return on equity" number={100} />
-        </Grid.Column>
-        <Grid.Column>
-          <GrowthSegment text="Profit growth" number={100} />
         </Grid.Column>
       </Grid.Row>
       <Grid.Row columns={2}>

@@ -33,15 +33,12 @@ class Products extends React.Component {
 
     return (
       <Grid stackable>
-        <Grid.Row columns={4}>
+        <Grid.Row columns={3}>
           <Grid.Column>
-            <GrowthSegment text="Stock value" number={100} />
+            <GrowthSegment text="Total Inventory value" number={100} />
           </Grid.Column>
           <Grid.Column>
             <GrowthSegment text="Total items" number={100} />
-          </Grid.Column>
-          <Grid.Column>
-            <GrowthSegment text="Stock growth" number={100} />
           </Grid.Column>
           <Grid.Column>
             <GrowthSegment text="Out of stock items" number={100} />

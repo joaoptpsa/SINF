@@ -33,15 +33,11 @@ const options = {
     key: 'netTotal',
   },
   costumers: {
-    name: 'Cost of goods',
+    name: 'Total Purchases',
     key: 'costumers',
   },
   sales: {
-    name: 'Gross profit',
-    key: 'sales',
-  },
-  foo: {
-    name: 'Working Capital',
+    name: 'Total Inventory Value',
     key: 'sales',
   },
 };
@@ -173,13 +169,8 @@ class MonthlyChart extends React.Component {
             active={option === options.sales.key}
             onClick={() => this.setState({ option: options.sales.key })}
           />
-          <Menu.Item
-            name={options.foo.name}
-            active={option === options.foo.key}
-            onClick={() => this.setState({ option: options.foo.key })}
-          />
         </Menu>
-
+        
         <ResponsiveContainer height={300} width="100%">
           <LineChart data={[...this.data[selectedYear]]}>
             <CartesianGrid strokeDasharray="3 3" />

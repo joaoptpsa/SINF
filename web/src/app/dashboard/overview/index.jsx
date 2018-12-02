@@ -16,7 +16,7 @@ const Overview = (props) => {
           <GrowthSegment text="Net Sales" number={netTotal} />
         </Grid.Column>
         <Grid.Column>
-          <GrowthSegment text="Cost of Goods sold" number={100} />
+          <GrowthSegment text="Total Purchases" number={100} />
         </Grid.Column>
         <Grid.Column>
           <GrowthSegment text="Total Inventory Value" number={100} />

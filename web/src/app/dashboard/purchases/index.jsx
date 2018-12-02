@@ -22,16 +22,16 @@ const Purchases = (props) => {
     <Grid>
       <Grid.Row columns={4}>
         <Grid.Column>
-          <GrowthSegment text="Total purchases" number={100} />
-        </Grid.Column>
-        <Grid.Column>
-          <GrowthSegment text="Total suppliers" number={100} />
-        </Grid.Column>
-        <Grid.Column>
-          <GrowthSegment text="Purchases growth" number={100} />
+          <GrowthSegment text="Total Purchases" number={100} />
         </Grid.Column>
         <Grid.Column>
           <GrowthSegment text="Number of purchases" number={100} />
+        </Grid.Column>
+        <Grid.Column>
+          <GrowthSegment text="Number of suppliers" number={100} />
+        </Grid.Column>
+        <Grid.Column>
+          <GrowthSegment text="Cost of Goods sold" number={100} />
         </Grid.Column>
       </Grid.Row>
       <Grid.Row columns={2}>

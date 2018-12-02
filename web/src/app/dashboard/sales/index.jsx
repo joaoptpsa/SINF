@@ -26,13 +26,13 @@ const Sales = (props) => {
       {/* growth segments */}
       <Grid.Row columns={3}>
         <Grid.Column>
-          <GrowthSegment text="Number of sales" number={numSales} />
+          <GrowthSegment text="Net Sales" number={netTotal} />
         </Grid.Column>
         <Grid.Column>
           <GrowthSegment text="Number of costumers" number={numCostumers} />
         </Grid.Column>
         <Grid.Column>
-          <GrowthSegment text="Sales gross profit" number={netTotal} />
+          <GrowthSegment text="Number of sales" number={numSales} />
         </Grid.Column>
       </Grid.Row>
       <Grid.Row columns={2}>

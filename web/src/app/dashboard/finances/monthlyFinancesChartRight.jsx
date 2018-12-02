@@ -29,19 +29,19 @@ const monthNames = [
 
 const options = {
   netTotal: {
-    name: 'Assets',
+    name: 'Current Ratio',
     key: 'netTotal',
   },
   costumers: {
-    name: 'Liabilities',
+    name: 'Quick Ratio (ACID)',
     key: 'costumers',
   },
   sales: {
-    name: 'Liquidity Ratio',
+    name: 'Cash Ratio',
     key: 'sales',
   },
   foo: {
-    name: 'Quick Ratio (ACID)',
+    name: 'Working Capital',
     key: 'sales',
   },
 };
