@@ -8,10 +8,7 @@ import TopProductsPiechartSegment from '../topProductsPiechartSegment';
 
 const Overview = (props) => {
   const {
-    numSales,
-    grossProfit,
-    top5Costumers,
-    top5Products,
+    numSales, netTotal, top5Costumers, top5Products,
   } = props;
 
   return (
@@ -27,7 +24,7 @@ const Overview = (props) => {
           <GrowthSegment text="Total Purchases" number={100} />
         </Grid.Column>
         <Grid.Column>
-          <GrowthSegment text="Gross Profit" number={grossProfit} />
+          <GrowthSegment text="Net total" number={netTotal} />
         </Grid.Column>
         <Grid.Column>
           <GrowthSegment text="Total Stock Value" number={100} />
@@ -47,6 +44,10 @@ const Overview = (props) => {
 
 Overview.propTypes = {
   SAFT: PropTypes.object.isRequired,
+  netTotal: PropTypes.number.isRequired,
+  numSales: PropTypes.number.isRequired,
+  top5Costumers: PropTypes.array.isRequired,
+  top5Products: PropTypes.array.isRequired,
 };
 
 export default dashboardPage(Overview);

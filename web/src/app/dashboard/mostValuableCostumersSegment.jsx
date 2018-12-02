@@ -22,7 +22,7 @@ const MostValuableCostumersSegment = ({ top5Costumers }) => (
         <YAxis />
         <Tooltip />
         <Legend />
-        <Bar name="Gross total" dataKey="quantity" fill="#8884d8" />
+        <Bar name="Net total" dataKey="quantity" fill="#8884d8" />
       </BarChart>
     </ResponsiveContainer>
   </Segment>

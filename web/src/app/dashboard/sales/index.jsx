@@ -12,13 +12,13 @@ const Sales = (props) => {
   const {
     SAFT,
     numSales,
-    grossProfit,
+    netTotal,
     top5Costumers,
     top5Products,
     numCostumers,
     getNumSales,
     getNumCostumers,
-    getGrossProfitFromInvoices,
+    getNetTotalFromInvoices,
   } = props;
 
   return (
@@ -32,7 +32,7 @@ const Sales = (props) => {
           <GrowthSegment text="Number of costumers" number={numCostumers} />
         </Grid.Column>
         <Grid.Column>
-          <GrowthSegment text="Sales gross profit" number={grossProfit} />
+          <GrowthSegment text="Sales gross profit" number={netTotal} />
         </Grid.Column>
       </Grid.Row>
       <Grid.Row columns={2}>
@@ -49,7 +49,7 @@ const Sales = (props) => {
             invoices={SAFT.sourceDocuments.invoices}
             getNumSales={getNumSales}
             getNumCostumers={getNumCostumers}
-            getGrossProfitFromInvoices={getGrossProfitFromInvoices}
+            getNetTotalFromInvoices={getNetTotalFromInvoices}
           />
         </Grid.Column>
       </Grid.Row>
@@ -57,9 +57,15 @@ const Sales = (props) => {
   );
 };
 
-
 Sales.propTypes = {
   SAFT: PropTypes.object.isRequired,
+  numSales: PropTypes.number.isRequired,
+  netTotal: PropTypes.number.isRequired,
+  top5Costumers: PropTypes.array.isRequired,
+  top5Products: PropTypes.array.isRequired,
+  numCostumers: PropTypes.number.isRequired,
+  getNumSales: PropTypes.func.isRequired,
+  getNumCostumers: PropTypes.func.isRequired,
 };
 
 export default dashboardPage(Sales);

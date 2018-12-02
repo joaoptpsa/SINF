@@ -70,20 +70,20 @@ const getTop5SoldProducts = (invoices, productList) => {
   return top5products;
 };
 
-const getCustumersGrossTotal = (invoices) => {
+const getCostumersNetTotal = (invoices) => {
   const customers = {};
 
   invoices.forEach((invoice) => {
     if (customers[invoice.customerID]) {
-      customers[invoice.customerID] += parseFloat(invoice.documentTotals.grossTotal);
-    } else customers[invoice.customerID] = parseFloat(invoice.documentTotals.grossTotal);
+      customers[invoice.customerID] += parseFloat(invoice.documentTotals.netTotal);
+    } else customers[invoice.customerID] = parseFloat(invoice.documentTotals.netTotal);
   });
 
   return customers;
 };
 
-const getTop5GrossTotalCostumers = (invoices, costumerList) => {
-  const customers = getCustumersGrossTotal(invoices);
+const getTop5NetTotalCostumers = (invoices, costumerList) => {
+  const customers = getCostumersNetTotal(invoices);
 
   // get codes of the top 5 gross total with customers
   const sortedKeys = Object.keys(customers)
@@ -98,12 +98,12 @@ const getTop5GrossTotalCostumers = (invoices, costumerList) => {
   return top5costumers;
 };
 
-const getGrossProfitFromInvoices = (invoices) => {
-  const costumersGrossTotal = getCustumersGrossTotal(invoices);
+const getNetTotalFromInvoices = (invoices) => {
+  const costumersNetTotal = getCostumersNetTotal(invoices);
   let total = 0;
 
-  Object.keys(costumersGrossTotal).forEach((key) => {
-    total += costumersGrossTotal[key];
+  Object.keys(costumersNetTotal).forEach((key) => {
+    total += costumersNetTotal[key];
   });
 
   return total;
@@ -220,15 +220,15 @@ const dashboardPage = WrappedComponent => class extends React.Component {
       );
 
       const top5Products = getTop5SoldProducts(invoicesThisPeriod, SAFT.masterFiles.products);
-      const top5Costumers = getTop5GrossTotalCostumers(
+      const top5Costumers = getTop5NetTotalCostumers(
         invoicesThisPeriod,
         SAFT.masterFiles.costumers,
       );
 
       // calculate increase in gross profit
-      const grossProfitThisPeriod = getGrossProfitFromInvoices(invoicesThisPeriod);
-      const grossProfitLastPeriod = getGrossProfitFromInvoices(invoicesLastPeriod);
-      const grossProfit = this.calculateDiff(grossProfitLastPeriod, grossProfitThisPeriod);
+      const netTotalThisPeriod = getNetTotalFromInvoices(invoicesThisPeriod);
+      const netTotalLastPeriod = getNetTotalFromInvoices(invoicesLastPeriod);
+      const netTotal = this.calculateDiff(netTotalLastPeriod, netTotalThisPeriod);
 
       // calculate increase in number of sales
       const numSalesThisPeriod = getNumSales(invoicesThisPeriod);
@@ -242,12 +242,12 @@ const dashboardPage = WrappedComponent => class extends React.Component {
 
       const dashboardPageProps = {
         numSales,
-        grossProfit,
+        netTotal,
         top5Costumers,
         top5Products,
         period,
         numCostumers,
-        getGrossProfitFromInvoices,
+        getNetTotalFromInvoices,
         getNumCostumers,
         getNumSales,
       };

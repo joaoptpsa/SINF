@@ -27,6 +27,21 @@ const monthNames = [
   'December',
 ];
 
+const options = {
+  netTotal: {
+    name: 'Net total',
+    key: 'netTotal',
+  },
+  costumers: {
+    name: 'Number of costumers',
+    key: 'costumers',
+  },
+  sales: {
+    name: 'Number of sales',
+    key: 'sales',
+  },
+};
+
 const getInvoicesByDate = (invoices) => {
   const years = {};
 
@@ -52,7 +67,7 @@ class MonthlyChart extends React.Component {
   constructor(props) {
     super(props);
     const {
-      invoices, getGrossProfitFromInvoices, getNumCostumers, getNumSales,
+      invoices, getNetTotalFromInvoices, getNumCostumers, getNumSales,
     } = props;
 
     const invoicesByYear = getInvoicesByDate(invoices);
@@ -68,28 +83,47 @@ class MonthlyChart extends React.Component {
 
         this.data[year].push({
           name: monthNames[month],
-          grossProfit: getGrossProfitFromInvoices(invoicesInMonth),
+          netTotal: getNetTotalFromInvoices(invoicesInMonth),
           costumers: getNumCostumers(invoicesInMonth),
           sales: getNumSales(invoicesInMonth),
         });
       });
     });
 
-    this.state = { option: 'grossProfit', selectedYear: Object.keys(this.data)[0] };
+    this.state = { option: options.netTotal.key, selectedYear: Object.keys(this.data)[0] };
   }
 
   renderLine = () => {
     const { option } = this.state;
 
     switch (option) {
-      case 'grossProfit':
-        return <Line type="monotone" name="Gross profit" dataKey="grossProfit" stroke="#75cac3" />;
+      case 'netTotal':
+        return (
+          <Line
+            type="monotone"
+            name={options.netTotal.name}
+            dataKey={options.netTotal.key}
+            stroke="#75cac3"
+          />
+        );
       case 'costumers':
         return (
-          <Line type="monotone" name="Number of costumers" dataKey="costumers" stroke="#75cac3" />
+          <Line
+            type="monotone"
+            name={options.costumers.name}
+            dataKey={options.costumers.key}
+            stroke="#75cac3"
+          />
         );
       case 'sales':
-        return <Line type="monotone" name="Number of sales" dataKey="sales" stroke="#75cac3" />;
+        return (
+          <Line
+            type="monotone"
+            name={options.sales.name}
+            dataKey={options.sales.key}
+            stroke="#75cac3"
+          />
+        );
       default:
         return null;
     }
@@ -121,19 +155,19 @@ class MonthlyChart extends React.Component {
         {this.renderYearMenu()}
         <Menu>
           <Menu.Item
-            name="Gross profit"
-            active={option === 'grossProfit'}
-            onClick={() => this.setState({ option: 'grossProfit' })}
+            name={options.netTotal.name}
+            active={option === options.netTotal.key}
+            onClick={() => this.setState({ option: options.netTotal.key })}
           />
           <Menu.Item
-            name="Number of costumers"
-            active={option === 'costumers'}
-            onClick={() => this.setState({ option: 'costumers' })}
+            name={options.costumers.name}
+            active={option === options.costumers.key}
+            onClick={() => this.setState({ option: options.costumers.key })}
           />
           <Menu.Item
-            name="Number of sales"
-            active={option === 'sales'}
-            onClick={() => this.setState({ option: 'sales' })}
+            name={options.sales.name}
+            active={option === options.sales.key}
+            onClick={() => this.setState({ option: options.sales.key })}
           />
         </Menu>
 
@@ -154,7 +188,7 @@ class MonthlyChart extends React.Component {
 
 MonthlyChart.propTypes = {
   invoices: PropTypes.array.isRequired,
-  getGrossProfitFromInvoices: PropTypes.func.isRequired,
+  getNetTotalFromInvoices: PropTypes.func.isRequired,
   getNumSales: PropTypes.func.isRequired,
   getNumCostumers: PropTypes.func.isRequired,
 };
