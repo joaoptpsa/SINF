@@ -6,7 +6,7 @@ import dashboardPage from '../dashboardPage';
 import GrowthSegment from '../growthSegment';
 import MostValuableCostumersSegment from '../mostValuableCostumersSegment';
 import TopProductsPiechartSegment from '../topProductsPiechartSegment';
-import MonthlyChart from './monthlyChart';
+import MonthlyChart from '../monthlyChart';
 
 const Sales = (props) => {
   const {
@@ -66,6 +66,7 @@ Sales.propTypes = {
   numCostumers: PropTypes.number.isRequired,
   getNumSales: PropTypes.func.isRequired,
   getNumCostumers: PropTypes.func.isRequired,
+  getNetTotalFromInvoices: PropTypes.func.isRequired,
 };
 
 export default dashboardPage(Sales);

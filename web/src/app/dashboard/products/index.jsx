@@ -9,7 +9,8 @@ import TopProductsPiechartSegment from '../topProductsPiechartSegment';
 import ProductsTable from './productsTable';
 import dashboardPage from '../dashboardPage';
 import MostUrgentBuysList from './mostUrgentBuys';
-import MonthlyChart from './monthlyChart';
+import MonthlyChart from '../monthlyChart';
+
 class Products extends React.Component {
   state = { text: '' };
 
@@ -25,7 +26,7 @@ class Products extends React.Component {
       top5Products,
       getNumSales,
       getNumCostumers,
-      getGrossProfitFromInvoices,
+      getNetTotalFromInvoices,
     } = this.props;
 
     const { text } = this.state;
@@ -52,7 +53,7 @@ class Products extends React.Component {
               invoices={SAFT.sourceDocuments.invoices}
               getNumSales={getNumSales}
               getNumCostumers={getNumCostumers}
-              getGrossProfitFromInvoices={getGrossProfitFromInvoices}
+              getNetTotalFromInvoices={getNetTotalFromInvoices}
             />
           </Grid.Column>
           <Grid.Column width={6}>

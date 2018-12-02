@@ -6,7 +6,7 @@ import dashboardPage from '../dashboardPage';
 import GrowthSegment from '../growthSegment';
 import MostValuableCostumersSegment from '../mostValuableCostumersSegment';
 import TopProductsPiechartSegment from '../topProductsPiechartSegment';
-import MonthlyChart from './monthlyChart';
+import MonthlyChart from '../monthlyChart';
 
 const Purchases = (props) => {
   const {
@@ -48,7 +48,7 @@ const Purchases = (props) => {
             invoices={SAFT.sourceDocuments.invoices}
             getNumSales={getNumSales}
             getNumCostumers={getNumCostumers}
-            getGrossProfitFromInvoices={getNetTotalFromInvoices}
+            getNetTotalFromInvoices={getNetTotalFromInvoices}
           />
         </Grid.Column>
         <Grid.Column width={6}>
@@ -65,6 +65,7 @@ Purchases.propTypes = {
   top5Products: PropTypes.array.isRequired,
   getNumSales: PropTypes.func.isRequired,
   getNumCostumers: PropTypes.func.isRequired,
+  getNetTotalFromInvoices: PropTypes.func.isRequired,
 };
 
 export default dashboardPage(Purchases);
