@@ -9,7 +9,7 @@ import TopProductsPiechartSegment from '../topProductsPiechartSegment';
 import ProductsTable from './productsTable';
 import dashboardPage from '../dashboardPage';
 import MostUrgentBuysList from './mostUrgentBuys';
-import MonthlyChart from '../monthlyChart';
+import MonthlyProductsChart from './monthlyProductsChart';
 
 class Products extends React.Component {
   state = { text: '' };
@@ -49,7 +49,7 @@ class Products extends React.Component {
         </Grid.Row>
         <Grid.Row columns={2}>
           <Grid.Column width={10}>
-            <MonthlyChart
+            <MonthlyProductsChart
               invoices={SAFT.sourceDocuments.invoices}
               getNumSales={getNumSales}
               getNumCostumers={getNumCostumers}

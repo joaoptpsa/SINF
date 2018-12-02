@@ -4,7 +4,8 @@ import PropTypes from 'prop-types';
 
 import dashboardPage from '../dashboardPage';
 import GrowthSegment from '../growthSegment';
-import MonthlyChart from '../monthlyChart';
+import MonthlyFinancesChartLeft from './monthlyFinancesChartLeft';
+import MonthlyFinancesChartRight from './monthlyFinancesChartRight';
 
 const Finances = (props) => {
   const {
@@ -29,7 +30,7 @@ const Finances = (props) => {
       </Grid.Row>
       <Grid.Row columns={2}>
         <Grid.Column>
-          <MonthlyChart
+          <MonthlyFinancesChartLeft
             invoices={SAFT.sourceDocuments.invoices}
             getNumSales={getNumSales}
             getNumCostumers={getNumCostumers}
@@ -37,7 +38,7 @@ const Finances = (props) => {
           />
         </Grid.Column>
         <Grid.Column>
-          <MonthlyChart
+          <MonthlyFinancesChartRight
             invoices={SAFT.sourceDocuments.invoices}
             getNumSales={getNumSales}
             getNumCostumers={getNumCostumers}
