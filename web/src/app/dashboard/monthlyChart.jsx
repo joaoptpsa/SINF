@@ -10,7 +10,7 @@ import {
   Line,
 } from 'recharts';
 import PropTypes from 'prop-types';
-import { Segment, Menu } from 'semantic-ui-react';
+import { Segment, Menu, Grid } from 'semantic-ui-react';
 
 const monthNames = [
   'January',
@@ -153,34 +153,39 @@ class MonthlyChart extends React.Component {
     return (
       <Segment>
         {this.renderYearMenu()}
-        <Menu>
-          <Menu.Item
-            name={options.netTotal.name}
-            active={option === options.netTotal.key}
-            onClick={() => this.setState({ option: options.netTotal.key })}
-          />
-          <Menu.Item
-            name={options.costumers.name}
-            active={option === options.costumers.key}
-            onClick={() => this.setState({ option: options.costumers.key })}
-          />
-          <Menu.Item
-            name={options.sales.name}
-            active={option === options.sales.key}
-            onClick={() => this.setState({ option: options.sales.key })}
-          />
-        </Menu>
-
-        <ResponsiveContainer height={300} width="100%">
-          <LineChart data={[...this.data[selectedYear]]}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            {this.renderLine()}
-          </LineChart>
-        </ResponsiveContainer>
+        <Grid columns={2}>
+          <Grid.Column width={4}>
+            <Menu vertical pointing>
+              <Menu.Item
+                name={options.netTotal.name}
+                active={option === options.netTotal.key}
+                onClick={() => this.setState({ option: options.netTotal.key })}
+              />
+              <Menu.Item
+                name={options.costumers.name}
+                active={option === options.costumers.key}
+                onClick={() => this.setState({ option: options.costumers.key })}
+              />
+              <Menu.Item
+                name={options.sales.name}
+                active={option === options.sales.key}
+                onClick={() => this.setState({ option: options.sales.key })}
+              />
+            </Menu>
+          </Grid.Column>
+          <Grid.Column width={12}>
+            <ResponsiveContainer height={300} width="100%">
+              <LineChart data={[...this.data[selectedYear]]}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="name" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                {this.renderLine()}
+              </LineChart>
+            </ResponsiveContainer>
+          </Grid.Column>
+        </Grid>
       </Segment>
     );
   }
