@@ -3,9 +3,7 @@ import { Grid } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 
 import dashboardPage from '../dashboardPage';
-import PercentageSegment from '../percentageSegment';
-import ValueSegment from '../valueSegment';
-import OurSegment from '../ourSegment';
+import DisplaySegment from '../displaySegment';
 import MonthlyFinancesChartRight from './monthlyFinancesChartRight';
 
 const Finances = (props) => {
@@ -17,19 +15,19 @@ const Finances = (props) => {
     <Grid>
       <Grid.Row columns={5}>
         <Grid.Column>
-          <OurSegment text="Quick Ratio (ACID)" number={100} />
+          <DisplaySegment text="Quick Ratio (ACID)" number={100} type="%" growth="10" />
         </Grid.Column>
         <Grid.Column>
-          <PercentageSegment text="Return on Sales" number={100} />
+          <DisplaySegment text="Return on Sales" number={100} type="%" />
         </Grid.Column>
         <Grid.Column>
-          <ValueSegment text="Net Sales" number={netTotal} />
+          <DisplaySegment text="Net Sales" number={netTotal} type="€" />
         </Grid.Column>
         <Grid.Column>
-          <ValueSegment text="Total Purchases" number={1723} />
+          <DisplaySegment text="Total Purchases" number={1723} type="€" />
         </Grid.Column>
         <Grid.Column>
-          <ValueSegment text="Total Inventory Value" number={523} />
+          <DisplaySegment text="Total Inventory Value" number={523} type="€" />
         </Grid.Column>
       </Grid.Row>
       <Grid.Row columns={1}>

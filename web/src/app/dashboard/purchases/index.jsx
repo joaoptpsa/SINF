@@ -3,7 +3,7 @@ import { Grid } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 
 import dashboardPage from '../dashboardPage';
-import ValueSegment from '../valueSegment';
+import DisplaySegment from '../displaySegment';
 import MostValuableCostumersSegment from './mostValuableCostumersSegment';
 import TopProductsPiechartSegment from '../topProductsPiechartSegment';
 import MonthlyPurchasesChart from './monthlyPurchasesChart';
@@ -22,16 +22,16 @@ const Purchases = (props) => {
     <Grid>
       <Grid.Row columns={4}>
         <Grid.Column>
-          <ValueSegment text="Total Purchases" number={100} />
+          <DisplaySegment text="Total Purchases" number={100} type="€" />
         </Grid.Column>
         <Grid.Column>
-          <ValueSegment text="Number of purchases" number={100} />
+          <DisplaySegment text="Number of purchases" number={100} type="" />
         </Grid.Column>
         <Grid.Column>
-          <ValueSegment text="Number of suppliers" number={100} />
+          <DisplaySegment text="Number of suppliers" number={100} type="" />
         </Grid.Column>
         <Grid.Column>
-          <ValueSegment text="Cost of Goods sold" number={100} />
+          <DisplaySegment text="Cost of Goods sold" number={100} type="€" />
         </Grid.Column>
       </Grid.Row>
       <Grid.Row columns={2}>
