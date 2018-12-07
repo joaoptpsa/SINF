@@ -4,7 +4,7 @@ import {
 } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 
-import ValueSegment from '../valueSegment';
+import DisplaySegment from '../displaySegment';
 import TopProductsPiechartSegment from '../topProductsPiechartSegment';
 import ProductsTable from './productsTable';
 import dashboardPage from '../dashboardPage';
@@ -35,13 +35,13 @@ class Products extends React.Component {
       <Grid stackable>
         <Grid.Row columns={3}>
           <Grid.Column>
-            <ValueSegment text="Total Inventory value" number={100} />
+            <DisplaySegment text="Total Inventory value" number={100} type="€" />
           </Grid.Column>
           <Grid.Column>
-            <ValueSegment text="Total items" number={100} />
+            <DisplaySegment text="Total items" number={100} type="" />
           </Grid.Column>
           <Grid.Column>
-            <ValueSegment text="Out of stock items" number={100} />
+            <DisplaySegment text="Out of stock items" number={100} type="" />
           </Grid.Column>
         </Grid.Row>
         <Grid.Row columns={2}>

@@ -1,8 +1,7 @@
 import React from 'react';
 import { Grid } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
-import ValueSegment from '../valueSegment';
-import PercentageSegment from '../percentageSegment';
+import DisplaySegment from '../displaySegment';
 import dashboardPage from '../dashboardPage';
 import MostValuableCostumersSegment from '../mostValuableCostumersSegment';
 import TopProductsPiechartSegment from '../topProductsPiechartSegment';
@@ -14,16 +13,16 @@ const Overview = (props) => {
     <Grid stackable>
       <Grid.Row columns={4}>
         <Grid.Column>
-          <ValueSegment text="Net Sales" number={netTotal} />
+          <DisplaySegment text="Net Sales" number={netTotal} type="€" />
         </Grid.Column>
         <Grid.Column>
-          <ValueSegment text="Total Purchases" number={100} />
+          <DisplaySegment text="Total Purchases" number={100} type="€" />
         </Grid.Column>
         <Grid.Column>
-          <ValueSegment text="Total Inventory Value" number={100} />
+          <DisplaySegment text="Total Inventory Value" number={100} type="€" />
         </Grid.Column>
         <Grid.Column>
-          <PercentageSegment text="Quick ratio" number={100} />
+          <DisplaySegment text="Quick ratio" number={100} type="%" />
         </Grid.Column>
       </Grid.Row>
       <Grid.Row columns={2}>
