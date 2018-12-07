@@ -25,7 +25,7 @@ class Products extends React.Component {
       SAFT,
       top5Products,
       getNumSales,
-      getNumCostumers,
+      getNumCustomers,
       getNetTotalFromInvoices,
     } = this.props;
 
@@ -49,7 +49,7 @@ class Products extends React.Component {
             <MonthlyProductsChart
               invoices={SAFT.sourceDocuments.invoices}
               getNumSales={getNumSales}
-              getNumCostumers={getNumCostumers}
+              getNumCustomers={getNumCustomers}
               getNetTotalFromInvoices={getNetTotalFromInvoices}
             />
           </Grid.Column>
@@ -89,6 +89,10 @@ class Products extends React.Component {
 
 Products.propTypes = {
   SAFT: PropTypes.object.isRequired,
+  getNumCustomers: PropTypes.func.isRequired,
+  getNetTotalFromInvoices: PropTypes.func.isRequired,
+  top5Products: PropTypes.array.isRequired,
+  getNumSales: PropTypes.func.isRequired,
 };
 
 export default dashboardPage(Products);

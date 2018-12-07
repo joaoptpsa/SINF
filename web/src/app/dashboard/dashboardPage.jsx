@@ -121,21 +121,21 @@ const getNumSales = (invoices) => {
   return numSales;
 };
 
-const getNumCostumers = (invoices) => {
-  const costumers = {};
+const getNumCustomers = (invoices) => {
+  const customers = {};
 
   invoices.forEach((invoice) => {
-    costumers[invoice.costumerID] = true;
+    customers[invoice.customerID] = true;
   });
 
-  return Object.keys(costumers).length;
+  return Object.keys(customers).length;
 };
 
 const dashboardPage = WrappedComponent => class extends React.Component {
   constructor(props) {
     super(props);
 
-    this.setPeriod('lastSemester');
+    this.state = this.setPeriod('lastSemester');
   }
 
     setPeriod = (period) => {
@@ -163,22 +163,23 @@ const dashboardPage = WrappedComponent => class extends React.Component {
       }
 
       if (this.state) {
-        this.setState({
-          period,
-          lastPeriodEndDate,
-          lastPeriodStartDate,
-          thisPeriodEndDate,
-          thisPeriodStartDate,
-        });
-      } else {
-        this.state = {
+        const state = {
           period,
           lastPeriodEndDate,
           lastPeriodStartDate,
           thisPeriodEndDate,
           thisPeriodStartDate,
         };
+        this.setState(state);
+        return state;
       }
+      return {
+        period,
+        lastPeriodEndDate,
+        lastPeriodStartDate,
+        thisPeriodEndDate,
+        thisPeriodStartDate,
+      };
     };
 
     onDropdownChange = (e, data) => {
@@ -236,8 +237,8 @@ const dashboardPage = WrappedComponent => class extends React.Component {
       const numSales = this.calculateDiff(numSalesLastPeriod, numSalesThisPeriod);
 
       // calculate increase in number of clients
-      const numCostumersThisPeriod = getNumCostumers(invoicesThisPeriod);
-      const numCostumersLastPeriod = getNumCostumers(invoicesLastPeriod);
+      const numCostumersThisPeriod = getNumCustomers(invoicesThisPeriod);
+      const numCostumersLastPeriod = getNumCustomers(invoicesLastPeriod);
       const numCostumers = this.calculateDiff(numCostumersLastPeriod, numCostumersThisPeriod);
 
       const dashboardPageProps = {
@@ -248,7 +249,7 @@ const dashboardPage = WrappedComponent => class extends React.Component {
         period,
         numCostumers,
         getNetTotalFromInvoices,
-        getNumCostumers,
+        getNumCustomers,
         getNumSales,
       };
 

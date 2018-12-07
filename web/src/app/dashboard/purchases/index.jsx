@@ -14,7 +14,7 @@ const Purchases = (props) => {
     top5Costumers,
     top5Products,
     getNumSales,
-    getNumCostumers,
+    getNumCustomers,
     getNetTotalFromInvoices,
   } = props;
 
@@ -47,7 +47,7 @@ const Purchases = (props) => {
           <MonthlyPurchasesChart
             invoices={SAFT.sourceDocuments.invoices}
             getNumSales={getNumSales}
-            getNumCostumers={getNumCostumers}
+            getNumCustomers={getNumCustomers}
             getNetTotalFromInvoices={getNetTotalFromInvoices}
           />
         </Grid.Column>
@@ -64,7 +64,7 @@ Purchases.propTypes = {
   top5Costumers: PropTypes.array.isRequired,
   top5Products: PropTypes.array.isRequired,
   getNumSales: PropTypes.func.isRequired,
-  getNumCostumers: PropTypes.func.isRequired,
+  getNumCustomers: PropTypes.func.isRequired,
   getNetTotalFromInvoices: PropTypes.func.isRequired,
 };
 

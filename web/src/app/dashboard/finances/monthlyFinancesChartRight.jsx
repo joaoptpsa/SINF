@@ -63,7 +63,7 @@ class MonthlyChart extends React.Component {
   constructor(props) {
     super(props);
     const {
-      invoices, getNetTotalFromInvoices, getNumCostumers, getNumSales,
+      invoices, getNetTotalFromInvoices, getNumCustomers, getNumSales,
     } = props;
 
     const invoicesByYear = getInvoicesByDate(invoices);
@@ -80,7 +80,7 @@ class MonthlyChart extends React.Component {
         this.data[year].push({
           name: monthNames[month],
           netTotal: getNetTotalFromInvoices(invoicesInMonth),
-          costumers: getNumCostumers(invoicesInMonth),
+          costumers: getNumCustomers(invoicesInMonth),
           sales: getNumSales(invoicesInMonth),
         });
       });
@@ -181,7 +181,7 @@ MonthlyChart.propTypes = {
   invoices: PropTypes.array.isRequired,
   getNetTotalFromInvoices: PropTypes.func.isRequired,
   getNumSales: PropTypes.func.isRequired,
-  getNumCostumers: PropTypes.func.isRequired,
+  getNumCustomers: PropTypes.func.isRequired,
 };
 
 export default MonthlyChart;

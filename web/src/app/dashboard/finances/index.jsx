@@ -10,7 +10,7 @@ import MonthlyFinancesChartRight from './monthlyFinancesChartRight';
 
 const Finances = (props) => {
   const {
-    SAFT, getNumSales, getNumCostumers, getNetTotalFromInvoices,
+    SAFT, getNumSales, getNumCustomers, getNetTotalFromInvoices, netTotal,
   } = props;
 
   return (
@@ -23,7 +23,7 @@ const Finances = (props) => {
           <PercentageSegment text="Return on Sales" number={100} />
         </Grid.Column>
         <Grid.Column>
-          <ValueSegment text="Net Sales" number={2323} />
+          <ValueSegment text="Net Sales" number={netTotal} />
         </Grid.Column>
         <Grid.Column>
           <ValueSegment text="Total Purchases" number={1723} />
@@ -37,7 +37,7 @@ const Finances = (props) => {
           <MonthlyFinancesChartRight
             invoices={SAFT.sourceDocuments.invoices}
             getNumSales={getNumSales}
-            getNumCostumers={getNumCostumers}
+            getNumCustomers={getNumCustomers}
             getNetTotalFromInvoices={getNetTotalFromInvoices}
           />
         </Grid.Column>
@@ -49,8 +49,9 @@ const Finances = (props) => {
 Finances.propTypes = {
   SAFT: PropTypes.object.isRequired,
   getNumSales: PropTypes.func.isRequired,
-  getNumCostumers: PropTypes.func.isRequired,
+  getNumCustomers: PropTypes.func.isRequired,
   getNetTotalFromInvoices: PropTypes.func.isRequired,
+  netTotal: PropTypes.number.isRequired,
 };
 
 export default dashboardPage(Finances);
