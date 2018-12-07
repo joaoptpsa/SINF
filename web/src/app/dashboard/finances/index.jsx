@@ -15,13 +15,13 @@ const Finances = (props) => {
     <Grid>
       <Grid.Row columns={5}>
         <Grid.Column>
-          <DisplaySegment text="Quick Ratio (ACID)" number={100} type="%" />
+          <DisplaySegment text="Quick Ratio (ACID)" number={100} type="%" growth="10" />
         </Grid.Column>
         <Grid.Column>
           <DisplaySegment text="Return on Sales" number={100} type="%" />
         </Grid.Column>
         <Grid.Column>
-          <DisplaySegment text="Net Sales" number={netTotal} type="€"/>
+          <DisplaySegment text="Net Sales" number={netTotal} type="€" />
         </Grid.Column>
         <Grid.Column>
           <DisplaySegment text="Total Purchases" number={1723} type="€" />
