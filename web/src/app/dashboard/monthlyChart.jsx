@@ -27,113 +27,32 @@ const monthNames = [
   'December',
 ];
 
-const options = {
-  netTotal: {
-    name: 'Net Sales',
-    key: 'netTotal',
-  },
-  costumers: {
-    name: 'Number of costumers',
-    key: 'costumers',
-  },
-  sales: {
-    name: 'Number of sales',
-    key: 'sales',
-  },
-};
-
-const getInvoicesByDate = (invoices) => {
-  const years = {};
-
-  invoices.forEach((invoice) => {
-    const { date } = invoice;
-    const month = date.getMonth();
-    const year = date.getFullYear();
-
-    if (!years[year]) {
-      years[year] = {};
-      years[year][month] = [invoice];
-    } else if (!years[year][month]) {
-      years[year][month] = [invoice];
-    } else {
-      years[year][month].push(invoice);
-    }
-  });
-
-  return years;
-};
-
 class MonthlyChart extends React.Component {
   constructor(props) {
     super(props);
-    const {
-      invoices, getNetTotalFromInvoices, getNumCustomers, getNumSales,
-    } = props;
 
-    const invoicesByYear = getInvoicesByDate(invoices);
+    const { data, options } = props;
 
-    // create data object
-    this.data = {};
-    Object.keys(invoicesByYear).forEach((year) => {
-      const invoicesInYear = invoicesByYear[year];
-      this.data[year] = [];
-
-      Object.keys(invoicesInYear).forEach((month) => {
-        const invoicesInMonth = invoicesInYear[month];
-
-        this.data[year].push({
-          name: monthNames[month],
-          netTotal: getNetTotalFromInvoices(invoicesInMonth),
-          costumers: getNumCustomers(invoicesInMonth),
-          sales: getNumSales(invoicesInMonth),
-        });
-      });
-    });
-
-    this.state = { option: options.netTotal.key, selectedYear: Object.keys(this.data)[0] };
+    this.state = { selectedOption: Object.keys(options)[0], selectedYear: Object.keys(data)[0] };
   }
 
   renderLine = () => {
-    const { option } = this.state;
+    const { selectedOption } = this.state;
+    const { options } = this.props;
 
-    switch (option) {
-      case 'netTotal':
-        return (
-          <Line
-            type="monotone"
-            name={options.netTotal.name}
-            dataKey={options.netTotal.key}
-            stroke="#75cac3"
-          />
-        );
-      case 'costumers':
-        return (
-          <Line
-            type="monotone"
-            name={options.costumers.name}
-            dataKey={options.costumers.key}
-            stroke="#75cac3"
-          />
-        );
-      case 'sales':
-        return (
-          <Line
-            type="monotone"
-            name={options.sales.name}
-            dataKey={options.sales.key}
-            stroke="#75cac3"
-          />
-        );
-      default:
-        return null;
-    }
+    const selectedItem = options[selectedOption];
+
+    return (
+      <Line type="monotone" name={selectedItem.name} dataKey={selectedItem.key} stroke="#75cac3" />
+    );
   };
 
   renderYearMenu = () => {
     const { selectedYear } = this.state;
+    const { data } = this.props;
     const items = [];
 
-    Object.keys(this.data).forEach((year) => {
+    Object.keys(data).forEach((year) => {
       items.push(
         <Menu.Item
           key={`${year}`}
@@ -147,8 +66,31 @@ class MonthlyChart extends React.Component {
     return <Menu>{items}</Menu>;
   };
 
+  renderOptions = () => {
+    const { options } = this.props;
+    const { selectedOption } = this.state;
+
+    const items = [];
+
+    Object.keys(options).forEach((key) => {
+      const item = options[key];
+
+      items.push(
+        <Menu.Item
+          key={`${key}`}
+          name={item.name}
+          active={selectedOption === item.key}
+          onClick={() => this.setState({ selectedOption: item.key })}
+        />,
+      );
+    });
+
+    return items;
+  };
+
   render() {
-    const { option, selectedYear } = this.state;
+    const { selectedYear } = this.state;
+    const { data } = this.props;
 
     return (
       <Segment>
@@ -156,26 +98,12 @@ class MonthlyChart extends React.Component {
         <Grid columns={2}>
           <Grid.Column width={4}>
             <Menu vertical pointing>
-              <Menu.Item
-                name={options.netTotal.name}
-                active={option === options.netTotal.key}
-                onClick={() => this.setState({ option: options.netTotal.key })}
-              />
-              <Menu.Item
-                name={options.costumers.name}
-                active={option === options.costumers.key}
-                onClick={() => this.setState({ option: options.costumers.key })}
-              />
-              <Menu.Item
-                name={options.sales.name}
-                active={option === options.sales.key}
-                onClick={() => this.setState({ option: options.sales.key })}
-              />
+              {this.renderOptions()}
             </Menu>
           </Grid.Column>
           <Grid.Column width={12}>
             <ResponsiveContainer height={300} width="100%">
-              <LineChart data={[...this.data[selectedYear]]}>
+              <LineChart data={[...data[selectedYear]]}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="name" />
                 <YAxis />
@@ -192,10 +120,13 @@ class MonthlyChart extends React.Component {
 }
 
 MonthlyChart.propTypes = {
-  invoices: PropTypes.array.isRequired,
-  getNetTotalFromInvoices: PropTypes.func.isRequired,
-  getNumSales: PropTypes.func.isRequired,
-  getNumCustomers: PropTypes.func.isRequired,
+  options: PropTypes.objectOf(
+    PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      key: PropTypes.string.isRequired,
+    }),
+  ).isRequired,
+  data: PropTypes.object.isRequired,
 };
 
 export default MonthlyChart;

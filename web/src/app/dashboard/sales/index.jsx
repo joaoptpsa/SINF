@@ -8,18 +8,89 @@ import MostValuableCostumersSegment from '../mostValuableCostumersSegment';
 import TopProductsPiechartSegment from '../topProductsPiechartSegment';
 import MonthlyChart from '../monthlyChart';
 
+const monthNames = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
+];
+
+const monthlyChartOptions = {
+  netTotal: {
+    name: 'Net Sales',
+    key: 'netTotal',
+  },
+  costumers: {
+    name: 'Number of costumers',
+    key: 'costumers',
+  },
+  sales: {
+    name: 'Number of sales',
+    key: 'sales',
+  },
+};
+
+const getInvoicesByDate = (invoices) => {
+  const years = {};
+
+  invoices.forEach((invoice) => {
+    const { date } = invoice;
+    const month = date.getMonth();
+    const year = date.getFullYear();
+
+    if (!years[year]) {
+      years[year] = {};
+      years[year][month] = [invoice];
+    } else if (!years[year][month]) {
+      years[year][month] = [invoice];
+    } else {
+      years[year][month].push(invoice);
+    }
+  });
+
+  return years;
+};
+
 const Sales = (props) => {
   const {
+    getNetTotalFromInvoices,
+    getNumCustomers,
+    getNumSales,
     SAFT,
     numSales,
     netTotal,
     top5Costumers,
     top5Products,
     numCostumers,
-    getNumSales,
-    getNumCustomers,
-    getNetTotalFromInvoices,
   } = props;
+
+  const invoicesByYear = getInvoicesByDate(SAFT.sourceDocuments.invoices);
+
+  // create data object
+  const data = {};
+  Object.keys(invoicesByYear).forEach((year) => {
+    const invoicesInYear = invoicesByYear[year];
+    data[year] = [];
+
+    Object.keys(invoicesInYear).forEach((month) => {
+      const invoicesInMonth = invoicesInYear[month];
+
+      data[year].push({
+        name: monthNames[month],
+        netTotal: getNetTotalFromInvoices(invoicesInMonth),
+        costumers: getNumCustomers(invoicesInMonth),
+        sales: getNumSales(invoicesInMonth),
+      });
+    });
+  });
 
   return (
     <Grid stackable>
@@ -45,12 +116,7 @@ const Sales = (props) => {
       </Grid.Row>
       <Grid.Row columns={1}>
         <Grid.Column>
-          <MonthlyChart
-            invoices={SAFT.sourceDocuments.invoices}
-            getNumSales={getNumSales}
-            getNumCustomers={getNumCustomers}
-            getNetTotalFromInvoices={getNetTotalFromInvoices}
-          />
+          <MonthlyChart data={data} options={monthlyChartOptions} />
         </Grid.Column>
       </Grid.Row>
     </Grid>
