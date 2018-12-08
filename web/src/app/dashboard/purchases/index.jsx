@@ -13,6 +13,7 @@ const Purchases = (props) => {
     SAFT,
     top5Costumers,
     top5Products,
+    numSuppliers,
     getNumSales,
     getNumCustomers,
     getNetTotalFromInvoices,
@@ -28,7 +29,7 @@ const Purchases = (props) => {
           <DisplaySegment text="Number of purchases" number={100} type="" />
         </Grid.Column>
         <Grid.Column>
-          <DisplaySegment text="Number of suppliers" number={100} type="" />
+          <DisplaySegment text="Number of suppliers" number={numSuppliers} type="" />
         </Grid.Column>
         <Grid.Column>
           <DisplaySegment text="Cost of Goods sold" number={100} type="€" />
