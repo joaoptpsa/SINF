@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {
-  Segment, Header, Icon, Input,
+  Segment, Header, Icon, Input, Container,
 } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 
@@ -18,15 +18,13 @@ const FileInput = ({ handleFile }) => {
   };
 
   return (
-    <Segment placeholder>
+    <Container fluid>
       <Header icon>
         <Icon name="cloud upload" />
         Upload SAF-T
       </Header>
-      <Segment.Inline>
-        <Input type="file" accept=".xml" onChange={handleChange} />
-      </Segment.Inline>
-    </Segment>
+      <Input type="file" accept=".xml" onChange={handleChange} />
+    </Container>
   );
 };
 

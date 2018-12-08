@@ -53,7 +53,7 @@ const Dashboard = ({ SAFT }) => (
           <Route path="/" exact render={props => <Overview SAFT={SAFT} {...props} />} />
           {/* Sales page */}
           <Route path="/sales/" render={props => <Sales SAFT={SAFT} {...props} />} />
-          {/* Puchases page*/}
+          {/* Puchases page */}
           <Route path="/purchases/" render={props => <Purchases SAFT={SAFT} {...props} />} />
           {/* Products page */}
           <Route path="/products/" render={props => <Products SAFT={SAFT} {...props} />} />

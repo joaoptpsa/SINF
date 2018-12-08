@@ -2,20 +2,19 @@ const URL = process.env.URL || "http://192.168.1.83:2018/WebApi/"
 
 let access_token = null;
 
-const tokenRequestBody = {
-    'username': "FEUP",
-    'password': "qualquer1",
-    'company': "DEMO",
-    'instance': "DEFAULT",
-    'grant_type': "password",
-    'line': "professional",
-};
+export const getToken = async (companyName) => {
+    let tokenRequestBody = {
+        'username': "FEUP",
+        'password': "qualquer1",
+        'company': "DEMO",
+        'instance': "DEFAULT",
+        'grant_type': "password",
+        'line': "professional",
+    };
 
-
-export const getToken = async () => {
     let url = URL + "token";
 
-    let bodyData = new URLSearchParams();
+    let bodyData = new URLSearchParams();3
 
     Object.keys(tokenRequestBody).forEach((key) => {
         bodyData.append(key, tokenRequestBody[key])
@@ -24,10 +23,11 @@ export const getToken = async () => {
     await makeRequest(url, "application/x-www-form-urlencoded", bodyData);
 
     access_token = responseJson.access_token;
+
+    console.log("GOT ACCESS TOKEN : " + access_token);
 }
 
 export const dbQuery = (queryString) => makeRequest(URL + "Administrador/Consulta", "application/json; charset=utf-8", queryString)
-
 
 const makeRequest = async (url, contentType, body) => {
     let bodyData;
@@ -51,6 +51,8 @@ const makeRequest = async (url, contentType, body) => {
         headers: headers,
         body: bodyData
     }
+
+    console.log(request);
 
     const response = await fetch(url, request);
 

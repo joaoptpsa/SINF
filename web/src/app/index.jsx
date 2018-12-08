@@ -1,11 +1,23 @@
 import * as React from 'react';
-import { Container, Segment } from 'semantic-ui-react';
+import {
+  Container, Segment, Input, Label, Icon, Form, Button,
+} from 'semantic-ui-react';
 import parseSAFT from 'saft2js';
+import { getToken } from 'primavera-web-api';
 import FileInput from './fileInput';
 import Dashboard from './dashboard';
 
 class App extends React.Component {
-  state = { SAFT: null, loading: false };
+  state = {
+    SAFT: null,
+    textInput: null,
+    companyName: null,
+    loading: false,
+  };
+
+  startDb = async (companyName) => {
+    await getToken(companyName);
+  };
 
   handleFile = (text) => {
     this.setState({ loading: true });
@@ -24,14 +36,45 @@ class App extends React.Component {
     });
   };
 
-  render() {
-    const { SAFT, loading } = this.state;
+  handleChange = (e) => {
+    this.setState({ textInput: e.target.value });
+  };
 
-    if (!SAFT) {
+  handleClick = () => {
+    const { textInput } = this.state;
+    this.setState({ companyName: textInput });
+    // this.startDb(textInput);
+  };
+
+  render() {
+    const { SAFT, companyName, loading } = this.state;
+
+    if (!SAFT || !companyName) {
       return (
         <Container>
           <Segment loading={loading}>
-            <FileInput handleFile={this.handleFile} />
+            <Form>
+              <Form.Field>
+                <FileInput handleFile={this.handleFile} />
+              </Form.Field>
+              <Form.Field>
+                <Input
+                  fluid
+                  label={(
+                    <Label>
+                      <Icon size="big" name="factory" />
+                      Company Name
+                    </Label>
+)}
+                  labelPosition="left"
+                  placeholder="BELAFLOR"
+                  onChange={this.handleChange}
+                />
+              </Form.Field>
+              <Form.Field>
+                <Button onClick={this.handleClick}>Submit</Button>
+              </Form.Field>
+            </Form>
           </Segment>
         </Container>
       );
