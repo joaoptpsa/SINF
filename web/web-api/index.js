@@ -21,13 +21,9 @@ export const getToken = async () => {
         bodyData.append(key, tokenRequestBody[key])
     })
 
-    const response = await makeRequest(url, "application/x-www-form-urlencoded", bodyData);
-
-    const responseJson = await response.json();
+    await makeRequest(url, "application/x-www-form-urlencoded", bodyData);
 
     access_token = responseJson.access_token;
-
-    console.log("GOT ACCESS TOKEN : " + access_token);
 }
 
 export const dbQuery = (queryString) => makeRequest(URL + "Administrador/Consulta", "application/json; charset=utf-8", queryString)
@@ -42,10 +38,11 @@ const makeRequest = async (url, contentType, body) => {
         bodyData = body;
     }
 
-    const headers = new Headers({
-        'Content-Type': contentType,
-        'Authorization': access_token ? 'Bearer ' + access_token : null
-    })
+    const headers = new Headers();
+    headers.append('Content-Type', contentType);
+    if (access_token) {
+        headers.append('Authorization', 'Bearer ' + access_token)
+    }
 
     let request = {
         method: 'POST',
