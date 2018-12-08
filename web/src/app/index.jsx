@@ -15,10 +15,6 @@ class App extends React.Component {
     loading: false,
   };
 
-  startDb = async (companyName) => {
-    await getToken(companyName);
-  };
-
   handleFile = (text) => {
     this.setState({ loading: true });
 
@@ -40,10 +36,11 @@ class App extends React.Component {
     this.setState({ textInput: e.target.value });
   };
 
-  handleClick = () => {
+  handleClick = async () => {
     const { textInput } = this.state;
     this.setState({ companyName: textInput });
-    // this.startDb(textInput);
+
+    await getToken();
   };
 
   render() {
@@ -65,7 +62,7 @@ class App extends React.Component {
                       <Icon size="big" name="factory" />
                       Company Name
                     </Label>
-)}
+                  )}
                   labelPosition="left"
                   placeholder="BELAFLOR"
                   onChange={this.handleChange}

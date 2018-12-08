@@ -30,8 +30,6 @@ class Products extends React.Component {
   loadDB = async () => {
     try {
       // loading started
-      await getToken();
-
       const result = await dbQuery('SELECT * FROM V_INV_ArtigoArmazem');
       // other queries
 

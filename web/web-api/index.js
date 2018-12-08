@@ -1,12 +1,12 @@
-const URL = process.env.URL || "http://192.168.1.83:2018/WebApi/"
+const URL = process.env.URL || "http://192.168.1.3:2018/WebApi/"
 
 let access_token = null;
 
-export const getToken = async (companyName) => {
+export const getToken = async (companyName = "DEMO") => {
     let tokenRequestBody = {
         'username': "FEUP",
         'password': "qualquer1",
-        'company': "DEMO",
+        'company': companyName,
         'instance': "DEFAULT",
         'grant_type': "password",
         'line': "professional",
@@ -14,7 +14,8 @@ export const getToken = async (companyName) => {
 
     let url = URL + "token";
 
-    let bodyData = new URLSearchParams();3
+    let bodyData = new URLSearchParams();
+    3
 
     Object.keys(tokenRequestBody).forEach((key) => {
         bodyData.append(key, tokenRequestBody[key])
