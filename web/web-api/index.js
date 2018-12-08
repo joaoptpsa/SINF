@@ -1,4 +1,4 @@
-const URL = process.env.URL || "http://192.168.1.83:2018/WebApi/"
+const URL = process.env.URL || "http://192.168.1.3:2018/WebApi/"
 
 let access_token = null;
 
@@ -22,11 +22,9 @@ export const getToken = async () => {
     })
 
     const response = await makeRequest(url, "application/x-www-form-urlencoded", bodyData);
-
     const responseJson = await response.json();
 
     access_token = responseJson.access_token;
-
     console.log("GOT ACCESS TOKEN : " + access_token);
 }
 
@@ -42,10 +40,11 @@ const makeRequest = async (url, contentType, body) => {
         bodyData = body;
     }
 
-    const headers = new Headers({
-        'Content-Type': contentType,
-        'Authorization': access_token ? 'Bearer ' + access_token : null
-    })
+    const headers = new Headers();
+    headers.append('Content-Type', contentType);
+    if (access_token) {
+        headers.append('Authorization', 'Bearer ' + access_token);
+    }
 
     let request = {
         method: 'POST',
