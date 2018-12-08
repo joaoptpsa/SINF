@@ -2,18 +2,17 @@ const URL = process.env.URL || "http://192.168.1.3:2018/WebApi/"
 
 let access_token = null;
 
-const tokenRequestBody = {
-    'username': "FEUP",
-    'password': "qualquer1",
-    'company': "DEMO",
-    'instance': "DEFAULT",
-    'grant_type': "password",
-    'line': "professional",
-};
-
-
-export const getToken = async () => {
+export const getToken = async (companyName = "DEMO") => {
     let url = URL + "token";
+
+    let tokenRequestBody = {
+        'username': "FEUP",
+        'password': "qualquer1",
+        'company': companyName,
+        'instance': "DEFAULT",
+        'grant_type': "password",
+        'line': "professional",
+    };
 
     let bodyData = new URLSearchParams();
 
@@ -29,7 +28,6 @@ export const getToken = async () => {
 }
 
 export const dbQuery = (queryString) => makeRequest(URL + "Administrador/Consulta", "application/json; charset=utf-8", queryString)
-
 
 const makeRequest = async (url, contentType, body) => {
     let bodyData;

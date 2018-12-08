@@ -28,17 +28,15 @@ class Products extends React.Component {
   };
 
   loadDB = async () => {
-    try {
-      // loading started
-      await getToken();
+    await getToken();
 
-      const result = await dbQuery('SELECT * FROM V_INV_ArtigoArmazem');
-      // other queries
+    // loading started
+    const result = await dbQuery('SELECT * FROM V_INV_ArtigoArmazem');
+    const resultJson = await result.json();
+    console.log(resultJson);
+    // other queries
 
-      // loading ended
-    } catch (e) {
-      console.error(e);
-    }
+    // loading ended
   };
 
   render() {
