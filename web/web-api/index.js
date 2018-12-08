@@ -1,5 +1,7 @@
 const URL = process.env.URL || "http://192.168.1.83:2018/WebApi/"
 
+let access_token = null;
+
 const tokenRequestBody = {
     'username': "FEUP",
     'password': "qualquer1",
@@ -10,35 +12,54 @@ const tokenRequestBody = {
 };
 
 
-export const getToken = () => makeRequest(URL + "token", "application/x-www-form-urlencoded", tokenRequestBody)
+export const getToken = async () => {
+    let url = URL + "token";
 
-export const dbQuery = (queryString) => makeRequest(URL + "Administrador/Consulta", "application/json", queryString)
+    let bodyData = new URLSearchParams();
+
+    Object.keys(tokenRequestBody).forEach((key) => {
+        bodyData.append(key, tokenRequestBody[key])
+    })
+
+    const response = await makeRequest(url, "application/x-www-form-urlencoded", bodyData);
+
+    const responseJson = await response.json();
+
+    access_token = responseJson.access_token;
+
+    console.log("GOT ACCESS TOKEN : " + access_token);
+}
+
+export const dbQuery = (queryString) => makeRequest(URL + "Administrador/Consulta", "application/json; charset=utf-8", queryString)
+
 
 const makeRequest = async (url, contentType, body) => {
-    let bodyData = null;
+    let bodyData;
 
-    if (contentType === "application/x-www-form-urlencoded") {
-        bodyData = new URLSearchParams();
-
-        Object.keys(body).forEach((key) => {
-            bodyData.append(key, body[key])
-        })
-    } else if (contentType === "application/json") {
+    if (contentType === "application/json; charset=utf-8") {
         bodyData = JSON.stringify(body);
+    } else {
+        bodyData = body;
     }
 
-    const response = await fetch(url, {
-        method: 'POST', // *GET, POST, PUT, DELETE, etc.
-        mode: 'cors', // no-cors, cors, *same-origin
-        cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-        credentials: 'same-origin', // include, *same-origin, omit
-        headers: {
-            'Content-Type': contentType,
-        },
-        body: bodyData // body data type must match "Content-Type" header
-    });
+    const headers = new Headers({
+        'Content-Type': contentType,
+        'Authorization': access_token ? 'Bearer ' + access_token : null
+    })
 
-    if (response.ok) return response.json();
-    else throw new Error(response.statusText);
+    let request = {
+        method: 'POST',
+        mode: "cors",
+        credentials: "omit",
+        headers: headers,
+        body: bodyData
+    }
 
-};
+    const response = await fetch(url, request);
+
+    if (response.ok) {
+        return response;
+    } else {
+        throw new Error(response.statusText);
+    }
+}

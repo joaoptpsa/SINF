@@ -9,15 +9,15 @@ const DisplaySegment = ({
   let changeIcon;
   let typeIcon;
 
-  if (type == '€') {
+  if (type === '€') {
     typeIcon = <Icon name="euro" />;
-  } else if (type == '%') {
+  } else if (type === '%') {
     typeIcon = <Icon name="percent" />;
   } else {
     typeIcon = null;
   }
 
-  if (growth == 0) {
+  if (growth === 0) {
     color = 'yellow';
     changeIcon = null;
   } else if (growth > 0) {
