@@ -12,12 +12,6 @@ class App extends React.Component {
     companyName: null,
     loading: false,
   };
-
-  // startDb = async (companyName) => {
-  //   console.log(companyName);
-  //   await getToken(companyName);
-  // }
-
   handleFile = (text) => {
     this.setState({ loading: true });
 
@@ -42,8 +36,6 @@ class App extends React.Component {
   handleClick = async () => {
     const { textInput } = this.state;
     this.setState({ companyName: textInput });
-
-    // this.startDb(textInput);
   };
 
   render() {
@@ -54,7 +46,7 @@ class App extends React.Component {
         <Container>
           <Segment placeholder loading={loading}>
             <FileInput handleFile={this.handleFile} />
-            <Segment.Inline fluid />
+            <Segment.Inline />
             <Container textAlign='center' fluid>
               <Input
                 label={(
@@ -68,14 +60,14 @@ class App extends React.Component {
                 onChange={this.handleChange}
               />
             </Container>
-            <Segment.Inline fluid />
+            <Segment.Inline />
             <Button onClick={this.handleClick}>Submit</Button>
           </Segment>
         </Container>
       );
     }
 
-    return <Dashboard SAFT={SAFT} />;
+    return <Dashboard SAFT={SAFT} companyName={companyName} />;
   }
 }
 

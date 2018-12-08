@@ -23,7 +23,7 @@ const FileInput = ({ handleFile }) => {
         <Icon name="cloud upload" />
         Upload SAF-T
     </Header>
-      <Segment.Inline fluid />
+      <Segment.Inline />
       <Input type="file" accept=".xml" onChange={handleChange} />
     </Container>
   );

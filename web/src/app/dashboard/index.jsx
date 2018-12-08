@@ -15,7 +15,7 @@ const menuItemStyle = {
   color: 'gray',
 };
 
-const Dashboard = ({ SAFT }) => (
+const Dashboard = ({ SAFT, companyName }) => (
   <Container fluid style={{ height: '100%' }}>
     <Router>
       <Grid columns={2} style={{ minHeight: '100%' }} stackable>
@@ -56,7 +56,7 @@ const Dashboard = ({ SAFT }) => (
           {/* Puchases page*/}
           <Route path="/purchases/" render={props => <Purchases SAFT={SAFT} {...props} />} />
           {/* Products page */}
-          <Route path="/products/" render={props => <Products SAFT={SAFT} {...props} />} />
+          <Route path="/products/" render={props => <Products SAFT={SAFT} companyName={companyName} {...props} />} />
           {/* Finances page */}
           <Route path="/finances/" render={props => <Finances SAFT={SAFT} {...props} />} />
           {/* */}

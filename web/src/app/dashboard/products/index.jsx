@@ -18,7 +18,9 @@ class Products extends React.Component {
   constructor(props) {
     super(props);
 
-    this.loadDB();
+    const { companyName } = this.props;
+
+    this.loadDB(companyName);
   }
 
   changeText = (e, data) => {
@@ -27,8 +29,8 @@ class Products extends React.Component {
     console.log(data.value);
   };
 
-  loadDB = async () => {
-    await getToken();
+  loadDB = async (companyName) => {
+    await getToken(companyName);
 
     // loading started
     const result = await dbQuery('SELECT * FROM V_INV_ArtigoArmazem');
