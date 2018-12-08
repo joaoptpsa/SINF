@@ -26,7 +26,8 @@
     "redux": "^4.0.1",
     "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^0.83.0",
-    "saft2js": "file:parseSAFT"
+    "saft2js": "file:parseSAFT",
+    "primavera-web-api": "file:web-api"
   },
   "browserslist": [
     ">0.2%",

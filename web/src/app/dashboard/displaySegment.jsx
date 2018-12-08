@@ -2,13 +2,16 @@ import React from 'react';
 import { Segment, Statistic, Icon } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 
-const DisplaySegment = ({ text, number, type, growth }) => {
+const DisplaySegment = ({
+  text, number, type, growth,
+}) => {
   let color;
-  let changeIcon, typeIcon;
+  let changeIcon;
+  let typeIcon;
 
-  if (type == "€") {
+  if (type == '€') {
     typeIcon = <Icon name="euro" />;
-  } else if (type == "%") {
+  } else if (type == '%') {
     typeIcon = <Icon name="percent" />;
   } else {
     typeIcon = null;
@@ -24,7 +27,7 @@ const DisplaySegment = ({ text, number, type, growth }) => {
     color = 'red';
     changeIcon = <Icon color="red" name="arrow circle down" />;
   } else {
-    //null (default)
+    // null (default)
     color = 'black';
     changeIcon = null;
   }
@@ -43,9 +46,16 @@ const DisplaySegment = ({ text, number, type, growth }) => {
   );
 };
 
+DisplaySegment.defaultProps = {
+  type: '',
+  growth: 0,
+};
+
 DisplaySegment.propTypes = {
   text: PropTypes.string.isRequired,
   number: PropTypes.number.isRequired,
+  type: PropTypes.string,
+  growth: PropTypes.number,
 };
 
 export default DisplaySegment;

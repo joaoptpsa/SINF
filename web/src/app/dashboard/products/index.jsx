@@ -3,6 +3,7 @@ import {
   Grid, Input, Segment, Header, Icon,
 } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
+import { getToken, dbQuery } from 'primavera-web-api';
 
 import DisplaySegment from '../displaySegment';
 import TopProductsPiechartSegment from '../topProductsPiechartSegment';
@@ -14,10 +15,26 @@ import MonthlyProductsChart from './monthlyProductsChart';
 class Products extends React.Component {
   state = { text: '' };
 
+  constructor(props) {
+    super(props);
+
+    this.loadDB();
+  }
+
   changeText = (e, data) => {
     this.setState({ text: data.value });
 
     console.log(data.value);
+  };
+
+  loadDB = async () => {
+    // loading started
+    await getToken().catch(e => console.error(e));
+
+    //await dbQuery('SELECT * FROM V_INV_ArtigoArmazem');
+    // other queries
+
+    // loading ended
   };
 
   render() {
