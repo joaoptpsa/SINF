@@ -37,7 +37,7 @@ class Products extends React.Component {
     console.log(urgentBuysJson);
 
     const itemsStockResult = await dbQuery(
-      'SELECT Artigo.Artigo, Artigo.Descricao, V_INV_ValoresActuaisStock.Stock , ArtigoMoeda.PVP1 FROM Artigo INNER JOIN V_INV_ValoresActuaisStock ON Artigo.Artigo = V_INV_ValoresActuaisStock.Artigo INNER JOIN ArtigoMoeda ON Artigo.Artigo = ArtigoMoeda.Artigo',
+      'SELECT DISTINCT Artigo.Artigo, Artigo.Descricao, V_INV_ValoresActuaisStock.Stock , ArtigoMoeda.PVP1 FROM Artigo INNER JOIN V_INV_ValoresActuaisStock ON Artigo.Artigo = V_INV_ValoresActuaisStock.Artigo INNER JOIN ArtigoMoeda ON Artigo.Artigo = ArtigoMoeda.Artigo',
     );
 
     const itemsStockJson = await itemsStockResult.json();
@@ -75,7 +75,7 @@ class Products extends React.Component {
 
     const top5StockedItemsArray = [];
     top5SortedItemsJson.forEach((item) => {
-      top5StockedItemsArray.push({ quantity: item.Stock, description: item.Descricao });
+      top5StockedItemsArray.push({ quantity: item.Stock, code: item.Artigo, description: item.Descricao});
     });
 
     this.setState({ top5StockedItems: top5StockedItemsArray });
