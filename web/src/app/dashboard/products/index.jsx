@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Grid, Input, Segment, Header, Icon,
+  Grid, Segment, Header, Icon,
 } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import { getToken, dbQuery } from 'primavera-web-api';
@@ -10,26 +10,27 @@ import TopProductsPiechartSegment from '../topProductsPiechartSegment';
 import ProductsTable from './productsTable';
 import dashboardPage from '../dashboardPage';
 import MostUrgentBuysList from './mostUrgentBuys';
-import MonthlyProductsChart from './monthlyProductsChart';
 
 class Products extends React.Component {
   state = {
-    text: '',
     loadingDb: true,
     numberOfStockedItems: 0,
     numberOfOutOfStockItems: 0,
     top5StockedItems: [],
+    itemsList: [],
   };
 
   constructor(props) {
     super(props);
-    const { companyName } = props;
+  }
 
+  componentDidMount() {
+    const { companyName } = this.props;
     this.loadDB(companyName);
   }
 
   loadDB = async (companyName) => {
-    await getToken(companyName);
+    // await getToken(companyName);
 
     // loading started
     const urgentBuys = await dbQuery('SELECT * FROM NecessidadesCompras');
@@ -41,10 +42,10 @@ class Products extends React.Component {
     );
 
     const itemsStockJson = await itemsStockResult.json();
-    console.log(itemsStockJson);
     this.getNumberOfStockedItems(itemsStockJson.DataSet.Table);
     this.getNumberOfOutOfStockItems(itemsStockJson.DataSet.Table);
     this.getTop5StockedItems(itemsStockJson.DataSet.Table);
+    this.getItemsListArray(itemsStockJson.DataSet.Table);
 
     this.setState({ loadingDb: false });
   };
@@ -75,30 +76,35 @@ class Products extends React.Component {
 
     const top5StockedItemsArray = [];
     top5SortedItemsJson.forEach((item) => {
-      top5StockedItemsArray.push({ quantity: item.Stock, code: item.Artigo, description: item.Descricao});
+      top5StockedItemsArray.push({
+        quantity: item.Stock,
+        code: item.Artigo,
+        description: item.Descricao,
+      });
     });
 
     this.setState({ top5StockedItems: top5StockedItemsArray });
   };
 
-  changeText = (e, data) => {
-    this.setState({ text: data.value });
+  getItemsListArray = (itemsTableJson) => {
+    const itemsListArray = [];
+    itemsTableJson.forEach((item) => {
+      itemsListArray.push({ ...item });
+    });
 
-    console.log(data.value);
+    this.setState({ itemsList: itemsListArray });
   };
 
   render() {
     const {
-      SAFT, getNumSales, getNumCustomers, getNetTotalFromInvoices,
-    } = this.props;
-
-    const {
-      text,
       loadingDb,
       numberOfStockedItems,
       numberOfOutOfStockItems,
       top5StockedItems,
+      itemsList,
     } = this.state;
+
+    console.log(itemsList);
 
     return (
       <Grid stackable>
@@ -130,18 +136,7 @@ class Products extends React.Component {
         </Grid.Row>
         <Grid.Row columns={2}>
           <Grid.Column width={10}>
-            <Segment>
-              <Grid.Row>
-                <Input
-                  action="Search"
-                  placeholder="Search..."
-                  fluid
-                  onChange={this.changeText}
-                  value={text}
-                />
-                <ProductsTable />
-              </Grid.Row>
-            </Segment>
+            <ProductsTable itemsList={itemsList} />
           </Grid.Column>
           <Grid.Column width={6}>
             <TopProductsPiechartSegment

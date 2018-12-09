@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Container, Segment, Button } from 'semantic-ui-react';
 import parseSAFT from 'saft2js';
+import { getToken } from 'primavera-web-api';
 import FileInput from './fileInput';
 import CompanyInput from './companyInput';
 import Dashboard from './dashboard';
@@ -36,7 +37,11 @@ class App extends React.Component {
 
   handleClick = async () => {
     const { textInput } = this.state;
-    this.setState({ companyName: textInput });
+    this.setState({ loading: true });
+
+    await getToken(textInput);
+
+    this.setState({ companyName: textInput, loading: false });
   };
 
   render() {
