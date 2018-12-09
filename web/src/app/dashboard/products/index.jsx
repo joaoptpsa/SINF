@@ -17,28 +17,30 @@ class Products extends React.Component {
 
   constructor(props) {
     super(props);
+    console.log(props);
 
-    const { companyName } = this.props;
+    const { companyName } = props;
 
     this.loadDB(companyName);
   }
-
-  changeText = (e, data) => {
-    this.setState({ text: data.value });
-
-    console.log(data.value);
-  };
 
   loadDB = async (companyName) => {
     await getToken(companyName);
 
     // loading started
-    const result = await dbQuery('SELECT * FROM V_INV_ArtigoArmazem');
+    const result = await dbQuery('SELECT * FROM NecessidadesCompras');
     const resultJson = await result.json();
     console.log(resultJson);
+
     // other queries
 
     // loading ended
+  };
+
+  changeText = (e, data) => {
+    this.setState({ text: data.value });
+
+    console.log(data.value);
   };
 
   render() {

@@ -2,7 +2,6 @@ const URL = process.env.URL || 'http://192.168.1.3:2018/WebApi/';
 
 let accessToken = null;
 
-
 const makeRequest = async (url, contentType, body) => {
   let bodyData;
 
@@ -61,5 +60,6 @@ export const getToken = async (companyName = 'DEMO') => {
 };
 
 export const dbQuery = (queryString) => {
-  makeRequest(`${URL}Administrador/Consulta`, 'application/json; charset=utf-8', queryString);
+  const url = `${URL}Administrador/Consulta`;
+  return makeRequest(url, 'application/json; charset=utf-8', queryString);
 };
