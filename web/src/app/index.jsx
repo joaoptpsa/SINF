@@ -4,6 +4,7 @@ import {
 } from 'semantic-ui-react';
 import parseSAFT from 'saft2js';
 import FileInput from './fileInput';
+import CompanyInput from './companyInput';
 import Dashboard from './dashboard';
 
 class App extends React.Component {
@@ -49,19 +50,7 @@ class App extends React.Component {
           <Segment placeholder loading={loading}>
             <FileInput handleFile={this.handleFile} />
             <Segment.Inline />
-            <Container textAlign="center" fluid>
-              <Input
-                label={(
-                  <Label>
-                    <Icon name="factory" />
-                    Company Name
-                  </Label>
-                )}
-                labelPosition="left"
-                placeholder="BELAFLOR"
-                onChange={this.handleChange}
-              />
-            </Container>
+            <CompanyInput handleChange={this.handleChange} />
             <Segment.Inline />
             <Button onClick={this.handleClick}>Submit</Button>
           </Segment>

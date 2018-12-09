@@ -17,8 +17,6 @@ class Products extends React.Component {
 
   constructor(props) {
     super(props);
-    console.log(props);
-
     const { companyName } = props;
 
     this.loadDB(companyName);
