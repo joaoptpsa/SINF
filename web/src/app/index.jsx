@@ -1,7 +1,5 @@
 import * as React from 'react';
-import {
-  Container, Segment, Input, Label, Icon, Button,
-} from 'semantic-ui-react';
+import { Container, Segment, Button } from 'semantic-ui-react';
 import parseSAFT from 'saft2js';
 import FileInput from './fileInput';
 import CompanyInput from './companyInput';

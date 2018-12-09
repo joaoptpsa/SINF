@@ -3,7 +3,7 @@ import { Segment, Statistic, Icon } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 
 const DisplaySegment = ({
-  text, number, type, growth,
+  text, loading, number, type, growth,
 }) => {
   let color;
   let changeIcon;
@@ -33,7 +33,11 @@ const DisplaySegment = ({
   }
 
   return (
-    <Segment textAlign="center" style={{ padding: '20px', minHeight: '140px', paddingTop: '35px' }}>
+    <Segment
+      loading={loading}
+      textAlign="center"
+      style={{ padding: '20px', minHeight: '140px', paddingTop: '35px' }}
+    >
       <Statistic size="huge" color={color}>
         <Statistic.Value text>
           {changeIcon}
@@ -48,11 +52,13 @@ const DisplaySegment = ({
 
 DisplaySegment.defaultProps = {
   type: '',
+  loading: false,
   growth: 0,
 };
 
 DisplaySegment.propTypes = {
   text: PropTypes.string.isRequired,
+  loading: PropTypes.bool,
   number: PropTypes.number.isRequired,
   type: PropTypes.string,
   growth: PropTypes.number,
