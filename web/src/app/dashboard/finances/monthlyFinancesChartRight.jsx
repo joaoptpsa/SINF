@@ -178,7 +178,7 @@ class MonthlyChart extends React.Component {
 }
 
 MonthlyChart.propTypes = {
-  invoices: PropTypes.array.isRequired,
+  invoices: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
   getNetTotalFromInvoices: PropTypes.func.isRequired,
   getNumSales: PropTypes.func.isRequired,
   getNumCustomers: PropTypes.func.isRequired,

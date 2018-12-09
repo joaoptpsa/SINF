@@ -53,7 +53,7 @@ const Dashboard = ({ SAFT, companyName }) => (
           <Route path="/" exact render={props => <Overview SAFT={SAFT} {...props} />} />
           {/* Sales page */}
           <Route path="/sales/" render={props => <Sales SAFT={SAFT} {...props} />} />
-          {/* Puchases page*/}
+          {/* Puchases page */}
           <Route path="/purchases/" render={props => <Purchases SAFT={SAFT} {...props} />} />
           {/* Products page */}
           <Route path="/products/" render={props => <Products SAFT={SAFT} companyName={companyName} {...props} />} />
@@ -66,8 +66,13 @@ const Dashboard = ({ SAFT, companyName }) => (
   </Container>
 );
 
+Dashboard.defaultProps = {
+  companyName: 'Demo',
+};
+
 Dashboard.propTypes = {
-  SAFT: PropTypes.object.isRequired,
+  SAFT: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  companyName: PropTypes.string,
 };
 
 export default Dashboard;

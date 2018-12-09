@@ -38,10 +38,10 @@ const Overview = (props) => {
 };
 
 Overview.propTypes = {
-  SAFT: PropTypes.object.isRequired,
+  SAFT: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   netTotal: PropTypes.number.isRequired,
-  top5Costumers: PropTypes.array.isRequired,
-  top5Products: PropTypes.array.isRequired,
+  top5Costumers: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
+  top5Products: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
 export default dashboardPage(Overview);

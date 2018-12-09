@@ -131,9 +131,7 @@ const getNumCustomers = (invoices) => {
   return Object.keys(customers).length;
 };
 
-const getNumSuppliers = ({ suppliers }) => {
-  return Object.keys(suppliers).length;
-}
+const getNumSuppliers = ({ suppliers }) => Object.keys(suppliers).length;
 
 const dashboardPage = WrappedComponent => class extends React.Component {
   constructor(props) {

@@ -1,62 +1,65 @@
-const URL = process.env.URL || "http://192.168.1.3:2018/WebApi/"
+const URL = process.env.URL || 'http://192.168.1.3:2018/WebApi/';
 
-let access_token = null;
+let accessToken = null;
 
-export const getToken = async (companyName = "DEMO") => {
-    let url = URL + "token";
-
-    let tokenRequestBody = {
-        'username': "FEUP",
-        'password': "qualquer1",
-        'company': companyName,
-        'instance': "DEFAULT",
-        'grant_type': "password",
-        'line': "professional",
-    };
-
-    let bodyData = new URLSearchParams();
-
-    Object.keys(tokenRequestBody).forEach((key) => {
-        bodyData.append(key, tokenRequestBody[key])
-    })
-
-    const response = await makeRequest(url, "application/x-www-form-urlencoded", bodyData);
-    const responseJson = await response.json();
-
-    access_token = responseJson.access_token;
-    console.log("GOT ACCESS TOKEN : " + access_token);
-}
-
-export const dbQuery = (queryString) => makeRequest(URL + "Administrador/Consulta", "application/json; charset=utf-8", queryString)
 
 const makeRequest = async (url, contentType, body) => {
-    let bodyData;
+  let bodyData;
 
-    if (contentType === "application/json; charset=utf-8") {
-        bodyData = JSON.stringify(body);
-    } else {
-        bodyData = body;
-    }
+  if (contentType === 'application/json; charset=utf-8') {
+    bodyData = JSON.stringify(body);
+  } else {
+    bodyData = body;
+  }
 
-    const headers = new Headers();
-    headers.append('Content-Type', contentType);
-    if (access_token) {
-        headers.append('Authorization', 'Bearer ' + access_token);
-    }
+  const headers = new Headers();
+  headers.append('Content-Type', contentType);
+  if (accessToken) {
+    headers.append('Authorization', `Bearer ${accessToken}`);
+  }
 
-    let request = {
-        method: 'POST',
-        mode: "cors",
-        credentials: "omit",
-        headers: headers,
-        body: bodyData
-    }
+  const request = {
+    method: 'POST',
+    mode: 'cors',
+    credentials: 'omit',
+    headers,
+    body: bodyData,
+  };
 
-    const response = await fetch(url, request);
+  const response = await fetch(url, request);
 
-    if (response.ok) {
-        return response;
-    } else {
-        throw new Error(response.statusText);
-    }
-}
+  if (response.ok) {
+    return response;
+  }
+  // else
+  throw new Error(response.statusText);
+};
+
+export const getToken = async (companyName = 'DEMO') => {
+  const url = `${URL}token`;
+
+  const tokenRequestBody = {
+    username: 'FEUP',
+    password: 'qualquer1',
+    company: companyName,
+    instance: 'DEFAULT',
+    grant_type: 'password',
+    line: 'professional',
+  };
+
+  const bodyData = new URLSearchParams();
+
+  Object.keys(tokenRequestBody).forEach((key) => {
+    bodyData.append(key, tokenRequestBody[key]);
+  });
+
+  const response = await makeRequest(url, 'application/x-www-form-urlencoded', bodyData);
+  const responseJson = await response.json();
+
+  accessToken = responseJson.access_token;
+  console.log(`GOT ACCESS TOKEN -> ${accessToken}`);
+};
+
+export const dbQuery = (queryString) => {
+  makeRequest(`${URL}Administrador/Consulta`, 'application/json; charset=utf-8', queryString);
+};

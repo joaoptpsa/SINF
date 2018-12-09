@@ -1,7 +1,8 @@
 import * as React from 'react';
-import { Container, Segment, Input, Label, Icon, Button, Header } from 'semantic-ui-react';
+import {
+  Container, Segment, Input, Label, Icon, Button,
+} from 'semantic-ui-react';
 import parseSAFT from 'saft2js';
-import { getToken } from 'primavera-web-api';
 import FileInput from './fileInput';
 import Dashboard from './dashboard';
 
@@ -12,6 +13,7 @@ class App extends React.Component {
     companyName: null,
     loading: false,
   };
+
   handleFile = (text) => {
     this.setState({ loading: true });
 
@@ -47,13 +49,13 @@ class App extends React.Component {
           <Segment placeholder loading={loading}>
             <FileInput handleFile={this.handleFile} />
             <Segment.Inline />
-            <Container textAlign='center' fluid>
+            <Container textAlign="center" fluid>
               <Input
                 label={(
                   <Label>
                     <Icon name="factory" />
                     Company Name
-                    </Label>
+                  </Label>
                 )}
                 labelPosition="left"
                 placeholder="BELAFLOR"

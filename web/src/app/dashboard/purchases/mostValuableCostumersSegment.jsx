@@ -29,7 +29,7 @@ const MostValuableCostumersSegment = ({ top5Costumers }) => (
 );
 
 MostValuableCostumersSegment.propTypes = {
-  top5Costumers: PropTypes.array.isRequired,
+  top5Costumers: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
 export default MostValuableCostumersSegment;

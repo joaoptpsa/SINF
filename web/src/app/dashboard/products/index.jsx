@@ -108,11 +108,16 @@ class Products extends React.Component {
   }
 }
 
+Products.defaultProps = {
+  companyName: 'DEMO',
+};
+
 Products.propTypes = {
-  SAFT: PropTypes.object.isRequired,
+  SAFT: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  companyName: PropTypes.string,
   getNumCustomers: PropTypes.func.isRequired,
   getNetTotalFromInvoices: PropTypes.func.isRequired,
-  top5Products: PropTypes.array.isRequired,
+  top5Products: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
   getNumSales: PropTypes.func.isRequired,
 };
 

@@ -12,20 +12,20 @@ import {
 import PropTypes from 'prop-types';
 import { Segment, Menu, Grid } from 'semantic-ui-react';
 
-const monthNames = [
-  'January',
-  'February',
-  'March',
-  'April',
-  'May',
-  'June',
-  'July',
-  'August',
-  'September',
-  'October',
-  'November',
-  'December',
-];
+// const monthNames = [
+//   'January',
+//   'February',
+//   'March',
+//   'April',
+//   'May',
+//   'June',
+//   'July',
+//   'August',
+//   'September',
+//   'October',
+//   'November',
+//   'December',
+// ];
 
 class MonthlyChart extends React.Component {
   constructor(props) {
@@ -126,7 +126,7 @@ MonthlyChart.propTypes = {
       key: PropTypes.string.isRequired,
     }),
   ).isRequired,
-  data: PropTypes.object.isRequired,
+  data: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
 export default MonthlyChart;

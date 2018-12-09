@@ -45,7 +45,7 @@ const Finances = (props) => {
 };
 
 Finances.propTypes = {
-  SAFT: PropTypes.object.isRequired,
+  SAFT: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   getNumSales: PropTypes.func.isRequired,
   getNumCustomers: PropTypes.func.isRequired,
   getNetTotalFromInvoices: PropTypes.func.isRequired,

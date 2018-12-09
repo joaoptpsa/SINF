@@ -124,11 +124,11 @@ const Sales = (props) => {
 };
 
 Sales.propTypes = {
-  SAFT: PropTypes.object.isRequired,
+  SAFT: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   numSales: PropTypes.number.isRequired,
   netTotal: PropTypes.number.isRequired,
-  top5Costumers: PropTypes.array.isRequired,
-  top5Products: PropTypes.array.isRequired,
+  top5Costumers: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
+  top5Products: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
   numCostumers: PropTypes.number.isRequired,
   getNumSales: PropTypes.func.isRequired,
   getNumCustomers: PropTypes.func.isRequired,
