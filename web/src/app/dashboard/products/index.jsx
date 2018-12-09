@@ -18,6 +18,7 @@ class Products extends React.Component {
     loadingDb: true,
     numberOfStockedItems: 0,
     numberOfOutOfStockItems: 0,
+    top5StockedItems: [],
   };
 
   constructor(props) {
@@ -35,12 +36,16 @@ class Products extends React.Component {
     const urgentBuysJson = await urgentBuys.json();
     console.log(urgentBuysJson);
 
-    const itemsStockResult = await dbQuery('SELECT Artigo, Stock FROM V_INV_ValoresActuaisStock');
+    const itemsStockResult = await dbQuery(
+      'SELECT Artigo.Artigo, Artigo.Descricao, V_INV_ValoresActuaisStock.Stock , ArtigoMoeda.PVP1 FROM Artigo INNER JOIN V_INV_ValoresActuaisStock ON Artigo.Artigo = V_INV_ValoresActuaisStock.Artigo INNER JOIN ArtigoMoeda ON Artigo.Artigo = ArtigoMoeda.Artigo',
+    );
+
     const itemsStockJson = await itemsStockResult.json();
+    console.log(itemsStockJson);
     this.getNumberOfStockedItems(itemsStockJson.DataSet.Table);
     this.getNumberOfOutOfStockItems(itemsStockJson.DataSet.Table);
+    this.getTop5StockedItems(itemsStockJson.DataSet.Table);
 
-    // loading ended
     this.setState({ loadingDb: false });
   };
 
@@ -64,6 +69,18 @@ class Products extends React.Component {
     this.setState({ numberOfOutOfStockItems });
   };
 
+  getTop5StockedItems = (itemsTableJson) => {
+    const sortedItemsJson = itemsTableJson.sort((a, b) => b.Stock - a.Stock);
+    const top5SortedItemsJson = sortedItemsJson.splice(0, 5); // sort in ascending order
+
+    const top5StockedItemsArray = [];
+    top5SortedItemsJson.forEach((item) => {
+      top5StockedItemsArray.push({ quantity: item.Stock, description: item.Descricao });
+    });
+
+    this.setState({ top5StockedItems: top5StockedItemsArray });
+  };
+
   changeText = (e, data) => {
     this.setState({ text: data.value });
 
@@ -72,16 +89,17 @@ class Products extends React.Component {
 
   render() {
     const {
-      SAFT,
-      top5Products,
-      getNumSales,
-      getNumCustomers,
-      getNetTotalFromInvoices,
+      SAFT, getNumSales, getNumCustomers, getNetTotalFromInvoices,
     } = this.props;
 
     const {
-      text, loadingDb, numberOfStockedItems, numberOfOutOfStockItems,
+      text,
+      loadingDb,
+      numberOfStockedItems,
+      numberOfOutOfStockItems,
+      top5StockedItems,
     } = this.state;
+
     return (
       <Grid stackable>
         <Grid.Row columns={3}>
@@ -112,19 +130,6 @@ class Products extends React.Component {
         </Grid.Row>
         <Grid.Row columns={2}>
           <Grid.Column width={10}>
-            <MonthlyProductsChart
-              invoices={SAFT.sourceDocuments.invoices}
-              getNumSales={getNumSales}
-              getNumCustomers={getNumCustomers}
-              getNetTotalFromInvoices={getNetTotalFromInvoices}
-            />
-          </Grid.Column>
-          <Grid.Column width={6}>
-            <TopProductsPiechartSegment title="Top stocked products" top5Products={top5Products} />
-          </Grid.Column>
-        </Grid.Row>
-        <Grid.Row columns={2}>
-          <Grid.Column width={10}>
             <Segment>
               <Grid.Row>
                 <Input
@@ -138,6 +143,15 @@ class Products extends React.Component {
               </Grid.Row>
             </Segment>
           </Grid.Column>
+          <Grid.Column width={6}>
+            <TopProductsPiechartSegment
+              title="Top stocked products"
+              top5Products={top5StockedItems}
+            />
+          </Grid.Column>
+        </Grid.Row>
+        <Grid.Row columns={2}>
+          <Grid.Column width={10} />
           <Grid.Column width={6}>
             <Segment style={{ height: '100%' }}>
               <Header as="h5" textAlign="center" style={{ margin: 'auto', width: '50%' }}>
