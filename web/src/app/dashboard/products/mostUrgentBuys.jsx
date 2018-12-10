@@ -4,7 +4,6 @@ import {
 } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 
-// TODO: PropTypes
 class MostUrgentBuysList extends React.Component {
   state = { urgentBuysList: [] };
 
@@ -50,19 +49,6 @@ class MostUrgentBuysList extends React.Component {
   };
 
   render() {
-    const { urgentBuysList } = this.state;
-
-    if (urgentBuysList === []) {
-      return (
-        <Segment style={{ height: '100%' }}>
-          <Header as="h2" textAlign="center" style={{ margin: 'auto', width: '50%' }}>
-            <Icon name="bell" />
-            <Header.Content>Most Urgent Buys</Header.Content>
-          </Header>
-        </Segment>
-      );
-    }
-
     return (
       <Segment style={{ height: '100%' }}>
         <Header as="h5" textAlign="center" style={{ margin: 'auto', width: '50%' }}>
@@ -76,5 +62,9 @@ class MostUrgentBuysList extends React.Component {
     );
   }
 }
+
+MostUrgentBuysList.propTypes = {
+  urgentBuysList: PropTypes.array.isRequired,
+};
 
 export default MostUrgentBuysList;
