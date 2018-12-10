@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Grid, Input, Segment, Header, Icon,
+  Grid, Segment, Header, Icon,
 } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import { getToken, dbQuery } from 'primavera-web-api';
@@ -10,37 +10,43 @@ import TopProductsPiechartSegment from '../topProductsPiechartSegment';
 import ProductsTable from './productsTable';
 import dashboardPage from '../dashboardPage';
 import MostUrgentBuysList from './mostUrgentBuys';
-import MonthlyProductsChart from './monthlyProductsChart';
 
 class Products extends React.Component {
   state = {
-    text: '',
     loadingDb: true,
     numberOfStockedItems: 0,
     numberOfOutOfStockItems: 0,
+    top5StockedItems: [],
+    itemsList: [],
   };
 
   constructor(props) {
     super(props);
-    const { companyName } = props;
+  }
 
+  componentDidMount() {
+    const { companyName } = this.props;
     this.loadDB(companyName);
   }
 
   loadDB = async (companyName) => {
-    await getToken(companyName);
+    // await getToken(companyName);
 
     // loading started
     const urgentBuys = await dbQuery('SELECT * FROM NecessidadesCompras');
     const urgentBuysJson = await urgentBuys.json();
     console.log(urgentBuysJson);
 
-    const itemsStockResult = await dbQuery('SELECT Artigo, Stock FROM V_INV_ValoresActuaisStock');
+    const itemsStockResult = await dbQuery(
+      'SELECT DISTINCT Artigo.Artigo, Artigo.Descricao, V_INV_ValoresActuaisStock.Stock , ArtigoMoeda.PVP1 FROM Artigo INNER JOIN V_INV_ValoresActuaisStock ON Artigo.Artigo = V_INV_ValoresActuaisStock.Artigo INNER JOIN ArtigoMoeda ON Artigo.Artigo = ArtigoMoeda.Artigo',
+    );
+
     const itemsStockJson = await itemsStockResult.json();
     this.getNumberOfStockedItems(itemsStockJson.DataSet.Table);
     this.getNumberOfOutOfStockItems(itemsStockJson.DataSet.Table);
+    this.getTop5StockedItems(itemsStockJson.DataSet.Table);
+    this.getItemsListArray(itemsStockJson.DataSet.Table);
 
-    // loading ended
     this.setState({ loadingDb: false });
   };
 
@@ -64,24 +70,42 @@ class Products extends React.Component {
     this.setState({ numberOfOutOfStockItems });
   };
 
-  changeText = (e, data) => {
-    this.setState({ text: data.value });
+  getTop5StockedItems = (itemsTableJson) => {
+    const sortedItemsJson = itemsTableJson.sort((a, b) => b.Stock - a.Stock);
+    const top5SortedItemsJson = sortedItemsJson.splice(0, 5); // sort in ascending order
 
-    console.log(data.value);
+    const top5StockedItemsArray = [];
+    top5SortedItemsJson.forEach((item) => {
+      top5StockedItemsArray.push({
+        quantity: item.Stock,
+        code: item.Artigo,
+        description: item.Descricao,
+      });
+    });
+
+    this.setState({ top5StockedItems: top5StockedItemsArray });
+  };
+
+  getItemsListArray = (itemsTableJson) => {
+    const itemsListArray = [];
+    itemsTableJson.forEach((item) => {
+      itemsListArray.push({ ...item });
+    });
+
+    this.setState({ itemsList: itemsListArray });
   };
 
   render() {
     const {
-      SAFT,
-      top5Products,
-      getNumSales,
-      getNumCustomers,
-      getNetTotalFromInvoices,
-    } = this.props;
-
-    const {
-      text, loadingDb, numberOfStockedItems, numberOfOutOfStockItems,
+      loadingDb,
+      numberOfStockedItems,
+      numberOfOutOfStockItems,
+      top5StockedItems,
+      itemsList,
     } = this.state;
+
+    console.log(itemsList);
+
     return (
       <Grid stackable>
         <Grid.Row columns={3}>
@@ -112,32 +136,17 @@ class Products extends React.Component {
         </Grid.Row>
         <Grid.Row columns={2}>
           <Grid.Column width={10}>
-            <MonthlyProductsChart
-              invoices={SAFT.sourceDocuments.invoices}
-              getNumSales={getNumSales}
-              getNumCustomers={getNumCustomers}
-              getNetTotalFromInvoices={getNetTotalFromInvoices}
-            />
+            <ProductsTable itemsList={itemsList} />
           </Grid.Column>
           <Grid.Column width={6}>
-            <TopProductsPiechartSegment title="Top stocked products" top5Products={top5Products} />
+            <TopProductsPiechartSegment
+              title="Top stocked products"
+              top5Products={top5StockedItems}
+            />
           </Grid.Column>
         </Grid.Row>
         <Grid.Row columns={2}>
-          <Grid.Column width={10}>
-            <Segment>
-              <Grid.Row>
-                <Input
-                  action="Search"
-                  placeholder="Search..."
-                  fluid
-                  onChange={this.changeText}
-                  value={text}
-                />
-                <ProductsTable />
-              </Grid.Row>
-            </Segment>
-          </Grid.Column>
+          <Grid.Column width={10} />
           <Grid.Column width={6}>
             <Segment style={{ height: '100%' }}>
               <Header as="h5" textAlign="center" style={{ margin: 'auto', width: '50%' }}>

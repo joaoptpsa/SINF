@@ -15,7 +15,7 @@ const Finances = (props) => {
     <Grid>
       <Grid.Row columns={5}>
         <Grid.Column>
-          <DisplaySegment text="Quick Ratio (ACID)" number={100} type="%" growth="10" />
+          <DisplaySegment text="Quick Ratio (ACID)" number={100} type="%" growth={10} />
         </Grid.Column>
         <Grid.Column>
           <DisplaySegment text="Return on Sales" number={100} type="%" />
