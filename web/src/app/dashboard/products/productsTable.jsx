@@ -2,7 +2,6 @@ import React from 'react';
 import { Table, Input, Segment } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 
-// TODO: Proptypes
 class ProductsTable extends React.Component {
   state = { text: '', itemsList: [] };
 
