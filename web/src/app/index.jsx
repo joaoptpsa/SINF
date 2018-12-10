@@ -61,7 +61,7 @@ class App extends React.Component {
       );
     }
 
-    return <Dashboard SAFT={SAFT} companyName={companyName} />;
+    return <Dashboard SAFT={SAFT} />;
   }
 }
 

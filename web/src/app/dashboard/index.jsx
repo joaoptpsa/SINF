@@ -15,7 +15,7 @@ const menuItemStyle = {
   color: 'gray',
 };
 
-const Dashboard = ({ SAFT, companyName }) => (
+const Dashboard = ({ SAFT }) => (
   <Container fluid style={{ height: '100%' }}>
     <Router>
       <Grid columns={2} style={{ minHeight: '100%' }} stackable>
@@ -56,7 +56,7 @@ const Dashboard = ({ SAFT, companyName }) => (
           {/* Puchases page */}
           <Route path="/purchases/" render={props => <Purchases SAFT={SAFT} {...props} />} />
           {/* Products page */}
-          <Route path="/products/" render={props => <Products SAFT={SAFT} companyName={companyName} {...props} />} />
+          <Route path="/products/" render={props => <Products SAFT={SAFT} {...props} />} />
           {/* Finances page */}
           <Route path="/finances/" render={props => <Finances SAFT={SAFT} {...props} />} />
           {/* */}
@@ -71,8 +71,7 @@ Dashboard.defaultProps = {
 };
 
 Dashboard.propTypes = {
-  SAFT: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
-  companyName: PropTypes.string,
+  SAFT: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types,
 };
 
 export default Dashboard;

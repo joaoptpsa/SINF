@@ -2,6 +2,7 @@ import React from 'react';
 import { Table, Input, Segment } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 
+// TODO: Proptypes
 class ProductsTable extends React.Component {
   state = { text: '', itemsList: [] };
 
@@ -33,7 +34,7 @@ class ProductsTable extends React.Component {
   };
 
   render() {
-    const { text, itemsList } = this.state;
+    const { text } = this.state;
 
     return (
       <Segment>
@@ -50,7 +51,7 @@ class ProductsTable extends React.Component {
               <Table.HeaderCell>#</Table.HeaderCell>
               <Table.HeaderCell>Name</Table.HeaderCell>
               <Table.HeaderCell>Total Stock</Table.HeaderCell>
-              <Table.HeaderCell>Value</Table.HeaderCell>
+              <Table.HeaderCell>PVP</Table.HeaderCell>
             </Table.Row>
           </Table.Header>
 

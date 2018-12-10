@@ -14,6 +14,7 @@ import MostUrgentBuysList from './mostUrgentBuys';
 class Products extends React.Component {
   state = {
     loadingDb: true,
+    urgentBuysList: [],
     numberOfStockedItems: 0,
     numberOfOutOfStockItems: 0,
     top5StockedItems: [],
@@ -21,15 +22,16 @@ class Products extends React.Component {
   };
 
   componentDidMount() {
-    const { companyName } = this.props;
-    this.loadDB(companyName);
+    this.loadDB();
   }
 
-  loadDB = async (companyName) => {
+  loadDB = async () => {
     // loading started
-    const urgentBuys = await dbQuery('SELECT * FROM NecessidadesCompras');
+    const urgentBuys = await dbQuery(
+      'SELECT DISTINCT Artigo.Artigo, Artigo.Descricao, NecessidadesCompras.Quantidade FROM NecessidadesCompras INNER JOIN Artigo ON Artigo.Artigo = NecessidadesCompras.Artigo',
+    );
     const urgentBuysJson = await urgentBuys.json();
-    console.log(urgentBuysJson);
+    this.getUrgentBuysArray(urgentBuysJson.DataSet.Table);
 
     const itemsStockResult = await dbQuery(
       'SELECT DISTINCT Artigo.Artigo, Artigo.Descricao, V_INV_ValoresActuaisStock.Stock , ArtigoMoeda.PVP1 FROM Artigo INNER JOIN V_INV_ValoresActuaisStock ON Artigo.Artigo = V_INV_ValoresActuaisStock.Artigo INNER JOIN ArtigoMoeda ON Artigo.Artigo = ArtigoMoeda.Artigo',
@@ -42,6 +44,15 @@ class Products extends React.Component {
     this.getItemsListArray(itemsStockJson.DataSet.Table);
 
     this.setState({ loadingDb: false });
+  };
+
+  getUrgentBuysArray = (urgentBuysTableJson) => {
+    const urgentBuysArray = [];
+    urgentBuysTableJson.forEach((item) => {
+      urgentBuysArray.push({ ...item });
+    });
+
+    this.setState({ urgentBuysList: urgentBuysArray });
   };
 
   getNumberOfStockedItems = (itemsTable) => {
@@ -92,13 +103,12 @@ class Products extends React.Component {
   render() {
     const {
       loadingDb,
+      urgentBuysList,
       numberOfStockedItems,
       numberOfOutOfStockItems,
       top5StockedItems,
       itemsList,
     } = this.state;
-
-    console.log(itemsList);
 
     return (
       <Grid stackable>
@@ -129,26 +139,25 @@ class Products extends React.Component {
           </Grid.Column>
         </Grid.Row>
         <Grid.Row columns={2}>
-          <Grid.Column width={10}>
+          <Grid.Column width={10} height={300}>
             <ProductsTable itemsList={itemsList} />
           </Grid.Column>
           <Grid.Column width={6}>
-            <TopProductsPiechartSegment
-              title="Top stocked products"
-              top5Products={top5StockedItems}
-            />
-          </Grid.Column>
-        </Grid.Row>
-        <Grid.Row columns={2}>
-          <Grid.Column width={10} />
-          <Grid.Column width={6}>
-            <Segment style={{ height: '100%' }}>
-              <Header as="h5" textAlign="center" style={{ margin: 'auto', width: '50%' }}>
-                <Icon size="small" name="bell" circular />
-                <Header.Content>Most Urgent Buys</Header.Content>
-              </Header>
-              <MostUrgentBuysList />
-            </Segment>
+            <Grid>
+              <Grid.Row columns={1}>
+                <Grid.Column width={16}>
+                  <TopProductsPiechartSegment
+                    title="Top stocked products"
+                    top5Products={top5StockedItems}
+                  />
+                </Grid.Column>
+              </Grid.Row>
+              <Grid.Row columns={1}>
+                <Grid.Column width={16}>
+                  <MostUrgentBuysList urgentBuysList={urgentBuysList} />
+                </Grid.Column>
+              </Grid.Row>
+            </Grid>
           </Grid.Column>
         </Grid.Row>
       </Grid>
