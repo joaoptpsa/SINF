@@ -3,7 +3,7 @@ import {
   Grid, Segment, Header, Icon,
 } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
-import { getToken, dbQuery } from 'primavera-web-api';
+import { dbQuery } from 'primavera-web-api';
 
 import DisplaySegment from '../displaySegment';
 import TopProductsPiechartSegment from '../topProductsPiechartSegment';
@@ -20,18 +20,12 @@ class Products extends React.Component {
     itemsList: [],
   };
 
-  constructor(props) {
-    super(props);
-  }
-
   componentDidMount() {
     const { companyName } = this.props;
     this.loadDB(companyName);
   }
 
   loadDB = async (companyName) => {
-    // await getToken(companyName);
-
     // loading started
     const urgentBuys = await dbQuery('SELECT * FROM NecessidadesCompras');
     const urgentBuysJson = await urgentBuys.json();
