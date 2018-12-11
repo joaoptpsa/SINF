@@ -31,7 +31,7 @@ class App extends React.Component {
     });
   };
 
-  handleChange = (e) => {
+  handleText = (e) => {
     this.setState({ textInput: e.target.value });
   };
 
@@ -53,7 +53,7 @@ class App extends React.Component {
           <Segment placeholder loading={loading}>
             <FileInput handleFile={this.handleFile} />
             <Segment.Inline />
-            <CompanyInput handleChange={this.handleChange} />
+            <CompanyInput handleText={this.handleText} />
             <Segment.Inline />
             <Button onClick={this.handleClick}>Submit</Button>
           </Segment>

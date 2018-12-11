@@ -4,7 +4,7 @@ import {
 } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 
-const CompanyInput = ({ handleChange }) => (
+const CompanyInput = ({ handleText }) => (
   <Container textAlign="center" fluid>
     <Input
       label={(
@@ -15,13 +15,13 @@ const CompanyInput = ({ handleChange }) => (
 )}
       labelPosition="left"
       placeholder="DEMO"
-      onChange={handleChange}
+      onChange={handleText}
     />
   </Container>
 );
 
 CompanyInput.propTypes = {
-  handleChange: PropTypes.func.isRequired,
+  handleText: PropTypes.func.isRequired,
 };
 
 export default CompanyInput;
