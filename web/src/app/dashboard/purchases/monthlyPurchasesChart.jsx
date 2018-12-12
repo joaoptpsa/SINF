@@ -32,10 +32,6 @@ const options = {
     name: 'Purchases',
     key: 'netTotal',
   },
-  costumers: {
-    name: 'Suppliers',
-    key: 'costumers',
-  },
 };
 
 const getInvoicesByDate = (invoices) => {
@@ -102,24 +98,7 @@ class MonthlyChart extends React.Component {
             stroke="#75cac3"
           />
         );
-      case 'costumers':
-        return (
-          <Line
-            type="monotone"
-            name={options.costumers.name}
-            dataKey={options.costumers.key}
-            stroke="#75cac3"
-          />
-        );
-      case 'sales':
-        return (
-          <Line
-            type="monotone"
-            name={options.sales.name}
-            dataKey={options.sales.key}
-            stroke="#75cac3"
-          />
-        );
+
       default:
         return null;
     }
@@ -154,11 +133,6 @@ class MonthlyChart extends React.Component {
             name={options.netTotal.name}
             active={option === options.netTotal.key}
             onClick={() => this.setState({ option: options.netTotal.key })}
-          />
-          <Menu.Item
-            name={options.costumers.name}
-            active={option === options.costumers.key}
-            onClick={() => this.setState({ option: options.costumers.key })}
           />
         </Menu>
 
