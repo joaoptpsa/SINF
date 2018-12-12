@@ -36,7 +36,7 @@ class Purchases extends React.Component {
   };
 
   getTotalPurchasesValue = (buyOrdersJson) => {
-    const totalPurchasesValue = 0;
+    let totalPurchasesValue = 0;
     buyOrdersJson.forEach((buyOrder) => {
       totalPurchasesValue += buyOrder.TotalMerc;
     });

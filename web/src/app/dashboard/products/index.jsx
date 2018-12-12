@@ -106,13 +106,14 @@ class Products extends React.Component {
   };
 
   getCostForItem = (Artigo, itemsBuyPriceJson) => {
+    let itemCost = 0;
     itemsBuyPriceJson.forEach((item) => {
-      if (item.Artigo == Artigo) {
-        return item.Custo;
+      if (item.Artigo === Artigo) {
+        itemCost = item.Custo;
       }
     });
 
-    return 0;
+    return itemCost;
   };
 
   getTotalInventoryValue = (itemsStockJson, itemsBuyPriceJson) => {
