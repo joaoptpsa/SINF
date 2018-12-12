@@ -1,7 +1,5 @@
 import React from 'react';
-import {
-  Grid, Segment, Header, Icon,
-} from 'semantic-ui-react';
+import { Grid } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import { dbQuery } from 'primavera-web-api';
 
@@ -14,6 +12,7 @@ import MostUrgentBuysList from './mostUrgentBuys';
 class Products extends React.Component {
   state = {
     loadingDb: true,
+    totalInventoryValue: 0,
     urgentBuysList: [],
     numberOfStockedItems: 0,
     numberOfOutOfStockItems: 0,
@@ -42,6 +41,12 @@ class Products extends React.Component {
     this.getNumberOfOutOfStockItems(itemsStockJson.DataSet.Table);
     this.getTop5StockedItems(itemsStockJson.DataSet.Table);
     this.getItemsListArray(itemsStockJson.DataSet.Table);
+
+    const itemsBuyPrice = await dbQuery(
+      'SELECT AF.Artigo, AVG(AF.PrCustoUltimo) AS Custo FROM ArtigoFornecedor AF GROUP BY AF.Artigo',
+    );
+    const itemsBuyPriceJson = await itemsBuyPrice.json();
+    this.getTotalInventoryValue(itemsStockJson.DataSet.Table, itemsBuyPriceJson.DataSet.Table);
 
     this.setState({ loadingDb: false });
   };
@@ -100,9 +105,30 @@ class Products extends React.Component {
     this.setState({ itemsList: itemsListArray });
   };
 
+  getCostForItem = (Artigo, itemsBuyPriceJson) => {
+    itemsBuyPriceJson.forEach((item) => {
+      if (item.Artigo == Artigo) {
+        return item.Custo;
+      }
+    });
+
+    return 0;
+  };
+
+  getTotalInventoryValue = (itemsStockJson, itemsBuyPriceJson) => {
+    let totalInventoryValue = 0;
+    itemsStockJson.forEach((item) => {
+      const itemCost = this.getCostForItem(item.Artigo, itemsBuyPriceJson);
+      totalInventoryValue += item.Stock * itemCost;
+    });
+
+    this.setState({ totalInventoryValue });
+  };
+
   render() {
     const {
       loadingDb,
+      totalInventoryValue,
       urgentBuysList,
       numberOfStockedItems,
       numberOfOutOfStockItems,
@@ -117,7 +143,7 @@ class Products extends React.Component {
             <DisplaySegment
               text="Total Inventory value"
               loading={loadingDb}
-              number={100}
+              number={totalInventoryValue}
               type="€"
             />
           </Grid.Column>

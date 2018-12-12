@@ -47,7 +47,8 @@ class App extends React.Component {
   render() {
     const { SAFT, companyName, loading } = this.state;
 
-    if (!SAFT || !companyName) {
+    // if (!SAFT || !companyName) {
+    if (!SAFT) {
       return (
         <Container>
           <Segment placeholder loading={loading}>
