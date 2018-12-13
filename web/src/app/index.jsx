@@ -3,7 +3,7 @@ import {
   Container, Segment, Button, Divider, Input, Label, Icon,
 } from 'semantic-ui-react';
 import parseSAFT from 'saft2js';
-import { getToken } from 'primavera-web-api';
+import { getToken, loadDb } from 'primavera-web-api';
 import FileInput from './fileInput';
 import Dashboard from './dashboard';
 
@@ -44,6 +44,7 @@ class App extends React.Component {
 
     try {
       await getToken(companyName, url);
+      await loadDb();
       this.setState({ loading: false, success: true });
     } catch (e) {
       console.error(e.message);

@@ -2,25 +2,14 @@ import React from 'react';
 import {
   Segment, List, Label, Header, Icon,
 } from 'semantic-ui-react';
-import { queryUrgentBuys } from 'primavera-web-api';
+import { getUrgentBuys } from 'primavera-web-api';
 
 class MostUrgentBuysList extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { loadingDb: true, urgentBuysArray: [] };
+    this.state = { urgentBuysArray: getUrgentBuys() };
   }
-
-  componentDidMount() {
-    this.loadDb();
-  }
-
-  loadDb = async () => {
-    const urgentBuysJson = await queryUrgentBuys();
-    this.setState({ urgentBuysArray: urgentBuysJson.DataSet.Table });
-
-    this.setState({ loadingDb: false });
-  };
 
   renderList = () => {
     const items = [];
@@ -60,10 +49,8 @@ class MostUrgentBuysList extends React.Component {
   };
 
   render() {
-    const { loadingDb } = this.state;
-
     return (
-      <Segment loading={loadingDb} style={{ height: '100%' }}>
+      <Segment style={{ height: '100%' }}>
         <Header as="h5" textAlign="center" style={{ margin: 'auto', width: '50%' }}>
           <Icon size="small" name="bell" circular />
           <Header.Content>Most Urgent Buys</Header.Content>

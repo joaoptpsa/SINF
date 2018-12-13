@@ -1,24 +1,13 @@
 import React from 'react';
 import { Table, Input, Segment } from 'semantic-ui-react';
-import { queryProductsInformation } from 'primavera-web-api';
+import { getProductsInformation } from 'primavera-web-api';
 
 class ProductsTable extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { loadingDb: true, text: '', productsInformationArray: [] };
+    this.state = { text: '', productsInformationArray: getProductsInformation() };
   }
-
-  componentDidMount = () => {
-    this.loadDb();
-  };
-
-  loadDb = async () => {
-    const productsInformationJson = await queryProductsInformation();
-    this.setState({ productsInformationArray: productsInformationJson.DataSet.Table });
-
-    this.setState({ loadingDb: false });
-  };
 
   changeText = (e, data) => {
     this.setState({ text: data.value });
@@ -27,6 +16,7 @@ class ProductsTable extends React.Component {
   renderTable = () => {
     const rows = [];
     const { productsInformationArray } = this.state;
+    console.log(productsInformationArray);
 
     productsInformationArray.forEach((product) => {
       const element = (
@@ -44,10 +34,10 @@ class ProductsTable extends React.Component {
   };
 
   render() {
-    const { loadingDb, text } = this.state;
+    const { text } = this.state;
 
     return (
-      <Segment loading={loadingDb}>
+      <Segment>
         <Input
           action="Search"
           placeholder="Search..."
