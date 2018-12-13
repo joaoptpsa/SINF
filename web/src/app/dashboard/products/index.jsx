@@ -13,10 +13,8 @@ class Products extends React.Component {
   state = {
     loadingDb: true,
     totalInventoryValue: 0,
-    urgentBuysList: [],
     numberOfStockedItems: 0,
     numberOfOutOfStockItems: 0,
-    top5StockedItems: [],
     itemsList: [],
   };
 
@@ -26,12 +24,6 @@ class Products extends React.Component {
 
   loadDB = async () => {
     // loading started
-    const urgentBuys = await dbQuery(
-      'SELECT DISTINCT Artigo.Artigo, Artigo.Descricao, NecessidadesCompras.Quantidade FROM NecessidadesCompras INNER JOIN Artigo ON Artigo.Artigo = NecessidadesCompras.Artigo',
-    );
-    const urgentBuysJson = await urgentBuys.json();
-    this.getUrgentBuysArray(urgentBuysJson.DataSet.Table);
-
     const itemsStockResult = await dbQuery(
       'SELECT DISTINCT Artigo.Artigo, Artigo.Descricao, V_INV_ValoresActuaisStock.Stock , ArtigoMoeda.PVP1 FROM Artigo INNER JOIN V_INV_ValoresActuaisStock ON Artigo.Artigo = V_INV_ValoresActuaisStock.Artigo INNER JOIN ArtigoMoeda ON Artigo.Artigo = ArtigoMoeda.Artigo',
     );
@@ -48,15 +40,6 @@ class Products extends React.Component {
     this.getTotalInventoryValue(itemsStockJson.DataSet.Table, itemsBuyPriceJson.DataSet.Table);
 
     this.setState({ loadingDb: false });
-  };
-
-  getUrgentBuysArray = (urgentBuysTableJson) => {
-    const urgentBuysArray = [];
-    urgentBuysTableJson.forEach((item) => {
-      urgentBuysArray.push({ ...item });
-    });
-
-    this.setState({ urgentBuysList: urgentBuysArray });
   };
 
   getNumberOfStockedItems = (itemsTable) => {
@@ -113,10 +96,8 @@ class Products extends React.Component {
     const {
       loadingDb,
       totalInventoryValue,
-      urgentBuysList,
       numberOfStockedItems,
       numberOfOutOfStockItems,
-      top5StockedItems,
       itemsList,
     } = this.state;
 
@@ -161,7 +142,7 @@ class Products extends React.Component {
               </Grid.Row>
               <Grid.Row columns={1}>
                 <Grid.Column width={16}>
-                  <MostUrgentBuysList urgentBuysList={urgentBuysList} />
+                  <MostUrgentBuysList />
                 </Grid.Column>
               </Grid.Row>
             </Grid>

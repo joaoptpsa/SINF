@@ -2,20 +2,34 @@ import React from 'react';
 import {
   Segment, List, Label, Header, Icon,
 } from 'semantic-ui-react';
-import PropTypes from 'prop-types';
+import { dbQuery } from 'primavera-web-api';
 
 class MostUrgentBuysList extends React.Component {
-  state = { urgentBuysList: [] };
+  constructor(props) {
+    super(props);
 
-  componentWillReceiveProps(nextProps) {
-    this.setState({ urgentBuysList: nextProps.urgentBuysList });
+    this.state = { loadingDb: true, urgentBuysArray: [] };
   }
+
+  componentDidMount() {
+    this.loadDb();
+  }
+
+  loadDb = async () => {
+    const urgentBuys = await dbQuery(
+      'SELECT DISTINCT Artigo.Artigo, Artigo.Descricao, NecessidadesCompras.Quantidade FROM NecessidadesCompras INNER JOIN Artigo ON Artigo.Artigo = NecessidadesCompras.Artigo',
+    );
+    const urgentBuysJson = await urgentBuys.json();
+    this.setState({ urgentBuysArray: urgentBuysJson.DataSet.Table });
+
+    this.setState({ loadingDb: false });
+  };
 
   renderList = () => {
     const items = [];
-    const { urgentBuysList } = this.state;
+    const { urgentBuysArray } = this.state;
 
-    if (urgentBuysList.length === 0) {
+    if (urgentBuysArray.length === 0) {
       return (
         <List.Item>
           <Header icon>
@@ -26,7 +40,7 @@ class MostUrgentBuysList extends React.Component {
       );
     }
 
-    urgentBuysList.forEach((urgentBuy) => {
+    urgentBuysArray.forEach((urgentBuy) => {
       let color = 'blue';
       if (urgentBuy.Quantidade < 50) {
         color = 'orange';
@@ -49,8 +63,10 @@ class MostUrgentBuysList extends React.Component {
   };
 
   render() {
+    const { loadingDb } = this.state;
+
     return (
-      <Segment style={{ height: '100%' }}>
+      <Segment loading={loadingDb} style={{ height: '100%' }}>
         <Header as="h5" textAlign="center" style={{ margin: 'auto', width: '50%' }}>
           <Icon size="small" name="bell" circular />
           <Header.Content>Most Urgent Buys</Header.Content>
@@ -62,9 +78,5 @@ class MostUrgentBuysList extends React.Component {
     );
   }
 }
-
-MostUrgentBuysList.propTypes = {
-  urgentBuysList: PropTypes.array.isRequired,
-};
 
 export default MostUrgentBuysList;
