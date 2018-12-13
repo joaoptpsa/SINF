@@ -1,12 +1,12 @@
 import React from 'react';
 import { Table, Input, Segment } from 'semantic-ui-react';
-import { dbQuery } from 'primavera-web-api';
+import { queryProductsInformation } from 'primavera-web-api';
 
 class ProductsTable extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { loadingDb: true, text: '', itemsInformationArray: [] };
+    this.state = { loadingDb: true, text: '', productsInformationArray: [] };
   }
 
   componentDidMount = () => {
@@ -14,11 +14,8 @@ class ProductsTable extends React.Component {
   };
 
   loadDb = async () => {
-    const itemsInformationResult = await dbQuery(
-      'SELECT DISTINCT Artigo.Artigo, Artigo.Descricao, V_INV_ValoresActuaisStock.Stock , ArtigoMoeda.PVP1 FROM Artigo INNER JOIN V_INV_ValoresActuaisStock ON Artigo.Artigo = V_INV_ValoresActuaisStock.Artigo INNER JOIN ArtigoMoeda ON Artigo.Artigo = ArtigoMoeda.Artigo',
-    );
-    const itemsInformationArray = await itemsInformationResult.json();
-    this.setState({ itemsInformationArray: itemsInformationArray.DataSet.Table });
+    const productsInformationJson = await queryProductsInformation();
+    this.setState({ productsInformationArray: productsInformationJson.DataSet.Table });
 
     this.setState({ loadingDb: false });
   };
@@ -29,15 +26,15 @@ class ProductsTable extends React.Component {
 
   renderTable = () => {
     const rows = [];
-    const { itemsInformationArray } = this.state;
+    const { productsInformationArray } = this.state;
 
-    itemsInformationArray.forEach((item) => {
+    productsInformationArray.forEach((product) => {
       const element = (
-        <Table.Row key={item.Artigo}>
-          <Table.Cell>{item.Artigo}</Table.Cell>
-          <Table.Cell>{item.Descricao}</Table.Cell>
-          <Table.Cell>{item.Stock}</Table.Cell>
-          <Table.Cell>{item.PVP1}</Table.Cell>
+        <Table.Row key={product.Artigo}>
+          <Table.Cell>{product.Artigo}</Table.Cell>
+          <Table.Cell>{product.Descricao}</Table.Cell>
+          <Table.Cell>{product.Stock}</Table.Cell>
+          <Table.Cell>{product.PVP1}</Table.Cell>
         </Table.Row>
       );
       rows.push(element);
