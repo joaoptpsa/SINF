@@ -72,6 +72,7 @@ Dashboard.defaultProps = {
 
 Dashboard.propTypes = {
   SAFT: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types,
+  companyName: PropTypes.string,
 };
 
 export default Dashboard;
