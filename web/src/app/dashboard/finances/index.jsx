@@ -8,7 +8,12 @@ import MonthlyFinancesChartRight from './monthlyFinancesChartRight';
 
 const Finances = (props) => {
   const {
-    SAFT, getNumSales, getNumCustomers, getNetTotalFromInvoices, netTotal,
+    SAFT,
+    getNumSales,
+    getNumCustomers,
+    getNetTotalFromInvoices,
+    netTotalGrowth,
+    netTotalThisPeriod,
   } = props;
 
   return (
@@ -18,10 +23,15 @@ const Finances = (props) => {
           <DisplaySegment text="Quick Ratio (ACID)" number={100} type="%" growth={10} />
         </Grid.Column>
         <Grid.Column>
-          <DisplaySegment text="Return on Sales" number={100} type="%" />
+          <DisplaySegment text="Return on Sales" number={100} type="€" />
         </Grid.Column>
         <Grid.Column>
-          <DisplaySegment text="Net Sales" number={netTotal} type="€" />
+          <DisplaySegment
+            text="Net Sales"
+            number={netTotalThisPeriod}
+            growth={netTotalGrowth}
+            type=""
+          />
         </Grid.Column>
         <Grid.Column>
           <DisplaySegment text="Total Purchases" number={1723} type="€" />
@@ -49,7 +59,8 @@ Finances.propTypes = {
   getNumSales: PropTypes.func.isRequired,
   getNumCustomers: PropTypes.func.isRequired,
   getNetTotalFromInvoices: PropTypes.func.isRequired,
-  netTotal: PropTypes.number.isRequired,
+  netTotalGrowth: PropTypes.number.isRequired,
+  netTotalThisPeriod: PropTypes.number.isRequired,
 };
 
 export default dashboardPage(Finances);

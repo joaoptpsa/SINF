@@ -1,8 +1,7 @@
 import React from 'react';
 import { Grid } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
-
-import dashboardPage from '../dashboardPage';
+import dashboardPage, { InjectedProps } from '../dashboardPage';
 import BarChartSegment from '../barChartSegment';
 import TopProductsPiechartSegment from '../topProductsPiechartSegment';
 import MonthlyChart from '../monthlyChart';
@@ -125,14 +124,7 @@ const Sales = (props) => {
 
 Sales.propTypes = {
   SAFT: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
-  numSales: PropTypes.number.isRequired,
-  netTotal: PropTypes.number.isRequired,
-  top5Costumers: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
-  top5Products: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
-  numCostumers: PropTypes.number.isRequired,
-  getNumSales: PropTypes.func.isRequired,
-  getNumCustomers: PropTypes.func.isRequired,
-  getNetTotalFromInvoices: PropTypes.func.isRequired,
+  ...InjectedProps,
 };
 
 export default dashboardPage(Sales);

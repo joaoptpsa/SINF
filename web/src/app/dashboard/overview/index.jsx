@@ -2,18 +2,25 @@ import React from 'react';
 import { Grid } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import DisplaySegment from '../displaySegment';
-import dashboardPage from '../dashboardPage';
+import dashboardPage, { InjectedProps } from '../dashboardPage';
 import BarChartSegment from '../barChartSegment';
 import TopProductsPiechartSegment from '../topProductsPiechartSegment';
 
 const Overview = (props) => {
-  const { netTotal, top5Costumers, top5Products } = props;
+  const {
+    netTotalThisPeriod, netTotalGrowth, top5Costumers, top5Products,
+  } = props;
 
   return (
     <Grid stackable>
       <Grid.Row columns={4}>
         <Grid.Column>
-          <DisplaySegment text="Net Sales" number={netTotal} type="€" />
+          <DisplaySegment
+            text="Net Sales"
+            number={netTotalThisPeriod}
+            growth={netTotalGrowth}
+            type="€"
+          />
         </Grid.Column>
         <Grid.Column>
           <DisplaySegment text="Total Purchases" number={100} type="€" />
@@ -39,9 +46,7 @@ const Overview = (props) => {
 
 Overview.propTypes = {
   SAFT: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
-  netTotal: PropTypes.number.isRequired,
-  top5Costumers: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
-  top5Products: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
+  ...InjectedProps,
 };
 
 export default dashboardPage(Overview);

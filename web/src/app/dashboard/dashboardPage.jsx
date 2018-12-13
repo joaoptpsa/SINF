@@ -1,5 +1,6 @@
 import React from 'react';
 import { Divider, Select, Segment } from 'semantic-ui-react';
+import PropTypes from 'prop-types';
 
 const options = [
   {
@@ -140,140 +141,155 @@ const dashboardPage = WrappedComponent => class extends React.Component {
     this.state = this.setPeriod('lastSemester');
   }
 
-  setPeriod = (period) => {
-    const { SAFT } = this.props;
-    const { endDate } = SAFT.header;
+    setPeriod = (period) => {
+      const { SAFT } = this.props;
+      const { endDate } = SAFT.header;
 
-    const lastPeriodEndDate = new Date(endDate);
-    const lastPeriodStartDate = new Date(endDate);
-    const thisPeriodStartDate = new Date(endDate);
-    const thisPeriodEndDate = new Date(endDate);
+      const lastPeriodEndDate = new Date(endDate);
+      const lastPeriodStartDate = new Date(endDate);
+      const thisPeriodStartDate = new Date(endDate);
+      const thisPeriodEndDate = new Date(endDate);
 
-    switch (period) {
-      case 'lastSemester':
-        lastPeriodEndDate.setMonth(lastPeriodEndDate.getMonth() - 6);
-        thisPeriodStartDate.setMonth(thisPeriodStartDate.getMonth() - 6);
-        lastPeriodStartDate.setMonth(lastPeriodStartDate.getMonth() - 12);
-        break;
-      case 'lastMonth':
-        lastPeriodEndDate.setMonth(lastPeriodEndDate.getMonth() - 1);
-        thisPeriodStartDate.setMonth(thisPeriodStartDate.getMonth() - 1);
-        lastPeriodStartDate.setMonth(lastPeriodStartDate.getMonth() - 2);
-        break;
-      default:
-        break;
-    }
+      switch (period) {
+        case 'lastSemester':
+          lastPeriodEndDate.setMonth(lastPeriodEndDate.getMonth() - 6);
+          thisPeriodStartDate.setMonth(thisPeriodStartDate.getMonth() - 6);
+          lastPeriodStartDate.setMonth(lastPeriodStartDate.getMonth() - 12);
+          break;
+        case 'lastMonth':
+          lastPeriodEndDate.setMonth(lastPeriodEndDate.getMonth() - 1);
+          thisPeriodStartDate.setMonth(thisPeriodStartDate.getMonth() - 1);
+          lastPeriodStartDate.setMonth(lastPeriodStartDate.getMonth() - 2);
+          break;
+        default:
+          break;
+      }
 
-    if (this.state) {
-      const state = {
+      if (this.state) {
+        const state = {
+          period,
+          lastPeriodEndDate,
+          lastPeriodStartDate,
+          thisPeriodEndDate,
+          thisPeriodStartDate,
+        };
+        this.setState(state);
+        return state;
+      }
+      return {
         period,
         lastPeriodEndDate,
         lastPeriodStartDate,
         thisPeriodEndDate,
         thisPeriodStartDate,
       };
-      this.setState(state);
-      return state;
-    }
-    return {
-      period,
-      lastPeriodEndDate,
-      lastPeriodStartDate,
-      thisPeriodEndDate,
-      thisPeriodStartDate,
-    };
-  };
-
-  onDropdownChange = (e, data) => {
-    this.setPeriod(data.value);
-  };
-
-  calculateDiff = (previousValue, newValue) => {
-    if (previousValue !== 0) {
-      return (newValue / previousValue - 1) * 100;
-    }
-    if (newValue !== 0) {
-      return 100;
-    }
-    return 0;
-  };
-
-  render() {
-    const { props } = this;
-    const { SAFT } = props;
-
-    const {
-      period,
-      lastPeriodEndDate,
-      lastPeriodStartDate,
-      thisPeriodEndDate,
-      thisPeriodStartDate,
-    } = this.state;
-
-    const invoicesThisPeriod = getInvoices(
-      SAFT.sourceDocuments,
-      thisPeriodStartDate,
-      thisPeriodEndDate,
-    );
-
-    const invoicesLastPeriod = getInvoices(
-      SAFT.sourceDocuments,
-      lastPeriodStartDate,
-      lastPeriodEndDate,
-    );
-
-    const top5Products = getTop5SoldProducts(invoicesThisPeriod, SAFT.masterFiles.products);
-    const top5Costumers = getTop5NetTotalCostumers(
-      invoicesThisPeriod,
-      SAFT.masterFiles.costumers,
-    );
-
-    // calculate increase in gross profit
-    const netTotalThisPeriod = getNetTotalFromInvoices(invoicesThisPeriod);
-    const netTotalLastPeriod = getNetTotalFromInvoices(invoicesLastPeriod);
-    const netTotal = this.calculateDiff(netTotalLastPeriod, netTotalThisPeriod);
-
-    // calculate increase in number of sales
-    const numSalesThisPeriod = getNumSales(invoicesThisPeriod);
-    const numSalesLastPeriod = getNumSales(invoicesLastPeriod);
-    const numSales = this.calculateDiff(numSalesLastPeriod, numSalesThisPeriod);
-
-    // calculate increase in number of clients
-    const numCostumersThisPeriod = getNumCustomers(invoicesThisPeriod);
-    const numCostumersLastPeriod = getNumCustomers(invoicesLastPeriod);
-    const numCostumers = this.calculateDiff(numCostumersLastPeriod, numCostumersThisPeriod);
-
-    /* Purchases stuff (maybe move this later) */
-
-    const numSuppliers = getNumSuppliers(SAFT.masterFiles);
-
-    const dashboardPageProps = {
-      numSales,
-      netTotal,
-      top5Costumers,
-      top5Products,
-      period,
-      numCostumers,
-      numSuppliers,
-      getNetTotalFromInvoices,
-      getNumCustomers,
-      getNumSales,
     };
 
-    return (
-      <Segment>
-        <Select
-          placeholder="Select time"
-          options={options}
-          style={selectStyle}
-          onChange={this.onDropdownChange}
-          value={period}
-        />
-        <Divider />
-        <WrappedComponent {...props} {...dashboardPageProps} />
-      </Segment>
-    );
-  }
+    onDropdownChange = (e, data) => {
+      this.setPeriod(data.value);
+    };
+
+    calculateDiff = (previousValue, newValue) => {
+      if (previousValue !== 0) {
+        return (newValue / previousValue - 1) * 100;
+      }
+      if (newValue !== 0) {
+        return 100;
+      }
+      return 0;
+    };
+
+    render() {
+      const { props } = this;
+      const { SAFT } = props;
+
+      const {
+        period,
+        lastPeriodEndDate,
+        lastPeriodStartDate,
+        thisPeriodEndDate,
+        thisPeriodStartDate,
+      } = this.state;
+
+      const invoicesThisPeriod = getInvoices(
+        SAFT.sourceDocuments,
+        thisPeriodStartDate,
+        thisPeriodEndDate,
+      );
+
+      const invoicesLastPeriod = getInvoices(
+        SAFT.sourceDocuments,
+        lastPeriodStartDate,
+        lastPeriodEndDate,
+      );
+
+      const top5Products = getTop5SoldProducts(invoicesThisPeriod, SAFT.masterFiles.products);
+      const top5Costumers = getTop5NetTotalCostumers(
+        invoicesThisPeriod,
+        SAFT.masterFiles.costumers,
+      );
+
+      // calculate increase in gross profit
+      const netTotalThisPeriod = getNetTotalFromInvoices(invoicesThisPeriod);
+      const netTotalLastPeriod = getNetTotalFromInvoices(invoicesLastPeriod);
+      const netTotalGrowth = this.calculateDiff(netTotalLastPeriod, netTotalThisPeriod);
+
+      // calculate increase in number of sales
+      const numSalesThisPeriod = getNumSales(invoicesThisPeriod);
+      const numSalesLastPeriod = getNumSales(invoicesLastPeriod);
+      const numSales = this.calculateDiff(numSalesLastPeriod, numSalesThisPeriod);
+
+      // calculate increase in number of clients
+      const numCostumersThisPeriod = getNumCustomers(invoicesThisPeriod);
+      const numCostumersLastPeriod = getNumCustomers(invoicesLastPeriod);
+      const numCostumers = this.calculateDiff(numCostumersLastPeriod, numCostumersThisPeriod);
+
+      /* Purchases stuff (maybe move this later) */
+
+      const numSuppliers = getNumSuppliers(SAFT.masterFiles);
+
+      const dashboardPageProps = {
+        numSales,
+        netTotalGrowth,
+        top5Costumers,
+        top5Products,
+        period,
+        numCostumers,
+        numSuppliers,
+        getNetTotalFromInvoices,
+        getNumCustomers,
+        getNumSales,
+        netTotalThisPeriod,
+      };
+
+      return (
+        <Segment>
+          <Select
+            placeholder="Select time"
+            options={options}
+            style={selectStyle}
+            onChange={this.onDropdownChange}
+            value={period}
+          />
+          <Divider />
+          <WrappedComponent {...props} {...dashboardPageProps} />
+        </Segment>
+      );
+    }
+};
+
+export const InjectedProps = {
+  netTotalGrowth: PropTypes.number.isRequired,
+  netTotalThisPeriod: PropTypes.number.isRequired,
+  top5Costumers: PropTypes.array.isRequired,
+  top5Products: PropTypes.array.isRequired,
+  numSales: PropTypes.number.isRequired,
+  period: PropTypes.oneOf(['lastMonth', 'lastSemester']).isRequired,
+  numCostumers: PropTypes.number.isRequired,
+  numSuppliers: PropTypes.number.isRequired,
+  getNetTotalFromInvoices: PropTypes.func.isRequired,
+  getNumCustomers: PropTypes.func.isRequired,
+  getNumSales: PropTypes.func.isRequired,
 };
 
 export default dashboardPage;
