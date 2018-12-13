@@ -1,5 +1,6 @@
 import React from 'react';
 import { Divider, Select, Segment } from 'semantic-ui-react';
+import PropTypes from 'prop-types';
 
 const options = [
   {
@@ -275,6 +276,20 @@ const dashboardPage = WrappedComponent => class extends React.Component {
         </Segment>
       );
     }
+};
+
+export const InjectedProps = {
+  netTotalGrowth: PropTypes.number.isRequired,
+  netTotalThisPeriod: PropTypes.number.isRequired,
+  top5Costumers: PropTypes.array.isRequired,
+  top5Products: PropTypes.array.isRequired,
+  numSales: PropTypes.number.isRequired,
+  period: PropTypes.oneOf(['lastMonth', 'lastSemester']).isRequired,
+  numCostumers: PropTypes.number.isRequired,
+  numSuppliers: PropTypes.number.isRequired,
+  getNetTotalFromInvoices: PropTypes.func.isRequired,
+  getNumCustomers: PropTypes.func.isRequired,
+  getNumSales: PropTypes.func.isRequired,
 };
 
 export default dashboardPage;

@@ -6,7 +6,7 @@ import { dbQuery } from 'primavera-web-api';
 import DisplaySegment from '../displaySegment';
 import TopStockedProductsPiechartSegment from './topStockedProductsPiechartSegment';
 import ProductsTable from './productsTable';
-import dashboardPage from '../dashboardPage';
+import dashboardPage, { InjectedProps } from '../dashboardPage';
 import MostUrgentBuysList from './mostUrgentBuys';
 
 class Products extends React.Component {
@@ -24,7 +24,7 @@ class Products extends React.Component {
 
   loadDB = async () => {
     // loading started
-    
+
     const itemsStockResult = await dbQuery(
       'SELECT DISTINCT Artigo.Artigo, Artigo.Descricao, V_INV_ValoresActuaisStock.Stock , ArtigoMoeda.PVP1 FROM Artigo INNER JOIN V_INV_ValoresActuaisStock ON Artigo.Artigo = V_INV_ValoresActuaisStock.Artigo INNER JOIN ArtigoMoeda ON Artigo.Artigo = ArtigoMoeda.Artigo',
     );
@@ -160,10 +160,7 @@ Products.defaultProps = {
 Products.propTypes = {
   SAFT: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   companyName: PropTypes.string,
-  getNumCustomers: PropTypes.func.isRequired,
-  getNetTotalFromInvoices: PropTypes.func.isRequired,
-  top5Products: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
-  getNumSales: PropTypes.func.isRequired,
+  ...InjectedProps,
 };
 
 export default dashboardPage(Products);

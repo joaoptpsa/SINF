@@ -2,7 +2,7 @@ import React from 'react';
 import { Grid } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import DisplaySegment from '../displaySegment';
-import dashboardPage from '../dashboardPage';
+import dashboardPage, { InjectedProps } from '../dashboardPage';
 import BarChartSegment from '../barChartSegment';
 import TopProductsPiechartSegment from '../topProductsPiechartSegment';
 
@@ -46,10 +46,7 @@ const Overview = (props) => {
 
 Overview.propTypes = {
   SAFT: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
-  netTotalGrowth: PropTypes.number.isRequired,
-  netTotalThisPeriod: PropTypes.number.isRequired,
-  top5Costumers: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
-  top5Products: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
+  ...InjectedProps,
 };
 
 export default dashboardPage(Overview);
