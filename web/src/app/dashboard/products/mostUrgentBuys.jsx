@@ -2,7 +2,7 @@ import React from 'react';
 import {
   Segment, List, Label, Header, Icon,
 } from 'semantic-ui-react';
-import { dbQuery } from 'primavera-web-api';
+import { queryUrgentBuys } from 'primavera-web-api';
 
 class MostUrgentBuysList extends React.Component {
   constructor(props) {
@@ -16,10 +16,7 @@ class MostUrgentBuysList extends React.Component {
   }
 
   loadDb = async () => {
-    const urgentBuys = await dbQuery(
-      'SELECT DISTINCT Artigo.Artigo, Artigo.Descricao, NecessidadesCompras.Quantidade FROM NecessidadesCompras INNER JOIN Artigo ON Artigo.Artigo = NecessidadesCompras.Artigo',
-    );
-    const urgentBuysJson = await urgentBuys.json();
+    const urgentBuysJson = await queryUrgentBuys();
     this.setState({ urgentBuysArray: urgentBuysJson.DataSet.Table });
 
     this.setState({ loadingDb: false });

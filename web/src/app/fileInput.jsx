@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {
-  Container, Segment, Header, Icon, Input,
+  Container, Header, Icon, Input,
 } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 

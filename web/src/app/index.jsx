@@ -106,7 +106,7 @@ class App extends React.Component {
                 </Label>
 )}
               value={url}
-              placeholder="https://localhost:2018"
+              placeholder="http://192.168.1.83:2018/WebApi/"
               name="url"
               onChange={this.handleText}
             />
