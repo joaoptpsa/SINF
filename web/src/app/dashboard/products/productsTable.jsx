@@ -16,7 +16,6 @@ class ProductsTable extends React.Component {
   renderTable = () => {
     const rows = [];
     const { productsInformationArray } = this.state;
-    console.log(productsInformationArray);
 
     productsInformationArray.forEach((product) => {
       const element = (

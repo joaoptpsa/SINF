@@ -1,9 +1,9 @@
 import React from 'react';
-import { Segment, Header, Container } from 'semantic-ui-react';
+import { Segment, Header } from 'semantic-ui-react';
 import {
   ResponsiveContainer, PieChart, Pie, Legend, Cell,
 } from 'recharts';
-import { dbQuery } from 'primavera-web-api';
+import { getProductsStock } from 'primavera-web-api';
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#FF4444'];
 
@@ -11,54 +11,22 @@ class TopStockedProductsPiechartSegment extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      loadingDb: true,
-      top5StockedItems: [],
-    };
+    const productsStockArray = getProductsStock();
+    const top5StockedProducts = productsStockArray.sort((a, b) => b.Stock - a.Stock).splice(0, 5);
+
+    this.state = { top5StockedProducts };
   }
-
-  componentDidMount() {
-    this.loadDb();
-  }
-
-  loadDb = async () => {
-    const itemsStockResult = await dbQuery(
-      'SELECT DISTINCT Artigo.Artigo, Artigo.Descricao, V_INV_ValoresActuaisStock.Stock FROM Artigo INNER JOIN V_INV_ValoresActuaisStock ON Artigo.Artigo = V_INV_ValoresActuaisStock.Artigo',
-    );
-
-    this.getTop5StockedItems(itemsStockResult.DataSet.Table);
-
-    this.setState({ loadingDb: false });
-  };
-
-  getTop5StockedItems = (itemsTableArray) => {
-    const sortedStockedItemsArray = itemsTableArray.sort((a, b) => b.Stock - a.Stock); // sort in ascending order
-    const top5StockedItemsArray = sortedStockedItemsArray.splice(0, 5);
-
-    this.setState({ top5StockedItems: top5StockedItemsArray });
-  };
 
   render() {
-    const { loadingDb, top5StockedItems } = this.state;
-
-    if (loadingDb) {
-      return (
-        <Segment loading>
-          <Header>Top Stocked Products</Header>
-          <ResponsiveContainer height={300} width="90%">
-            <Container fluid />
-          </ResponsiveContainer>
-        </Segment>
-      );
-    }
+    const { top5StockedProducts } = this.state;
 
     return (
       <Segment>
         <Header>Top Stocked Products</Header>
         <ResponsiveContainer height={300} width="90%">
           <PieChart>
-            <Pie data={top5StockedItems} dataKey="Stock" nameKey="Descricao" label>
-              {top5StockedItems.map((entry, index) => (
+            <Pie data={top5StockedProducts} dataKey="Stock" nameKey="Descricao" label>
+              {top5StockedProducts.map((entry, index) => (
                 <Cell key={entry.Artigo} fill={COLORS[index]} />
               ))}
             </Pie>

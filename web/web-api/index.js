@@ -2,6 +2,10 @@ let URL = null;
 let accessToken = null;
 let urgentBuys = [];
 let productsInformation = [];
+let productsStock = [];
+let totalStock = 0;
+let noOutOfStockProducts = 0;
+
 
 const makeRequest = async (url, contentType, body) => {
   if (!URL) throw new Error('Need to setup url with getToken function.');
@@ -72,9 +76,27 @@ const queryUrgentBuys = () => {
   );
 }
 
-const queryProductsInformation = async () => {
+const queryProductsInformation = () => {
   return dbQuery(
     'SELECT DISTINCT Artigo.Artigo, Artigo.Descricao, V_INV_ValoresActuaisStock.Stock , ArtigoMoeda.PVP1 FROM Artigo INNER JOIN V_INV_ValoresActuaisStock ON Artigo.Artigo = V_INV_ValoresActuaisStock.Artigo INNER JOIN ArtigoMoeda ON Artigo.Artigo = ArtigoMoeda.Artigo',
+  );
+}
+
+const queryProductsStock = () => {
+  return dbQuery(
+    'SELECT DISTINCT Artigo.Artigo, Artigo.Descricao, V_INV_ValoresActuaisStock.Stock FROM Artigo INNER JOIN V_INV_ValoresActuaisStock ON Artigo.Artigo = V_INV_ValoresActuaisStock.Artigo',
+  );
+}
+
+const queryTotalStock = () => {
+  return dbQuery(
+    'SELECT SUM(V_INV_ValoresActuaisStock.Stock) FROM V_INV_ValoresActuaisStock'
+  );
+}
+
+const queryNoOutOfStockProducts = () => {
+  return dbQuery(
+    'SELECT COUNT(Artigo) FROM V_INV_ValoresActuaisStock WHERE Stock = 0'
   );
 }
 
@@ -86,10 +108,27 @@ export const getProductsInformation = () => {
   return productsInformation;
 }
 
+export const getProductsStock = () => {
+  return productsStock;
+}
+
+export const getTotalStock = () => {
+  return totalStock;
+}
+
 export const loadDb = async () => {
   let productsInformationJson = await queryProductsInformation();
   productsInformation = productsInformationJson.DataSet.Table;
 
   let urgentBuysJson = await queryUrgentBuys();
   urgentBuys = urgentBuysJson.DataSet.Table;
+
+  let productsStockJson = await queryProductsStock();
+  productsStock = productsStockJson.DataSet.Table;
+
+  let totalStockJson = await queryTotalStock();
+  totalStock = totalStockJson.DataSet.Table[0].Column1;
+
+  let noOutOfStockProductsJson = await queryNoOutOfStockProducts();
+  noOutOfStockProducts = noOutOfStockProductsJson.DataSet.Table[0].Column1;
 }
