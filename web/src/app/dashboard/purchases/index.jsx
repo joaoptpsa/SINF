@@ -5,7 +5,7 @@ import { dbQuery } from 'primavera-web-api';
 
 import dashboardPage from '../dashboardPage';
 import DisplaySegment from '../displaySegment';
-import MostValuableCostumersSegment from './mostValuableCostumersSegment';
+import BarChartSegment from '../barChartSegment';
 import TopProductsPiechartSegment from '../topProductsPiechartSegment';
 import MonthlyPurchasesChart from './monthlyPurchasesChart';
 
@@ -14,6 +14,7 @@ class Purchases extends React.Component {
     loadingDb: true,
     noTotalPurchases: 0,
     totalPurchasesValue: 0,
+    top5Suppliers: [],
   };
 
   componentDidMount() {
@@ -22,11 +23,18 @@ class Purchases extends React.Component {
 
   loadDB = async () => {
     const buyOrders = await dbQuery(
-      "SELECT CC.Entidade, CC.DataDoc, CC.TotalMerc, CCS.Estado FROM CabecCompras CC INNER JOIN CabecComprasStatus CCS ON CCS.IdCabecCompras = CC.Id WHERE CC.TipoDoc = 'ECF'",
+      "SELECT CC.Entidade, F.Nome, CC.DataDoc, CC.TotalMerc, CCS.Estado FROM CabecCompras CC INNER JOIN CabecComprasStatus CCS ON CCS.IdCabecCompras = CC.Id INNER JOIN Fornecedores F ON CC.Entidade = F.Fornecedor WHERE CC.TipoDoc = 'ECF'",
     );
     const buyOrdersJson = await buyOrders.json();
     this.getNoTotalPurchases(buyOrdersJson.DataSet.Table);
     this.getTotalPurchasesValue(buyOrdersJson.DataSet.Table);
+
+    const totalBuyOrdersBySupplier = await dbQuery(
+      "SELECT CC.Entidade, F.Nome, SUM(CC.TotalMerc) TotalCompras FROM CabecCompras CC INNER JOIN CabecComprasStatus CCS ON CCS.IdCabecCompras = CC.Id INNER JOIN Fornecedores F ON CC.Entidade = F.Fornecedor WHERE CC.TipoDoc = 'ECF' GROUP BY CC.Entidade, F.Nome",
+    );
+    const totalBuyOrdersBySupplierJson = await totalBuyOrdersBySupplier.json();
+
+    this.getTop5Suppliers(totalBuyOrdersBySupplierJson.DataSet.Table);
 
     this.setState({ loadingDb: false });
   };
@@ -44,18 +52,36 @@ class Purchases extends React.Component {
     this.setState({ totalPurchasesValue });
   };
 
+  getTop5Suppliers = (totalBuyOrdersBySupplierJson) => {
+    const sortedSuppliersJson = totalBuyOrdersBySupplierJson.sort(
+      (a, b) => a.TotalCompras - b.TotalCompras,
+    );
+    const top5SortedSuppliersJson = sortedSuppliersJson.splice(0, 5);
+
+    const top5SuppliersArray = [];
+    top5SortedSuppliersJson.forEach((supplier) => {
+      top5SuppliersArray.push({
+        name: supplier.Nome,
+        quantity: supplier.TotalCompras,
+      });
+    });
+
+    this.setState({ top5Suppliers: top5SuppliersArray });
+  };
+
   render() {
     const {
       SAFT,
       numSuppliers,
       top5Products,
-      top5Costumers,
       getNumSales,
       getNumCustomers,
       getNetTotalFromInvoices,
     } = this.props;
 
-    const { loadingDb, noTotalPurchases, totalPurchasesValue } = this.state;
+    const {
+      loadingDb, noTotalPurchases, totalPurchasesValue, top5Suppliers,
+    } = this.state;
 
     return (
       <Grid>
@@ -85,7 +111,13 @@ class Purchases extends React.Component {
             <TopProductsPiechartSegment title="Spending by Category" top5Products={top5Products} />
           </Grid.Column>
           <Grid.Column width={10}>
-            <MostValuableCostumersSegment top5Costumers={top5Costumers} />
+            <BarChartSegment
+              title="Most Valuable Suppliers"
+              infArray={top5Suppliers}
+              xAxisDataKey="name"
+              barDataKey="quantity"
+              barDataDescription="Purchased"
+            />
           </Grid.Column>
         </Grid.Row>
         <Grid.Row columns={2}>
