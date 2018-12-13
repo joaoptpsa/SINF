@@ -32,7 +32,7 @@ const makeRequest = async (url, contentType, body) => {
     return response.json();
   }
   // else
-  throw new Error(response.statusText);
+  throw new Error(response.statusText, response.status);
 };
 
 export const getToken = async (companyName, url) => {
@@ -56,6 +56,8 @@ export const getToken = async (companyName, url) => {
   });
 
   const response = await makeRequest('token', 'application/x-www-form-urlencoded', bodyData);
+
+  console.log(response);
 
   accessToken = response.access_token;
 
