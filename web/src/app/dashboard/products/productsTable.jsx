@@ -1,13 +1,27 @@
 import React from 'react';
 import { Table, Input, Segment } from 'semantic-ui-react';
-import PropTypes from 'prop-types';
+import { dbQuery } from 'primavera-web-api';
 
 class ProductsTable extends React.Component {
-  state = { text: '', itemsList: [] };
+  constructor(props) {
+    super(props);
 
-  componentWillReceiveProps(nextProps) {
-    this.setState({ itemsList: nextProps.itemsList });
+    this.state = { loadingDb: true, text: '', itemsInformationArray: [] };
   }
+
+  componentDidMount = () => {
+    this.loadDb();
+  };
+
+  loadDb = async () => {
+    const itemsInformationResult = await dbQuery(
+      'SELECT DISTINCT Artigo.Artigo, Artigo.Descricao, V_INV_ValoresActuaisStock.Stock , ArtigoMoeda.PVP1 FROM Artigo INNER JOIN V_INV_ValoresActuaisStock ON Artigo.Artigo = V_INV_ValoresActuaisStock.Artigo INNER JOIN ArtigoMoeda ON Artigo.Artigo = ArtigoMoeda.Artigo',
+    );
+    const itemsInformationArray = await itemsInformationResult.json();
+    this.setState({ itemsInformationArray: itemsInformationArray.DataSet.Table });
+
+    this.setState({ loadingDb: false });
+  };
 
   changeText = (e, data) => {
     this.setState({ text: data.value });
@@ -15,9 +29,9 @@ class ProductsTable extends React.Component {
 
   renderTable = () => {
     const rows = [];
-    const { itemsList } = this.state;
+    const { itemsInformationArray } = this.state;
 
-    itemsList.forEach((item) => {
+    itemsInformationArray.forEach((item) => {
       const element = (
         <Table.Row key={item.Artigo}>
           <Table.Cell>{item.Artigo}</Table.Cell>
@@ -33,10 +47,10 @@ class ProductsTable extends React.Component {
   };
 
   render() {
-    const { text } = this.state;
+    const { loadingDb, text } = this.state;
 
     return (
-      <Segment>
+      <Segment loading={loadingDb}>
         <Input
           action="Search"
           placeholder="Search..."
@@ -60,9 +74,5 @@ class ProductsTable extends React.Component {
     );
   }
 }
-
-ProductsTable.propTypes = {
-  itemsList: PropTypes.array.isRequired,
-};
 
 export default ProductsTable;
