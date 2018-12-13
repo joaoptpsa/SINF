@@ -22,7 +22,7 @@ class Purchases extends React.Component {
 
   loadDB = async () => {
     const buyOrders = await dbQuery(
-      "SELECT CC.Entidade, CC.TotalMerc, CCS.Estado FROM CabecCompras CC INNER JOIN CabecComprasStatus CCS ON CCS.IdCabecCompras = CC.Id WHERE CC.TipoDoc = 'ECF'",
+      "SELECT CC.Entidade, CC.DataDoc, CC.TotalMerc, CCS.Estado FROM CabecCompras CC INNER JOIN CabecComprasStatus CCS ON CCS.IdCabecCompras = CC.Id WHERE CC.TipoDoc = 'ECF'",
     );
     const buyOrdersJson = await buyOrders.json();
     this.getNoTotalPurchases(buyOrdersJson.DataSet.Table);
@@ -82,7 +82,7 @@ class Purchases extends React.Component {
         </Grid.Row>
         <Grid.Row columns={2}>
           <Grid.Column width={6}>
-            <TopProductsPiechartSegment title="Top items bought" top5Products={top5Products} />
+            <TopProductsPiechartSegment title="Spending by Category" top5Products={top5Products} />
           </Grid.Column>
           <Grid.Column width={10}>
             <MostValuableCostumersSegment top5Costumers={top5Costumers} />
@@ -96,9 +96,6 @@ class Purchases extends React.Component {
               getNumCustomers={getNumCustomers}
               getNetTotalFromInvoices={getNetTotalFromInvoices}
             />
-          </Grid.Column>
-          <Grid.Column width={6}>
-            <TopProductsPiechartSegment title="Spending by item" top5Products={top5Products} />
           </Grid.Column>
         </Grid.Row>
       </Grid>
