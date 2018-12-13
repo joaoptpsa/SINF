@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { dbQuery } from 'primavera-web-api';
 
 import DisplaySegment from '../displaySegment';
-import TopProductsPiechartSegment from '../topProductsPiechartSegment';
+import TopStockedProductsPiechartSegment from './topStockedProductsPiechartSegment';
 import ProductsTable from './productsTable';
 import dashboardPage from '../dashboardPage';
 import MostUrgentBuysList from './mostUrgentBuys';
@@ -39,7 +39,6 @@ class Products extends React.Component {
     const itemsStockJson = await itemsStockResult.json();
     this.getNumberOfStockedItems(itemsStockJson.DataSet.Table);
     this.getNumberOfOutOfStockItems(itemsStockJson.DataSet.Table);
-    this.getTop5StockedItems(itemsStockJson.DataSet.Table);
     this.getItemsListArray(itemsStockJson.DataSet.Table);
 
     const itemsBuyPrice = await dbQuery(
@@ -78,22 +77,6 @@ class Products extends React.Component {
     });
 
     this.setState({ numberOfOutOfStockItems });
-  };
-
-  getTop5StockedItems = (itemsTableJson) => {
-    const sortedItemsJson = itemsTableJson.sort((a, b) => b.Stock - a.Stock);
-    const top5SortedItemsJson = sortedItemsJson.splice(0, 5); // sort in ascending order
-
-    const top5StockedItemsArray = [];
-    top5SortedItemsJson.forEach((item) => {
-      top5StockedItemsArray.push({
-        quantity: item.Stock,
-        code: item.Artigo,
-        description: item.Descricao,
-      });
-    });
-
-    this.setState({ top5StockedItems: top5StockedItemsArray });
   };
 
   getItemsListArray = (itemsTableJson) => {
@@ -173,10 +156,7 @@ class Products extends React.Component {
             <Grid>
               <Grid.Row columns={1}>
                 <Grid.Column width={16}>
-                  <TopProductsPiechartSegment
-                    title="Top stocked products"
-                    top5Products={top5StockedItems}
-                  />
+                  <TopStockedProductsPiechartSegment />
                 </Grid.Column>
               </Grid.Row>
               <Grid.Row columns={1}>
