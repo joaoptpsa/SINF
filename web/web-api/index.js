@@ -1,8 +1,9 @@
-const URL = process.env.URL || 'http://192.168.1.4:2018/WebApi/';
-
+let URL = null;
 let accessToken = null;
 
 const makeRequest = async (url, contentType, body) => {
+  if (!URL) throw new Error('Need to setup url with getToken function.');
+
   let bodyData;
 
   if (contentType === 'application/json; charset=utf-8') {
@@ -25,7 +26,7 @@ const makeRequest = async (url, contentType, body) => {
     body: bodyData,
   };
 
-  const response = await fetch(url, request);
+  const response = await fetch(`${URL}/${url}`, request);
 
   if (response.ok) {
     return response;
@@ -34,8 +35,10 @@ const makeRequest = async (url, contentType, body) => {
   throw new Error(response.statusText);
 };
 
-export const getToken = async (companyName = 'DEMO') => {
-  const url = `${URL}token`;
+export const getToken = async (companyName, url) => {
+  URL = url;
+
+  console.log(`Connecting to primavera webapi in ${URL}`);
 
   const tokenRequestBody = {
     username: 'FEUP',
@@ -52,14 +55,12 @@ export const getToken = async (companyName = 'DEMO') => {
     bodyData.append(key, tokenRequestBody[key]);
   });
 
-  const response = await makeRequest(url, 'application/x-www-form-urlencoded', bodyData);
+  const response = await makeRequest('token', 'application/x-www-form-urlencoded', bodyData);
+
   const responseJson = await response.json();
 
   accessToken = responseJson.access_token;
-  console.log(`GOT ACCESS TOKEN -> ${accessToken}`);
+  return accessToken;
 };
 
-export const dbQuery = (queryString) => {
-  const url = `${URL}Administrador/Consulta`;
-  return makeRequest(url, 'application/json; charset=utf-8', queryString);
-};
+export const dbQuery = queryString => makeRequest('Administrador/Consulta', 'application/json; charset=utf-8', queryString);

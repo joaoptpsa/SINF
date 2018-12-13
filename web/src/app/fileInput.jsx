@@ -18,12 +18,20 @@ const FileInput = ({ handleFile }) => {
   };
 
   return (
-    <Container textAlign="center">
-      <Header icon>
+    <Container
+      textAlign="center"
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        itemsAlign: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      <Header as="h2" icon>
         <Icon name="cloud upload" />
         Upload SAF-T
       </Header>
-      <Segment.Inline />
+
       <Input type="file" accept=".xml" onChange={handleChange} />
     </Container>
   );
