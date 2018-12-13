@@ -29,23 +29,22 @@ class Products extends React.Component {
     const urgentBuys = await dbQuery(
       'SELECT DISTINCT Artigo.Artigo, Artigo.Descricao, NecessidadesCompras.Quantidade FROM NecessidadesCompras INNER JOIN Artigo ON Artigo.Artigo = NecessidadesCompras.Artigo',
     );
-    const urgentBuysJson = await urgentBuys.json();
-    this.getUrgentBuysArray(urgentBuysJson.DataSet.Table);
+
+    this.getUrgentBuysArray(urgentBuys.DataSet.Table);
 
     const itemsStockResult = await dbQuery(
       'SELECT DISTINCT Artigo.Artigo, Artigo.Descricao, V_INV_ValoresActuaisStock.Stock , ArtigoMoeda.PVP1 FROM Artigo INNER JOIN V_INV_ValoresActuaisStock ON Artigo.Artigo = V_INV_ValoresActuaisStock.Artigo INNER JOIN ArtigoMoeda ON Artigo.Artigo = ArtigoMoeda.Artigo',
     );
 
-    const itemsStockJson = await itemsStockResult.json();
-    this.getNumberOfStockedItems(itemsStockJson.DataSet.Table);
-    this.getNumberOfOutOfStockItems(itemsStockJson.DataSet.Table);
-    this.getItemsListArray(itemsStockJson.DataSet.Table);
+    this.getNumberOfStockedItems(itemsStockResult.DataSet.Table);
+    this.getNumberOfOutOfStockItems(itemsStockResult.DataSet.Table);
+    this.getItemsListArray(itemsStockResult.DataSet.Table);
 
     const itemsBuyPrice = await dbQuery(
       'SELECT AF.Artigo, AVG(AF.PrCustoUltimo) AS Custo FROM ArtigoFornecedor AF GROUP BY AF.Artigo',
     );
-    const itemsBuyPriceJson = await itemsBuyPrice.json();
-    this.getTotalInventoryValue(itemsStockJson.DataSet.Table, itemsBuyPriceJson.DataSet.Table);
+
+    this.getTotalInventoryValue(itemsBuyPrice.DataSet.Table, itemsBuyPrice.DataSet.Table);
 
     this.setState({ loadingDb: false });
   };

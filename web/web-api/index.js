@@ -29,7 +29,7 @@ const makeRequest = async (url, contentType, body) => {
   const response = await fetch(`${URL}/${url}`, request);
 
   if (response.ok) {
-    return response;
+    return response.json();
   }
   // else
   throw new Error(response.statusText);
@@ -57,9 +57,8 @@ export const getToken = async (companyName, url) => {
 
   const response = await makeRequest('token', 'application/x-www-form-urlencoded', bodyData);
 
-  const responseJson = await response.json();
+  accessToken = response.access_token;
 
-  accessToken = responseJson.access_token;
   return accessToken;
 };
 

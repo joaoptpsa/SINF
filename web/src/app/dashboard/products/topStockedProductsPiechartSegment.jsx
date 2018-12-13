@@ -25,8 +25,8 @@ class TopStockedProductsPiechartSegment extends React.Component {
     const itemsStockResult = await dbQuery(
       'SELECT DISTINCT Artigo.Artigo, Artigo.Descricao, V_INV_ValoresActuaisStock.Stock FROM Artigo INNER JOIN V_INV_ValoresActuaisStock ON Artigo.Artigo = V_INV_ValoresActuaisStock.Artigo',
     );
-    const itemsStockJson = await itemsStockResult.json();
-    this.getTop5StockedItems(itemsStockJson.DataSet.Table);
+
+    this.getTop5StockedItems(itemsStockResult.DataSet.Table);
 
     this.setState({ loadingDb: false });
   };
