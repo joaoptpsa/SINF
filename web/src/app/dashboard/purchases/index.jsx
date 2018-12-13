@@ -28,12 +28,12 @@ class Purchases extends React.Component {
     const buyOrdersJson = await buyOrders.json();
     this.getNoTotalPurchases(buyOrdersJson.DataSet.Table);
     this.getTotalPurchasesValue(buyOrdersJson.DataSet.Table);
+    // TODO: monthlyChart for purchases
 
     const totalBuyOrdersBySupplier = await dbQuery(
       "SELECT CC.Entidade, F.Nome, SUM(CC.TotalMerc) TotalCompras FROM CabecCompras CC INNER JOIN CabecComprasStatus CCS ON CCS.IdCabecCompras = CC.Id INNER JOIN Fornecedores F ON CC.Entidade = F.Fornecedor WHERE CC.TipoDoc = 'ECF' GROUP BY CC.Entidade, F.Nome",
     );
     const totalBuyOrdersBySupplierJson = await totalBuyOrdersBySupplier.json();
-
     this.getTop5Suppliers(totalBuyOrdersBySupplierJson.DataSet.Table);
 
     this.setState({ loadingDb: false });
