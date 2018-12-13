@@ -65,7 +65,8 @@ const Sales = (props) => {
     getNumSales,
     SAFT,
     numSales,
-    netTotal,
+    netTotalThisPeriod,
+    netTotalGrowth,
     top5Costumers,
     top5Products,
     numCostumers,
@@ -96,7 +97,12 @@ const Sales = (props) => {
       {/* growth segments */}
       <Grid.Row columns={3}>
         <Grid.Column>
-          <DisplaySegment text="Net Sales" number={netTotal} type="€" />
+          <DisplaySegment
+            text="Net Sales"
+            number={netTotalThisPeriod}
+            growth={netTotalGrowth}
+            type="€"
+          />
         </Grid.Column>
         <Grid.Column>
           <DisplaySegment text="Number of costumers" number={numCostumers} type="" />
