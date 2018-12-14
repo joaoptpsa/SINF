@@ -5,7 +5,7 @@ let productsInformation = [];
 let productsStock = [];
 let totalStock = 0;
 let noOutOfStockProducts = 0;
-
+let totalStockValue = 0;
 
 const makeRequest = async (url, contentType, body) => {
   if (!URL) throw new Error('Need to setup url with getToken function.');
@@ -70,65 +70,52 @@ export const getToken = async (companyName, url) => {
 
 export const dbQuery = queryString => makeRequest('Administrador/Consulta', 'application/json; charset=utf-8', queryString);
 
-const queryUrgentBuys = () => {
-  return dbQuery(
-    'SELECT DISTINCT Artigo.Artigo, Artigo.Descricao, NecessidadesCompras.Quantidade FROM NecessidadesCompras INNER JOIN Artigo ON Artigo.Artigo = NecessidadesCompras.Artigo',
-  );
-}
+const queryUrgentBuys = () => dbQuery(
+  'SELECT DISTINCT Artigo.Artigo, Artigo.Descricao, NecessidadesCompras.Quantidade FROM NecessidadesCompras INNER JOIN Artigo ON Artigo.Artigo = NecessidadesCompras.Artigo',
+);
 
-const queryProductsInformation = () => {
-  return dbQuery(
-    'SELECT DISTINCT Artigo.Artigo, Artigo.Descricao, V_INV_ValoresActuaisStock.Stock , ArtigoMoeda.PVP1 FROM Artigo INNER JOIN V_INV_ValoresActuaisStock ON Artigo.Artigo = V_INV_ValoresActuaisStock.Artigo INNER JOIN ArtigoMoeda ON Artigo.Artigo = ArtigoMoeda.Artigo',
-  );
-}
+const queryProductsInformation = () => dbQuery(
+  'SELECT DISTINCT Artigo.Artigo, Artigo.Descricao, V_INV_ValoresActuaisStock.Stock , ArtigoMoeda.PVP1 FROM Artigo INNER JOIN V_INV_ValoresActuaisStock ON Artigo.Artigo = V_INV_ValoresActuaisStock.Artigo INNER JOIN ArtigoMoeda ON Artigo.Artigo = ArtigoMoeda.Artigo',
+);
 
-const queryProductsStock = () => {
-  return dbQuery(
-    'SELECT DISTINCT Artigo.Artigo, Artigo.Descricao, V_INV_ValoresActuaisStock.Stock FROM Artigo INNER JOIN V_INV_ValoresActuaisStock ON Artigo.Artigo = V_INV_ValoresActuaisStock.Artigo',
-  );
-}
+const queryProductsStock = () => dbQuery(
+  'SELECT DISTINCT Artigo.Artigo, Artigo.Descricao, V_INV_ValoresActuaisStock.Stock FROM Artigo INNER JOIN V_INV_ValoresActuaisStock ON Artigo.Artigo = V_INV_ValoresActuaisStock.Artigo',
+);
 
-const queryTotalStock = () => {
-  return dbQuery(
-    'SELECT SUM(V_INV_ValoresActuaisStock.Stock) FROM V_INV_ValoresActuaisStock'
-  );
-}
+const queryTotalStock = () => dbQuery('SELECT SUM(V_INV_ValoresActuaisStock.Stock) FROM V_INV_ValoresActuaisStock');
 
-const queryNoOutOfStockProducts = () => {
-  return dbQuery(
-    'SELECT COUNT(Artigo) FROM V_INV_ValoresActuaisStock WHERE Stock = 0'
-  );
-}
+const queryNoOutOfStockProducts = () => dbQuery('SELECT COUNT(Artigo) FROM V_INV_ValoresActuaisStock WHERE Stock = 0');
 
-export const getUrgentBuys = () => {
-  return urgentBuys;
-}
+const queryTotalStockValue = () => dbQuery(
+  'SELECT SUM(ArtigoStock.Stock * ArtigoCusto.Custo) as TotalCost FROM(SELECT Artigo.Artigo AS Artigo, V_INV_ValoresActuaisStock.Stock AS Stock FROM Artigo INNER JOIN V_INV_ValoresActuaisStock ON Artigo.Artigo = V_INV_ValoresActuaisStock.Artigo) AS ArtigoStock, (SELECT AF.Artigo AS Artigo, AVG(AF.PrCustoUltimo) AS Custo FROM ArtigoFornecedor AF GROUP BY AF.Artigo) AS ArtigoCusto WHERE ArtigoStock.Artigo = ArtigoCusto.Artigo',
+);
 
-export const getProductsInformation = () => {
-  return productsInformation;
-}
+export const getUrgentBuys = () => urgentBuys;
 
-export const getProductsStock = () => {
-  return productsStock;
-}
+export const getProductsInformation = () => productsInformation;
 
-export const getTotalStock = () => {
-  return totalStock;
-}
+export const getProductsStock = () => productsStock;
+
+export const getTotalStock = () => totalStock;
+
+export const getTotalStockValue = () => totalStockValue;
 
 export const loadDb = async () => {
-  let productsInformationJson = await queryProductsInformation();
+  const productsInformationJson = await queryProductsInformation();
   productsInformation = productsInformationJson.DataSet.Table;
 
-  let urgentBuysJson = await queryUrgentBuys();
+  const urgentBuysJson = await queryUrgentBuys();
   urgentBuys = urgentBuysJson.DataSet.Table;
 
-  let productsStockJson = await queryProductsStock();
+  const productsStockJson = await queryProductsStock();
   productsStock = productsStockJson.DataSet.Table;
 
-  let totalStockJson = await queryTotalStock();
+  const totalStockJson = await queryTotalStock();
   totalStock = totalStockJson.DataSet.Table[0].Column1;
 
-  let noOutOfStockProductsJson = await queryNoOutOfStockProducts();
+  const noOutOfStockProductsJson = await queryNoOutOfStockProducts();
   noOutOfStockProducts = noOutOfStockProductsJson.DataSet.Table[0].Column1;
-}
+
+  const totalStockValueJson = await queryTotalStockValue();
+  totalStockValue = totalStockValueJson.DataSet.Table[0].TotalCost;
+};
