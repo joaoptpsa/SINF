@@ -19,53 +19,21 @@ class Purchases extends React.Component {
     };
   }
 
-  loadDB = async () => {
-    const buyOrders = await dbQuery(
-      "SELECT CC.Entidade, F.Nome, CC.DataDoc, CC.TotalMerc, CCS.Estado FROM CabecCompras CC INNER JOIN CabecComprasStatus CCS ON CCS.IdCabecCompras = CC.Id INNER JOIN Fornecedores F ON CC.Entidade = F.Fornecedor WHERE CC.TipoDoc = 'ECF'",
-    );
+  // loadDB = async () => {
+  //   const buyOrders = await dbQuery(
+  //     "SELECT CC.Entidade, F.Nome, CC.DataDoc, CC.TotalMerc, CCS.Estado FROM CabecCompras CC INNER JOIN CabecComprasStatus CCS ON CCS.IdCabecCompras = CC.Id INNER JOIN Fornecedores F ON CC.Entidade = F.Fornecedor WHERE CC.TipoDoc = 'ECF'",
+  //   );
 
-    this.getNoTotalPurchases(buyOrders.DataSet.Table);
-    this.getTotalPurchasesValue(buyOrders.DataSet.Table);
-    // TODO: monthlyChart for purchases
+  //   this.getNoTotalPurchases(buyOrders.DataSet.Table);
+  //   this.getTotalPurchasesValue(buyOrders.DataSet.Table);
+  //   // TODO: monthlyChart for purchases
 
-    const totalBuyOrdersBySupplier = await dbQuery(
-      "SELECT CC.Entidade, F.Nome, SUM(CC.TotalMerc) TotalCompras FROM CabecCompras CC INNER JOIN CabecComprasStatus CCS ON CCS.IdCabecCompras = CC.Id INNER JOIN Fornecedores F ON CC.Entidade = F.Fornecedor WHERE CC.TipoDoc = 'ECF' GROUP BY CC.Entidade, F.Nome",
-    );
+  //   const totalBuyOrdersBySupplier = await dbQuery(
+  //     "SELECT CC.Entidade, F.Nome, SUM(CC.TotalMerc) TotalCompras FROM CabecCompras CC INNER JOIN CabecComprasStatus CCS ON CCS.IdCabecCompras = CC.Id INNER JOIN Fornecedores F ON CC.Entidade = F.Fornecedor WHERE CC.TipoDoc = 'ECF' GROUP BY CC.Entidade, F.Nome",
+  //   );
 
-    this.getTop5Suppliers(totalBuyOrdersBySupplier.DataSet.Table);
-
-    this.setState({ loadingDb: false });
-  };
-
-  getNoTotalPurchases = (buyOrdersJson) => {
-    this.setState({ noTotalPurchases: buyOrdersJson.length });
-  };
-
-  getTotalPurchasesValue = (buyOrdersJson) => {
-    let totalPurchasesValue = 0;
-    buyOrdersJson.forEach((buyOrder) => {
-      totalPurchasesValue += buyOrder.TotalMerc;
-    });
-
-    this.setState({ totalPurchasesValue });
-  };
-
-  getTop5Suppliers = (totalBuyOrdersBySupplierJson) => {
-    const sortedSuppliersJson = totalBuyOrdersBySupplierJson.sort(
-      (a, b) => a.TotalCompras - b.TotalCompras,
-    );
-    const top5SortedSuppliersJson = sortedSuppliersJson.splice(0, 5);
-
-    const top5SuppliersArray = [];
-    top5SortedSuppliersJson.forEach((supplier) => {
-      top5SuppliersArray.push({
-        name: supplier.Nome,
-        quantity: supplier.TotalCompras,
-      });
-    });
-
-    this.setState({ top5Suppliers: top5SuppliersArray });
-  };
+  //   this.getTop5Suppliers(totalBuyOrdersBySupplier.DataSet.Table);
+  // };
 
   render() {
     const {
