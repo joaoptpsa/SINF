@@ -1,7 +1,7 @@
 import React from 'react';
 import { Grid } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
-import { dbQuery } from 'primavera-web-api';
+import { getNoPurchases, getTotalPurchasesCost } from 'primavera-web-api';
 
 import dashboardPage from '../dashboardPage';
 import DisplaySegment from '../displaySegment';
@@ -10,64 +10,30 @@ import TopProductsPiechartSegment from '../topProductsPiechartSegment';
 import MonthlyPurchasesChart from './monthlyPurchasesChart';
 
 class Purchases extends React.Component {
-  state = {
-    loadingDb: true,
-    noTotalPurchases: 0,
-    totalPurchasesValue: 0,
-    top5Suppliers: [],
-  };
+  constructor(props) {
+    super(props);
 
-  componentDidMount() {
-    this.loadDB();
+    this.state = {
+      noTotalPurchases: getNoPurchases(),
+      totalPurchasesCost: getTotalPurchasesCost(),
+    };
   }
 
-  loadDB = async () => {
-    const buyOrders = await dbQuery(
-      "SELECT CC.Entidade, F.Nome, CC.DataDoc, CC.TotalMerc, CCS.Estado FROM CabecCompras CC INNER JOIN CabecComprasStatus CCS ON CCS.IdCabecCompras = CC.Id INNER JOIN Fornecedores F ON CC.Entidade = F.Fornecedor WHERE CC.TipoDoc = 'ECF'",
-    );
+  // loadDB = async () => {
+  //   const buyOrders = await dbQuery(
+  //     "SELECT CC.Entidade, F.Nome, CC.DataDoc, CC.TotalMerc, CCS.Estado FROM CabecCompras CC INNER JOIN CabecComprasStatus CCS ON CCS.IdCabecCompras = CC.Id INNER JOIN Fornecedores F ON CC.Entidade = F.Fornecedor WHERE CC.TipoDoc = 'ECF'",
+  //   );
 
-    this.getNoTotalPurchases(buyOrders.DataSet.Table);
-    this.getTotalPurchasesValue(buyOrders.DataSet.Table);
-    // TODO: monthlyChart for purchases
+  //   this.getNoTotalPurchases(buyOrders.DataSet.Table);
+  //   this.getTotalPurchasesValue(buyOrders.DataSet.Table);
+  //   // TODO: monthlyChart for purchases
 
-    const totalBuyOrdersBySupplier = await dbQuery(
-      "SELECT CC.Entidade, F.Nome, SUM(CC.TotalMerc) TotalCompras FROM CabecCompras CC INNER JOIN CabecComprasStatus CCS ON CCS.IdCabecCompras = CC.Id INNER JOIN Fornecedores F ON CC.Entidade = F.Fornecedor WHERE CC.TipoDoc = 'ECF' GROUP BY CC.Entidade, F.Nome",
-    );
+  //   const totalBuyOrdersBySupplier = await dbQuery(
+  //     "SELECT CC.Entidade, F.Nome, SUM(CC.TotalMerc) TotalCompras FROM CabecCompras CC INNER JOIN CabecComprasStatus CCS ON CCS.IdCabecCompras = CC.Id INNER JOIN Fornecedores F ON CC.Entidade = F.Fornecedor WHERE CC.TipoDoc = 'ECF' GROUP BY CC.Entidade, F.Nome",
+  //   );
 
-    this.getTop5Suppliers(totalBuyOrdersBySupplier.DataSet.Table);
-
-    this.setState({ loadingDb: false });
-  };
-
-  getNoTotalPurchases = (buyOrdersJson) => {
-    this.setState({ noTotalPurchases: buyOrdersJson.length });
-  };
-
-  getTotalPurchasesValue = (buyOrdersJson) => {
-    let totalPurchasesValue = 0;
-    buyOrdersJson.forEach((buyOrder) => {
-      totalPurchasesValue += buyOrder.TotalMerc;
-    });
-
-    this.setState({ totalPurchasesValue });
-  };
-
-  getTop5Suppliers = (totalBuyOrdersBySupplierJson) => {
-    const sortedSuppliersJson = totalBuyOrdersBySupplierJson.sort(
-      (a, b) => a.TotalCompras - b.TotalCompras,
-    );
-    const top5SortedSuppliersJson = sortedSuppliersJson.splice(0, 5);
-
-    const top5SuppliersArray = [];
-    top5SortedSuppliersJson.forEach((supplier) => {
-      top5SuppliersArray.push({
-        name: supplier.Nome,
-        quantity: supplier.TotalCompras,
-      });
-    });
-
-    this.setState({ top5Suppliers: top5SuppliersArray });
-  };
+  //   this.getTop5Suppliers(totalBuyOrdersBySupplier.DataSet.Table);
+  // };
 
   render() {
     const {
@@ -79,28 +45,16 @@ class Purchases extends React.Component {
       getNetTotalFromInvoices,
     } = this.props;
 
-    const {
-      loadingDb, noTotalPurchases, totalPurchasesValue, top5Suppliers,
-    } = this.state;
+    const { noTotalPurchases, totalPurchasesCost, top5Suppliers } = this.state;
 
     return (
       <Grid>
         <Grid.Row columns={3}>
           <Grid.Column>
-            <DisplaySegment
-              text="Total Purchases"
-              loading={loadingDb}
-              number={totalPurchasesValue}
-              type="€"
-            />
+            <DisplaySegment text="Total Purchases" number={totalPurchasesCost} type="€" />
           </Grid.Column>
           <Grid.Column>
-            <DisplaySegment
-              text="Number of purchases"
-              loading={loadingDb}
-              number={noTotalPurchases}
-              type=""
-            />
+            <DisplaySegment text="Number of purchases" number={noTotalPurchases} type="" />
           </Grid.Column>
           <Grid.Column>
             <DisplaySegment text="Number of suppliers" number={numSuppliers} type="" />

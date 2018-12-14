@@ -6,6 +6,9 @@ let productsStock = [];
 let totalStock = 0;
 let noOutOfStockProducts = 0;
 let totalStockValue = 0;
+let noPurchases = 0;
+let totalPurchasesCost = 0;
+let top5Suppliers = [];
 
 const makeRequest = async (url, contentType, body) => {
   if (!URL) throw new Error('Need to setup url with getToken function.');
@@ -70,6 +73,7 @@ export const getToken = async (companyName, url) => {
 
 export const dbQuery = queryString => makeRequest('Administrador/Consulta', 'application/json; charset=utf-8', queryString);
 
+/* Products Queries */
 const queryUrgentBuys = () => dbQuery(
   'SELECT DISTINCT Artigo.Artigo, Artigo.Descricao, NecessidadesCompras.Quantidade FROM NecessidadesCompras INNER JOIN Artigo ON Artigo.Artigo = NecessidadesCompras.Artigo',
 );
@@ -86,10 +90,22 @@ const queryTotalStock = () => dbQuery('SELECT SUM(V_INV_ValoresActuaisStock.Stoc
 
 const queryNoOutOfStockProducts = () => dbQuery('SELECT COUNT(Artigo) FROM V_INV_ValoresActuaisStock WHERE Stock = 0');
 
-const queryTotalStockValue = () => dbQuery(
-  'SELECT SUM(ArtigoStock.Stock * ArtigoCusto.Custo) as TotalCost FROM(SELECT Artigo.Artigo AS Artigo, V_INV_ValoresActuaisStock.Stock AS Stock FROM Artigo INNER JOIN V_INV_ValoresActuaisStock ON Artigo.Artigo = V_INV_ValoresActuaisStock.Artigo) AS ArtigoStock, (SELECT AF.Artigo AS Artigo, AVG(AF.PrCustoUltimo) AS Custo FROM ArtigoFornecedor AF GROUP BY AF.Artigo) AS ArtigoCusto WHERE ArtigoStock.Artigo = ArtigoCusto.Artigo',
+const queryTotalStockValue = () => dbQuery('SELECT SUM(Artigo.STKActual * PCMedio) AS TotalStockCost FROM Artigo');
+
+/* Purchases Queries */
+const queryNoTotalPurchases = () => dbQuery(
+  "SELECT Count(CabecCompras.Id) as TotalPurchases FROM CabecCompras WHERE CabecCompras.TipoDoc = 'ECF'",
 );
 
+const queryTotalPurchasesCost = () => dbQuery(
+  "SELECT SUM(CabecCompras.TotalMerc) as TotalPurchasesCost FROM CabecCompras WHERE CabecCompras.TipoDoc = 'ECF'",
+);
+
+const queryTop5Suppliers = () => dbQuery(
+  "SELECT TOP 5 CabecCompras.Entidade, F.Nome, SUM(CabecCompras.TotalMerc) TotalCompras FROM CabecCompras INNER JOIN CabecComprasStatus ON CabecComprasStatus.IdCabecCompras = CabecCompras.Id INNER JOIN Fornecedores F ON CabecCompras.Entidade = F.Fornecedor WHERE CabecCompras.TipoDoc = 'ECF' GROUP BY CabecCompras.Entidade, F.Nome ORDER BY TotalCompras DESC",
+);
+
+/* Products */
 export const getUrgentBuys = () => urgentBuys;
 
 export const getProductsInformation = () => productsInformation;
@@ -102,7 +118,16 @@ export const getTotalStockValue = () => totalStockValue;
 
 export const getNoOutOfStockProfucts = () => noOutOfStockProducts;
 
+/* Purchases */
+
+export const getNoPurchases = () => noPurchases;
+
+export const getTotalPurchasesCost = () => totalPurchasesCost;
+
+export const getTop5Suppliers = () => top5Suppliers;
+
 export const loadDb = async () => {
+  /* Products */
   const urgentBuysJson = await queryUrgentBuys();
   urgentBuys = urgentBuysJson.DataSet.Table;
 
@@ -116,8 +141,18 @@ export const loadDb = async () => {
   totalStock = totalStockJson.DataSet.Table[0].Column1;
 
   const totalStockValueJson = await queryTotalStockValue();
-  totalStockValue = totalStockValueJson.DataSet.Table[0].TotalCost;
+  totalStockValue = totalStockValueJson.DataSet.Table[0].TotalStockCost;
 
   const noOutOfStockProductsJson = await queryNoOutOfStockProducts();
   noOutOfStockProducts = noOutOfStockProductsJson.DataSet.Table[0].Column1;
+
+  /* Purchases */
+  const noPurchasesJson = await queryNoTotalPurchases();
+  noPurchases = noPurchasesJson.DataSet.Table[0].TotalPurchases;
+
+  const totalPurchasesCostJson = await queryTotalPurchasesCost();
+  totalPurchasesCost = totalPurchasesCostJson.DataSet.Table[0].TotalPurchasesCost;
+
+  const top5SuppliersJson = await queryTop5Suppliers();
+  top5Suppliers = top5SuppliersJson.DataSet.Table;
 };
