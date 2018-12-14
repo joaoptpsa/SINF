@@ -100,12 +100,14 @@ export const getTotalStock = () => totalStock;
 
 export const getTotalStockValue = () => totalStockValue;
 
-export const loadDb = async () => {
-  const productsInformationJson = await queryProductsInformation();
-  productsInformation = productsInformationJson.DataSet.Table;
+export const getNoOutOfStockProfucts = () => noOutOfStockProducts;
 
+export const loadDb = async () => {
   const urgentBuysJson = await queryUrgentBuys();
   urgentBuys = urgentBuysJson.DataSet.Table;
+
+  const productsInformationJson = await queryProductsInformation();
+  productsInformation = productsInformationJson.DataSet.Table;
 
   const productsStockJson = await queryProductsStock();
   productsStock = productsStockJson.DataSet.Table;
@@ -113,9 +115,9 @@ export const loadDb = async () => {
   const totalStockJson = await queryTotalStock();
   totalStock = totalStockJson.DataSet.Table[0].Column1;
 
-  const noOutOfStockProductsJson = await queryNoOutOfStockProducts();
-  noOutOfStockProducts = noOutOfStockProductsJson.DataSet.Table[0].Column1;
-
   const totalStockValueJson = await queryTotalStockValue();
   totalStockValue = totalStockValueJson.DataSet.Table[0].TotalCost;
+
+  const noOutOfStockProductsJson = await queryNoOutOfStockProducts();
+  noOutOfStockProducts = noOutOfStockProductsJson.DataSet.Table[0].Column1;
 };

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Grid } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
-import { getTotalStockValue, getTotalStock, getNumberOfOutOfStockItems } from 'primavera-web-api';
+import { getTotalStockValue, getTotalStock, getNoOutOfStockProfucts } from 'primavera-web-api';
 
 import DisplaySegment from '../displaySegment';
 import TopStockedProductsPiechartSegment from './topStockedProductsPiechartSegment';
@@ -16,7 +16,7 @@ class Products extends React.Component {
     this.state = {
       totalInventoryValue: getTotalStockValue(),
       numberOfStockedItems: getTotalStock(),
-      numberOfOutOfStockItems: getNumberOfOutOfStockItems(),
+      numberOfOutOfStockItems: getNoOutOfStockProfucts(),
     };
   }
 
