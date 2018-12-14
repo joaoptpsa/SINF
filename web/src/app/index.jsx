@@ -4,6 +4,7 @@ import {
 } from 'semantic-ui-react';
 import parseSAFT from 'saft2js';
 import { getToken, loadDb } from 'primavera-web-api';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 import FileInput from './fileInput';
 import Dashboard from './dashboard';
 
@@ -122,7 +123,11 @@ class App extends React.Component {
       );
     }
 
-    return <Dashboard SAFT={SAFT} />;
+    return (
+      <Router>
+        <Route render={props => <Dashboard SAFT={SAFT} {...props} />} />
+      </Router>
+    );
   }
 }
 

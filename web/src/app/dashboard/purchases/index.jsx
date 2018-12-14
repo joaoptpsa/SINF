@@ -22,21 +22,26 @@ class Purchases extends React.Component {
   }
 
   loadDB = async () => {
-    const buyOrders = await dbQuery(
-      "SELECT CC.Entidade, F.Nome, CC.DataDoc, CC.TotalMerc, CCS.Estado FROM CabecCompras CC INNER JOIN CabecComprasStatus CCS ON CCS.IdCabecCompras = CC.Id INNER JOIN Fornecedores F ON CC.Entidade = F.Fornecedor WHERE CC.TipoDoc = 'ECF'",
-    );
+    try {
+      const buyOrders = await dbQuery(
+        "SELECT CC.Entidade, F.Nome, CC.DataDoc, CC.TotalMerc, CCS.Estado FROM CabecCompras CC INNER JOIN CabecComprasStatus CCS ON CCS.IdCabecCompras = CC.Id INNER JOIN Fornecedores F ON CC.Entidade = F.Fornecedor WHERE CC.TipoDoc = 'ECF'",
+      );
 
-    this.getNoTotalPurchases(buyOrders.DataSet.Table);
-    this.getTotalPurchasesValue(buyOrders.DataSet.Table);
-    // TODO: monthlyChart for purchases
+      this.getNoTotalPurchases(buyOrders.DataSet.Table);
+      this.getTotalPurchasesValue(buyOrders.DataSet.Table);
+      // TODO: monthlyChart for purchases
 
-    const totalBuyOrdersBySupplier = await dbQuery(
-      "SELECT CC.Entidade, F.Nome, SUM(CC.TotalMerc) TotalCompras FROM CabecCompras CC INNER JOIN CabecComprasStatus CCS ON CCS.IdCabecCompras = CC.Id INNER JOIN Fornecedores F ON CC.Entidade = F.Fornecedor WHERE CC.TipoDoc = 'ECF' GROUP BY CC.Entidade, F.Nome",
-    );
+      const totalBuyOrdersBySupplier = await dbQuery(
+        "SELECT CC.Entidade, F.Nome, SUM(CC.TotalMerc) TotalCompras FROM CabecCompras CC INNER JOIN CabecComprasStatus CCS ON CCS.IdCabecCompras = CC.Id INNER JOIN Fornecedores F ON CC.Entidade = F.Fornecedor WHERE CC.TipoDoc = 'ECF' GROUP BY CC.Entidade, F.Nome",
+      );
 
-    this.getTop5Suppliers(totalBuyOrdersBySupplier.DataSet.Table);
+      this.getTop5Suppliers(totalBuyOrdersBySupplier.DataSet.Table);
 
-    this.setState({ loadingDb: false });
+      this.setState({ loadingDb: false });
+    } catch (e) {
+      this.setState({ loadingDb: false });
+      alert(e);
+    }
   };
 
   getNoTotalPurchases = (buyOrdersJson) => {
