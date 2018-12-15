@@ -38,15 +38,16 @@ const parseProducts = (productsXML) => {
   return products;
 };
 
-const parseGeneralLedgers = (generalLedgersXML) => {
-  const generalLedgers = {};
+const parseGeneralLedgersAccounts = (generalLedgersAccountsXML) => {
+  const generalLedgersAccounts = {};
+  generalLedgersAccounts.TaxonomyReference = generalLedgersAccountsXML.TaxonomyReference[0];
 
-  generalLedgersXML.forEach((generalLedgerXML) => {
-    const generalLedger = new GeneralLedger(generalLedgerXML);
-    generalLedgers[generalLedger.accountID] = generalLedger;
+  generalLedgersAccountsXML.Account.forEach((generalLedgerAccountXML) => {
+    const generalLedger = new GeneralLedger(generalLedgerAccountXML);
+    generalLedgersAccounts[generalLedger.accountID] = generalLedger;
   });
 
-  return generalLedgers;
+  return generalLedgersAccounts;
 };
 
 const parseSuppliers = (suppliersXML) => {
@@ -64,9 +65,7 @@ class MasterFiles {
   constructor(XMLElement) {
     this.costumers = parseCustomers(XMLElement.Customer);
     this.products = parseProducts(XMLElement.Product);
-    if (XMLElement.GeneralLedger) {
-      this.generalLedger = parseGeneralLedgers(XMLElement.GeneralLedger);
-    }
+    this.generalLedgerAccounts = parseGeneralLedgersAccounts(XMLElement.GeneralLedgerAccounts[0]);
     this.suppliers = parseSuppliers(XMLElement.Supplier);
     this.taxTables = parseTaxTables(XMLElement.TaxTable);
   }
