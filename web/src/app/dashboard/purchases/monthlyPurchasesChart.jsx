@@ -1,4 +1,5 @@
 import React from 'react';
+import { Segment, Menu, Grid } from 'semantic-ui-react';
 import {
   ResponsiveContainer,
   LineChart,
@@ -9,8 +10,7 @@ import {
   Legend,
   Line,
 } from 'recharts';
-import PropTypes from 'prop-types';
-import { Segment, Menu } from 'semantic-ui-react';
+import { getPurchasesInformation } from 'primavera-web-api';
 
 const monthNames = [
   'January',
@@ -27,88 +27,87 @@ const monthNames = [
   'December',
 ];
 
-const options = {
-  netTotal: {
-    name: 'Purchases',
-    key: 'netTotal',
-  },
-};
-
-const getInvoicesByDate = (invoices) => {
+const getPurchasesGroupedByDate = (purchases) => {
   const years = {};
 
-  invoices.forEach((invoice) => {
-    const { date } = invoice;
+  purchases.forEach((purchase) => {
+    const date = new Date(purchase.DataDoc);
     const month = date.getMonth();
     const year = date.getFullYear();
 
     if (!years[year]) {
       years[year] = {};
-      years[year][month] = [invoice];
+      years[year][month] = [purchase];
     } else if (!years[year][month]) {
-      years[year][month] = [invoice];
+      years[year][month] = [purchase];
     } else {
-      years[year][month].push(invoice);
+      years[year][month].push(purchase);
     }
   });
 
   return years;
 };
 
-class MonthlyChart extends React.Component {
+const calculateTotalPurchases = (purchases) => {
+  let total = 0;
+
+  purchases.forEach((purchase) => {
+    total += purchase.TotalCompras;
+  });
+
+  return total;
+};
+
+const monthlyPurchasesChartOptions = {
+  totalPurchases: {
+    name: 'Purchases',
+    key: 'totalPurchases',
+  },
+};
+
+class MonthlyPurchasesChart extends React.Component {
   constructor(props) {
     super(props);
-    const {
-      invoices, getNetTotalFromInvoices, getNumCustomers, getNumSales,
-    } = props;
 
-    const invoicesByYear = getInvoicesByDate(invoices);
+    const purchasesInformation = getPurchasesInformation();
+    const purchasesGroupedByDate = getPurchasesGroupedByDate(purchasesInformation);
 
-    // create data object
-    this.data = {};
-    Object.keys(invoicesByYear).forEach((year) => {
-      const invoicesInYear = invoicesByYear[year];
-      this.data[year] = [];
+    const data = {};
+    Object.keys(purchasesGroupedByDate).forEach((year) => {
+      const purchasesInYear = purchasesGroupedByDate[year];
+      data[year] = [];
 
-      Object.keys(invoicesInYear).forEach((month) => {
-        const invoicesInMonth = invoicesInYear[month];
+      Object.keys(purchasesInYear).forEach((month) => {
+        const purchasesInMonth = purchasesInYear[month];
 
-        this.data[year].push({
+        data[year].push({
           name: monthNames[month],
-          netTotal: getNetTotalFromInvoices(invoicesInMonth),
-          costumers: getNumCustomers(invoicesInMonth),
-          sales: getNumSales(invoicesInMonth),
+          totalPurchases: calculateTotalPurchases(purchasesInMonth),
         });
       });
     });
 
-    this.state = { option: options.netTotal.key, selectedYear: Object.keys(this.data)[0] };
+    this.state = {
+      data,
+      selectedOption: Object.keys(monthlyPurchasesChartOptions)[0],
+      selectedYear: Object.keys(data)[0],
+    };
   }
 
   renderLine = () => {
-    const { option } = this.state;
+    const { selectedOption } = this.state;
+    const selectedItem = monthlyPurchasesChartOptions[selectedOption];
 
-    switch (option) {
-      case 'netTotal':
-        return (
-          <Line
-            type="monotone"
-            name={options.netTotal.name}
-            dataKey={options.netTotal.key}
-            stroke="#75cac3"
-          />
-        );
-
-      default:
-        return null;
-    }
+    return (
+      <Line type="monotone" name={selectedItem.name} dataKey={selectedItem.key} stroke="#75cac3" />
+    );
   };
 
   renderYearMenu = () => {
-    const { selectedYear } = this.state;
+    const { selectedYear, data } = this.state;
     const items = [];
 
-    Object.keys(this.data).forEach((year) => {
+    Object.keys(data).forEach((year) => {
       items.push(
         <Menu.Item
           key={`${year}`}
@@ -122,40 +121,54 @@ class MonthlyChart extends React.Component {
     return <Menu>{items}</Menu>;
   };
 
-  render() {
-    const { option, selectedYear } = this.state;
+  renderOptions = () => {
+    const { selectedOption } = this.state;
 
+    const items = [];
+
+    Object.keys(monthlyPurchasesChartOptions).forEach((key) => {
+      const item = monthlyPurchasesChartOptions[key];
+
+      items.push(
+        <Menu.Item
+          key={`${key}`}
+          name={item.name}
+          active={selectedOption === item.key}
+          onClick={() => this.setState({ selectedOption: item.key })}
+        />,
+      );
+    });
+
+    return items;
+  };
+
+  render() {
+    const { data, selectedYear } = this.state;
     return (
       <Segment>
         {this.renderYearMenu()}
-        <Menu>
-          <Menu.Item
-            name={options.netTotal.name}
-            active={option === options.netTotal.key}
-            onClick={() => this.setState({ option: options.netTotal.key })}
-          />
-        </Menu>
-
-        <ResponsiveContainer height={300} width="100%">
-          <LineChart data={[...this.data[selectedYear]]}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            {this.renderLine()}
-          </LineChart>
-        </ResponsiveContainer>
+        <Grid columns={2}>
+          <Grid.Column width={4}>
+            <Menu vertical pointing>
+              {this.renderOptions()}
+            </Menu>
+          </Grid.Column>
+          <Grid.Column width={12}>
+            <ResponsiveContainer height={300} width="100%">
+              <LineChart data={[...data[selectedYear]]}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="name" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                {this.renderLine()}
+              </LineChart>
+            </ResponsiveContainer>
+          </Grid.Column>
+        </Grid>
       </Segment>
     );
   }
 }
 
-MonthlyChart.propTypes = {
-  invoices: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
-  getNetTotalFromInvoices: PropTypes.func.isRequired,
-  getNumSales: PropTypes.func.isRequired,
-  getNumCustomers: PropTypes.func.isRequired,
-};
-
-export default MonthlyChart;
+export default MonthlyPurchasesChart;

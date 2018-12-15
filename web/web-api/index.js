@@ -9,6 +9,7 @@ let totalStockValue = 0;
 let noPurchases = 0;
 let totalPurchasesCost = 0;
 let top5Suppliers = [];
+let purchasesInformation = [];
 
 const makeRequest = async (url, contentType, body) => {
   if (!URL) throw new Error('Need to setup url with getToken function.');
@@ -102,7 +103,11 @@ const queryTotalPurchasesCost = () => dbQuery(
 );
 
 const queryTop5Suppliers = () => dbQuery(
-  "SELECT TOP 5 CabecCompras.Entidade, F.Nome, SUM(CabecCompras.TotalMerc) TotalCompras FROM CabecCompras INNER JOIN CabecComprasStatus ON CabecComprasStatus.IdCabecCompras = CabecCompras.Id INNER JOIN Fornecedores F ON CabecCompras.Entidade = F.Fornecedor WHERE CabecCompras.TipoDoc = 'ECF' GROUP BY CabecCompras.Entidade, F.Nome ORDER BY TotalCompras DESC",
+  "SELECT TOP 5 F.Nome, SUM(CabecCompras.TotalMerc) TotalCompras FROM CabecCompras INNER JOIN CabecComprasStatus ON CabecComprasStatus.IdCabecCompras = CabecCompras.Id INNER JOIN Fornecedores F ON CabecCompras.Entidade = F.Fornecedor WHERE CabecCompras.TipoDoc = 'ECF' GROUP BY CabecCompras.Entidade, F.Nome ORDER BY TotalCompras DESC",
+);
+
+const queryPurchasesInformation = () => dbQuery(
+  "SELECT CabecCompras.DataDoc, CabecCompras.TotalMerc TotalCompras FROM CabecCompras INNER JOIN CabecComprasStatus ON CabecComprasStatus.IdCabecCompras = CabecCompras.Id WHERE CabecCompras.TipoDoc = 'ECF'",
 );
 
 /* Products */
@@ -125,6 +130,8 @@ export const getNoPurchases = () => noPurchases;
 export const getTotalPurchasesCost = () => totalPurchasesCost;
 
 export const getTop5Suppliers = () => top5Suppliers;
+
+export const getPurchasesInformation = () => purchasesInformation;
 
 export const loadDb = async () => {
   /* Products */
@@ -155,4 +162,7 @@ export const loadDb = async () => {
 
   const top5SuppliersJson = await queryTop5Suppliers();
   top5Suppliers = top5SuppliersJson.DataSet.Table;
+
+  const purchasesInformationJson = await queryPurchasesInformation();
+  purchasesInformation = purchasesInformationJson.DataSet.Table;
 };
