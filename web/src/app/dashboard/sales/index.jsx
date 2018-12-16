@@ -64,12 +64,14 @@ const Sales = (props) => {
     getNumCustomers,
     getNumSales,
     SAFT,
-    numSales,
+    numSalesThisPeriod,
+    numSalesGrowth,
     netTotalThisPeriod,
     netTotalGrowth,
+    numCostumersThisPeriod,
+    numCostumersGrowth,
     top5Costumers,
     top5Products,
-    numCostumers,
   } = props;
 
   const invoicesByYear = getInvoicesByDate(SAFT.sourceDocuments.invoices);
@@ -105,10 +107,20 @@ const Sales = (props) => {
           />
         </Grid.Column>
         <Grid.Column>
-          <DisplaySegment text="Number of costumers" number={numCostumers} type="" />
+          <DisplaySegment
+            text="Number of costumers"
+            number={numCostumersThisPeriod}
+            growth={numCostumersGrowth}
+            type=""
+          />
         </Grid.Column>
         <Grid.Column>
-          <DisplaySegment text="Number of sales" number={numSales} type="€" />
+          <DisplaySegment
+            text="Number of sales"
+            number={numSalesThisPeriod}
+            growth={numSalesGrowth}
+            type="€"
+          />
         </Grid.Column>
       </Grid.Row>
       <Grid.Row columns={2}>

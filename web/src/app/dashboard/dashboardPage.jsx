@@ -242,26 +242,26 @@ const dashboardPage = WrappedComponent => class extends React.Component {
       // calculate increase in number of sales
       const numSalesThisPeriod = getNumSales(invoicesThisPeriod);
       const numSalesLastPeriod = getNumSales(invoicesLastPeriod);
-      const numSales = this.calculateDiff(numSalesLastPeriod, numSalesThisPeriod);
+      const numSalesGrowth = this.calculateDiff(numSalesLastPeriod, numSalesThisPeriod);
 
       // calculate increase in number of clients
       const numCostumersThisPeriod = getNumCustomers(invoicesThisPeriod);
       const numCostumersLastPeriod = getNumCustomers(invoicesLastPeriod);
-      const numCostumers = this.calculateDiff(numCostumersLastPeriod, numCostumersThisPeriod);
+      const numCostumersGrowth = this.calculateDiff(numCostumersLastPeriod, numCostumersThisPeriod);
 
       const dashboardPageProps = {
-        thisPeriodEndDate,
-        thisPeriodStartDate,
-        numSales,
+        numSalesThisPeriod,
+        numSalesGrowth,
+        netTotalThisPeriod,
         netTotalGrowth,
+        numCostumersThisPeriod,
+        numCostumersGrowth,
         top5Costumers,
         top5Products,
         period,
-        numCostumers,
         getNetTotalFromInvoices,
         getNumCustomers,
         getNumSales,
-        netTotalThisPeriod,
       };
 
       return (
@@ -281,13 +281,15 @@ const dashboardPage = WrappedComponent => class extends React.Component {
 };
 
 export const InjectedProps = {
+  numSalesThisPeriod: PropTypes.number.isRequired,
+  numSalesGrowth: PropTypes.number.isRequired,
   netTotalGrowth: PropTypes.number.isRequired,
   netTotalThisPeriod: PropTypes.number.isRequired,
+  numCostumersThisPeriod: PropTypes.number.isRequired,
+  numCostumersGrowth: PropTypes.number.isRequired,
   top5Costumers: PropTypes.array.isRequired,
   top5Products: PropTypes.array.isRequired,
-  numSales: PropTypes.number.isRequired,
   period: PropTypes.oneOf(['lastMonth', 'lastSemester']).isRequired,
-  numCostumers: PropTypes.number.isRequired,
   getNetTotalFromInvoices: PropTypes.func.isRequired,
   getNumCustomers: PropTypes.func.isRequired,
   getNumSales: PropTypes.func.isRequired,
