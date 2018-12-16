@@ -75,9 +75,16 @@ const getCostumersNetTotal = (invoices) => {
   const customers = {};
 
   invoices.forEach((invoice) => {
-    if (customers[invoice.customerID]) {
-      customers[invoice.customerID] += parseFloat(invoice.documentTotals.netTotal);
-    } else customers[invoice.customerID] = parseFloat(invoice.documentTotals.netTotal);
+    if (invoice.type === 'FT') {
+      if (customers[invoice.customerID]) {
+        customers[invoice.customerID] += parseFloat(invoice.documentTotals.netTotal);
+      } else customers[invoice.customerID] = parseFloat(invoice.documentTotals.netTotal);
+    }
+    if (invoice.type === 'NC') {
+      if (customers[invoice.customerID]) {
+        customers[invoice.customerID] -= parseFloat(invoice.documentTotals.netTotal);
+      } else customers[invoice.customerID] = parseFloat(invoice.documentTotals.netTotal);
+    }
   });
 
   return customers;
@@ -106,7 +113,7 @@ const getNetTotalFromInvoices = (invoices) => {
   Object.keys(costumersNetTotal).forEach((key) => {
     total += costumersNetTotal[key];
   });
-
+  
   return total;
 };
 
