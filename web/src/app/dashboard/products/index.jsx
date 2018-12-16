@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid } from 'semantic-ui-react';
+import { Segment, Grid } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import { getTotalStockValue, getTotalStock, getNoOutOfStockProfucts } from 'primavera-web-api';
 
@@ -24,38 +24,40 @@ class Products extends React.Component {
     const { totalInventoryValue, numberOfStockedItems, numberOfOutOfStockItems } = this.state;
 
     return (
-      <Grid stackable>
-        <Grid.Row columns={3}>
-          <Grid.Column>
-            <DisplaySegment text="Total Inventory value" number={totalInventoryValue} type="€" />
-          </Grid.Column>
-          <Grid.Column>
-            <DisplaySegment text="Total items" number={numberOfStockedItems} type="" />
-          </Grid.Column>
-          <Grid.Column>
-            <DisplaySegment text="Out of stock items" number={numberOfOutOfStockItems} type="" />
-          </Grid.Column>
-        </Grid.Row>
-        <Grid.Row columns={2}>
-          <Grid.Column width={10} height={300}>
-            <ProductsTable />
-          </Grid.Column>
-          <Grid.Column width={6}>
-            <Grid>
-              <Grid.Row columns={1}>
-                <Grid.Column width={16}>
-                  <TopStockedProductsPiechartSegment />
-                </Grid.Column>
-              </Grid.Row>
-              <Grid.Row columns={1}>
-                <Grid.Column width={16}>
-                  <MostUrgentBuysList />
-                </Grid.Column>
-              </Grid.Row>
-            </Grid>
-          </Grid.Column>
-        </Grid.Row>
-      </Grid>
+      <Segment>
+        <Grid stackable>
+          <Grid.Row columns={3}>
+            <Grid.Column>
+              <DisplaySegment text="Total Inventory value" number={totalInventoryValue} type="€" />
+            </Grid.Column>
+            <Grid.Column>
+              <DisplaySegment text="Total items" number={numberOfStockedItems} type="" />
+            </Grid.Column>
+            <Grid.Column>
+              <DisplaySegment text="Out of stock items" number={numberOfOutOfStockItems} type="" />
+            </Grid.Column>
+          </Grid.Row>
+          <Grid.Row columns={2}>
+            <Grid.Column width={10} height={300}>
+              <ProductsTable />
+            </Grid.Column>
+            <Grid.Column width={6}>
+              <Grid>
+                <Grid.Row columns={1}>
+                  <Grid.Column width={16}>
+                    <TopStockedProductsPiechartSegment />
+                  </Grid.Column>
+                </Grid.Row>
+                <Grid.Row columns={1}>
+                  <Grid.Column width={16}>
+                    <MostUrgentBuysList />
+                  </Grid.Column>
+                </Grid.Row>
+              </Grid>
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+      </Segment>
     );
   }
 }
