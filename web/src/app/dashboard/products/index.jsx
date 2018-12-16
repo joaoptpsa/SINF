@@ -6,7 +6,6 @@ import { getTotalStockValue, getTotalStock, getNoOutOfStockProfucts } from 'prim
 import DisplaySegment from '../displaySegment';
 import TopStockedProductsPiechartSegment from './topStockedProductsPiechartSegment';
 import ProductsTable from './productsTable';
-import dashboardPage, { InjectedProps } from '../dashboardPage';
 import MostUrgentBuysList from './mostUrgentBuys';
 
 class Products extends React.Component {
@@ -62,14 +61,8 @@ class Products extends React.Component {
   }
 }
 
-Products.defaultProps = {
-  companyName: 'DEMO',
-};
-
 Products.propTypes = {
   SAFT: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
-  companyName: PropTypes.string,
-  ...InjectedProps,
 };
 
 export default Products;

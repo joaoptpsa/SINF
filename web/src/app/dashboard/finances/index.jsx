@@ -4,34 +4,6 @@ import PropTypes from 'prop-types';
 
 import DisplaySegment from '../displaySegment';
 
-const getAR = (SAFT) => {
-  const AR = {};
-  AR.openingPeriod = Number.parseFloat(SAFT.masterFiles.generalLedgerAccounts['21'].openingDebitBalance)
-    - Number.parseFloat(SAFT.masterFiles.generalLedgerAccounts['21'].openingCreditBalance);
-  AR.closingPeriod = Number.parseFloat(SAFT.masterFiles.generalLedgerAccounts['21'].closingDebitBalance)
-    - Number.parseFloat(SAFT.masterFiles.generalLedgerAccounts['21'].closingCreditBalance);
-  let openingPeriodSign = 1;
-  if (AR.openingPeriod < 0) {
-    openingPeriodSign *= -1;
-  }
-  AR.growth = (AR.closingPeriod / AR.openingPeriod) * 100 * openingPeriodSign;
-  return AR;
-};
-
-const getAP = (SAFT) => {
-  const AP = {};
-  AP.openingPeriod = Number.parseFloat(SAFT.masterFiles.generalLedgerAccounts['22'].openingDebitBalance)
-    - Number.parseFloat(SAFT.masterFiles.generalLedgerAccounts['22'].openingCreditBalance);
-  AP.closingPeriod = Number.parseFloat(SAFT.masterFiles.generalLedgerAccounts['22'].closingDebitBalance)
-    - Number.parseFloat(SAFT.masterFiles.generalLedgerAccounts['22'].closingCreditBalance);
-  let openingPeriodSign = 1;
-  if (AP.openingPeriod < 0) {
-    openingPeriodSign *= -1;
-  }
-  AP.growth = (AP.closingPeriod / AP.openingPeriod) * 100 * openingPeriodSign;
-  return AP;
-};
-
 const getGeneralLedgerAccount = (SAFT, id) => {
   const Account = {};
   Account.openingPeriod = Number.parseFloat(SAFT.masterFiles.generalLedgerAccounts[`${id}`].openingDebitBalance)
@@ -46,6 +18,21 @@ const getGeneralLedgerAccount = (SAFT, id) => {
   return Account;
 };
 
+const getGrossProfit = (SAFT) => {
+  const netRevenue = getGeneralLedgerAccount(SAFT, 71);
+  const cogs = getGeneralLedgerAccount(SAFT, 61);
+
+  const gp = {};
+  gp.openingPeriod = netRevenue.openingPeriod - cogs.openingPeriod;
+  gp.closingPeriod = netRevenue.closingPeriod - cogs.closingPeriod;
+  let openingPeriodSign = 1;
+  if (gp.openingPeriod < 0) {
+    openingPeriodSign *= -1;
+  }
+  gp.growth = (gp.closingPeriod / gp.openingPeriod) * 100 * openingPeriodSign;
+  return gp;
+};
+
 const getQuickRatio = (SAFT) => {
   const cash1 = getGeneralLedgerAccount(SAFT, 11);
   const cash2 = getGeneralLedgerAccount(SAFT, 12);
@@ -58,38 +45,37 @@ const getQuickRatio = (SAFT) => {
 
 const Finances = (props) => {
   const { SAFT } = props;
-  const AR = getAR(SAFT);
-  const AP = getAP(SAFT);
+  const ar = getGeneralLedgerAccount(SAFT, 21);
+  const ap = getGeneralLedgerAccount(SAFT, 22);
+  const grossProfit = getGrossProfit(SAFT);
   const quickRatio = getQuickRatio(SAFT);
 
   return (
     <Segment>
       <Grid>
-        <Grid.Row columns={2}>
+        <Grid.Row columns={3}>
           <Grid.Column>
             <DisplaySegment
               text="Accounts Receivable"
-              number={AR.closingPeriod}
+              number={ar.closingPeriod}
               type="€"
-              growth={AR.growth}
+              growth={ar.growth}
             />
           </Grid.Column>
           <Grid.Column>
             <DisplaySegment
               text="Accounts Payable"
-              number={AP.closingPeriod}
+              number={ap.closingPeriod}
               type="€"
-              growth={AP.growth}
+              growth={ap.growth}
             />
           </Grid.Column>
-        </Grid.Row>
-        <Grid.Row columns={2}>
           <Grid.Column>
             <DisplaySegment
-              text="Quick Ratio"
-              number={quickRatio.closingPeriod}
+              text="Gross Profit"
+              number={grossProfit.closingPeriod}
               type="€"
-              growth={quickRatio.growth}
+              growth={grossProfit.growth}
             />
           </Grid.Column>
         </Grid.Row>

@@ -6,7 +6,6 @@ import { getNoPurchases, getTotalPurchasesCost } from 'primavera-web-api';
 import dashboardPage from '../dashboardPage';
 import DisplaySegment from '../displaySegment';
 import TopSuppliersBarChartSegment from './topSuppliersBarChartSegment';
-import TopProductsPiechartSegment from '../topProductsPiechartSegment';
 import MonthlyPurchasesChart from './monthlyPurchasesChart';
 
 class Purchases extends React.Component {
@@ -20,7 +19,7 @@ class Purchases extends React.Component {
   }
 
   render() {
-    const { numSuppliers, top5Products } = this.props;
+    const { numSuppliers } = this.props;
 
     const { noTotalPurchases, totalPurchasesCost } = this.state;
 
@@ -38,9 +37,6 @@ class Purchases extends React.Component {
           </Grid.Column>
         </Grid.Row>
         <Grid.Row columns={2}>
-          <Grid.Column width={6}>
-            <TopProductsPiechartSegment title="Spending by Category" top5Products={top5Products} />
-          </Grid.Column>
           <Grid.Column width={10}>
             <TopSuppliersBarChartSegment />
           </Grid.Column>
@@ -56,7 +52,6 @@ class Purchases extends React.Component {
 }
 
 Purchases.propTypes = {
-  top5Products: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
   numSuppliers: PropTypes.number.isRequired,
 };
 

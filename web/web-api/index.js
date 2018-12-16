@@ -94,20 +94,24 @@ const queryNoOutOfStockProducts = () => dbQuery('SELECT COUNT(Artigo) FROM V_INV
 const queryTotalStockValue = () => dbQuery('SELECT SUM(Artigo.STKActual * PCMedio) AS TotalStockCost FROM Artigo');
 
 /* Purchases Queries */
-const queryNoTotalPurchases = () => dbQuery(
-  "SELECT Count(CabecCompras.Id) as TotalPurchases FROM CabecCompras WHERE CabecCompras.TipoDoc = 'ECF'",
+const queryNoTotalPurchasesMade = () => dbQuery(
+  "SELECT Count(CC1.Id) as TotalPurchases FROM CabecCompras as CC1 WHERE CC1.TipoDoc = 'VFA' ",
+);
+
+const queryNoTotalPurchasesReversed = () => dbQuery(
+  "SELECT Count(CabecCompras.Id) as TotalReversals FROM CabecCompras WHERE CabecCompras.TipoDoc = 'VNC'",
 );
 
 const queryTotalPurchasesCost = () => dbQuery(
-  "SELECT SUM(CabecCompras.TotalMerc) as TotalPurchasesCost FROM CabecCompras WHERE CabecCompras.TipoDoc = 'ECF'",
+  "SELECT SUM(CabecCompras.TotalMerc) as TotalPurchasesCost FROM CabecCompras WHERE CabecCompras.TipoDoc = 'VFA' OR CabecCompras.TipoDoc='VNC' ",
 );
 
 const queryTop5Suppliers = () => dbQuery(
-  "SELECT TOP 5 F.Nome, SUM(CabecCompras.TotalMerc) TotalCompras FROM CabecCompras INNER JOIN CabecComprasStatus ON CabecComprasStatus.IdCabecCompras = CabecCompras.Id INNER JOIN Fornecedores F ON CabecCompras.Entidade = F.Fornecedor WHERE CabecCompras.TipoDoc = 'ECF' GROUP BY CabecCompras.Entidade, F.Nome ORDER BY TotalCompras DESC",
+  "SELECT TOP 5 F.Nome, SUM(CabecCompras.TotalMerc) TotalCompras FROM CabecCompras INNER JOIN CabecComprasStatus ON CabecComprasStatus.IdCabecCompras = CabecCompras.Id INNER JOIN Fornecedores F ON CabecCompras.Entidade = F.Fornecedor WHERE CabecCompras.TipoDoc = 'VFA' OR CabecCompras.TipoDoc = 'VNC' GROUP BY CabecCompras.Entidade, F.Nome ORDER BY TotalCompras ASC",
 );
 
 const queryPurchasesInformation = () => dbQuery(
-  "SELECT CabecCompras.DataDoc, CabecCompras.TotalMerc TotalCompras FROM CabecCompras INNER JOIN CabecComprasStatus ON CabecComprasStatus.IdCabecCompras = CabecCompras.Id WHERE CabecCompras.TipoDoc = 'ECF'",
+  "SELECT CabecCompras.DataDoc, CabecCompras.TotalMerc TotalCompras FROM CabecCompras INNER JOIN CabecComprasStatus ON CabecComprasStatus.IdCabecCompras = CabecCompras.Id WHERE CabecCompras.TipoDoc = 'VFA' OR CabecCompras.TipoDoc = 'VNC'",
 );
 
 /* Products */
@@ -154,8 +158,10 @@ export const loadDb = async () => {
   noOutOfStockProducts = noOutOfStockProductsJson.DataSet.Table[0].Column1;
 
   /* Purchases */
-  const noPurchasesJson = await queryNoTotalPurchases();
-  noPurchases = noPurchasesJson.DataSet.Table[0].TotalPurchases;
+  const noPurchasesJson = await queryNoTotalPurchasesMade();
+  const noPurchasesReversedJson = await queryNoTotalPurchasesReversed();
+  noPurchases = noPurchasesJson.DataSet.Table[0].TotalPurchases
+    - noPurchasesReversedJson.DataSet.Table[0].TotalReversals;
 
   const totalPurchasesCostJson = await queryTotalPurchasesCost();
   totalPurchasesCost = totalPurchasesCostJson.DataSet.Table[0].TotalPurchasesCost;
