@@ -113,7 +113,7 @@ const getNetTotalFromInvoices = (invoices) => {
   Object.keys(costumersNetTotal).forEach((key) => {
     total += costumersNetTotal[key];
   });
-  
+
   return total;
 };
 
@@ -138,8 +138,6 @@ const getNumCustomers = (invoices) => {
 
   return Object.keys(customers).length;
 };
-
-const getNumSuppliers = ({ suppliers }) => Object.keys(suppliers).length;
 
 const dashboardPage = WrappedComponent => class extends React.Component {
   constructor(props) {
@@ -251,18 +249,15 @@ const dashboardPage = WrappedComponent => class extends React.Component {
       const numCostumersLastPeriod = getNumCustomers(invoicesLastPeriod);
       const numCostumers = this.calculateDiff(numCostumersLastPeriod, numCostumersThisPeriod);
 
-      /* Purchases stuff (maybe move this later) */
-
-      const numSuppliers = getNumSuppliers(SAFT.masterFiles);
-
       const dashboardPageProps = {
+        thisPeriodEndDate,
+        thisPeriodStartDate,
         numSales,
         netTotalGrowth,
         top5Costumers,
         top5Products,
         period,
         numCostumers,
-        numSuppliers,
         getNetTotalFromInvoices,
         getNumCustomers,
         getNumSales,
@@ -293,7 +288,6 @@ export const InjectedProps = {
   numSales: PropTypes.number.isRequired,
   period: PropTypes.oneOf(['lastMonth', 'lastSemester']).isRequired,
   numCostumers: PropTypes.number.isRequired,
-  numSuppliers: PropTypes.number.isRequired,
   getNetTotalFromInvoices: PropTypes.func.isRequired,
   getNumCustomers: PropTypes.func.isRequired,
   getNumSales: PropTypes.func.isRequired,

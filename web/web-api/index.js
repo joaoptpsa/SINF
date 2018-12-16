@@ -10,6 +10,7 @@ let noPurchases = 0;
 let totalPurchasesCost = 0;
 let top5Suppliers = [];
 let purchasesInformation = [];
+let numSuppliers = 0;
 
 const makeRequest = async (url, contentType, body) => {
   if (!URL) throw new Error('Need to setup url with getToken function.');
@@ -114,6 +115,8 @@ const queryPurchasesInformation = () => dbQuery(
   "SELECT CabecCompras.DataDoc, CabecCompras.TotalMerc TotalCompras FROM CabecCompras INNER JOIN CabecComprasStatus ON CabecComprasStatus.IdCabecCompras = CabecCompras.Id WHERE CabecCompras.TipoDoc = 'VFA' OR CabecCompras.TipoDoc = 'VNC'",
 );
 
+const queryNumSuppliers = () => dbQuery('SELECT count(Fornecedor) as noSuppliers FROM Fornecedores');
+
 /* Products */
 export const getUrgentBuys = () => urgentBuys;
 
@@ -136,6 +139,8 @@ export const getTotalPurchasesCost = () => totalPurchasesCost;
 export const getTop5Suppliers = () => top5Suppliers;
 
 export const getPurchasesInformation = () => purchasesInformation;
+
+export const getNumSuppliers = () => numSuppliers;
 
 export const loadDb = async () => {
   /* Products */
@@ -171,4 +176,7 @@ export const loadDb = async () => {
 
   const purchasesInformationJson = await queryPurchasesInformation();
   purchasesInformation = purchasesInformationJson.DataSet.Table;
+
+  const numSuppliersJson = await queryNumSuppliers();
+  numSuppliers = numSuppliersJson.DataSet.Table[0].noSuppliers;
 };
