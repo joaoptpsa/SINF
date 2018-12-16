@@ -72,4 +72,4 @@ Products.propTypes = {
   ...InjectedProps,
 };
 
-export default dashboardPage(Products);
+export default Products;
