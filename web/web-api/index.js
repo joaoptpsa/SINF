@@ -2,7 +2,7 @@ let URL = null;
 let accessToken = null;
 let urgentBuys = [];
 let productsInformation = [];
-let productsStock = [];
+let top5ProductsStock = [];
 let totalStock = 0;
 let noOutOfStockProducts = 0;
 let totalStockValue = 0;
@@ -84,13 +84,17 @@ const queryProductsInformation = () => dbQuery(
   'SELECT DISTINCT Artigo.Artigo, Artigo.Descricao, V_INV_ValoresActuaisStock.Stock , ArtigoMoeda.PVP1 FROM Artigo INNER JOIN V_INV_ValoresActuaisStock ON Artigo.Artigo = V_INV_ValoresActuaisStock.Artigo INNER JOIN ArtigoMoeda ON Artigo.Artigo = ArtigoMoeda.Artigo',
 );
 
-const queryProductsStock = () => dbQuery(
-  'SELECT DISTINCT Artigo.Artigo, Artigo.Descricao, V_INV_ValoresActuaisStock.Stock FROM Artigo INNER JOIN V_INV_ValoresActuaisStock ON Artigo.Artigo = V_INV_ValoresActuaisStock.Artigo',
+const queryTop5ProductsStock = () => dbQuery(
+  'SELECT TOP 5 Artigo.Artigo, Artigo.Descricao, V_INV_ValoresActuaisStock.Stock FROM Artigo INNER JOIN V_INV_ValoresActuaisStock ON Artigo.Artigo = V_INV_ValoresActuaisStock.Artigo ORDER BY V_INV_ValoresActuaisStock.Stock DESC',
 );
 
-const queryTotalStock = () => dbQuery('SELECT SUM(V_INV_ValoresActuaisStock.Stock) FROM V_INV_ValoresActuaisStock');
+const queryTotalStock = () => dbQuery(
+  'SELECT SUM(V_INV_ValoresActuaisStock.Stock) AS TotalStock FROM V_INV_ValoresActuaisStock',
+);
 
-const queryNoOutOfStockProducts = () => dbQuery('SELECT COUNT(Artigo) FROM V_INV_ValoresActuaisStock WHERE Stock = 0');
+const queryNoOutOfStockProducts = () => dbQuery(
+  'SELECT COUNT(Artigo) AS OutOfStockProducts FROM V_INV_ValoresActuaisStock WHERE Stock = 0',
+);
 
 const queryTotalStockValue = () => dbQuery('SELECT SUM(Artigo.STKActual * PCMedio) AS TotalStockCost FROM Artigo');
 
@@ -122,7 +126,7 @@ export const getUrgentBuys = () => urgentBuys;
 
 export const getProductsInformation = () => productsInformation;
 
-export const getProductsStock = () => productsStock;
+export const getTop5ProductsStock = () => top5ProductsStock;
 
 export const getTotalStock = () => totalStock;
 
@@ -150,17 +154,17 @@ export const loadDb = async () => {
   const productsInformationJson = await queryProductsInformation();
   productsInformation = productsInformationJson.DataSet.Table;
 
-  const productsStockJson = await queryProductsStock();
-  productsStock = productsStockJson.DataSet.Table;
+  const top5ProductsStockJson = await queryTop5ProductsStock();
+  top5ProductsStock = top5ProductsStockJson.DataSet.Table;
 
   const totalStockJson = await queryTotalStock();
-  totalStock = totalStockJson.DataSet.Table[0].Column1;
+  totalStock = totalStockJson.DataSet.Table[0].TotalStock;
 
   const totalStockValueJson = await queryTotalStockValue();
   totalStockValue = totalStockValueJson.DataSet.Table[0].TotalStockCost;
 
   const noOutOfStockProductsJson = await queryNoOutOfStockProducts();
-  noOutOfStockProducts = noOutOfStockProductsJson.DataSet.Table[0].Column1;
+  noOutOfStockProducts = noOutOfStockProductsJson.DataSet.Table[0].OutOfStockProducts;
 
   /* Purchases */
   const noPurchasesJson = await queryNoTotalPurchasesMade();

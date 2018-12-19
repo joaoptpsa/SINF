@@ -3,7 +3,7 @@ import { Segment, Header } from 'semantic-ui-react';
 import {
   ResponsiveContainer, PieChart, Pie, Legend, Cell,
 } from 'recharts';
-import { getProductsStock } from 'primavera-web-api';
+import { getTop5ProductsStock } from 'primavera-web-api';
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#FF4444'];
 
@@ -11,10 +11,7 @@ class TopStockedProductsPiechartSegment extends React.Component {
   constructor(props) {
     super(props);
 
-    const productsStockArray = getProductsStock();
-    const top5StockedProducts = productsStockArray.sort((a, b) => b.Stock - a.Stock).splice(0, 5);
-
-    this.state = { top5StockedProducts };
+    this.state = { top5StockedProducts: getTop5ProductsStock() };
   }
 
   render() {

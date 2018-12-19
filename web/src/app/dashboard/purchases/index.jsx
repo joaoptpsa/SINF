@@ -3,7 +3,7 @@ import { Segment, Grid } from 'semantic-ui-react';
 import { getNoPurchases, getTotalPurchasesCost, getNumSuppliers } from 'primavera-web-api';
 
 import DisplaySegment from '../displaySegment';
-import TopSuppliersBarChartSegment from './topSuppliersBarChartSegment';
+import BiggestSuppliersBarChartSegment from './biggestSuppliersBarChartSegment';
 import MonthlyPurchasesChart from './monthlyPurchasesChart';
 
 class Purchases extends React.Component {
@@ -41,7 +41,7 @@ class Purchases extends React.Component {
           </Grid.Row>
           <Grid.Row columns={2}>
             <Grid.Column width={10}>
-              <TopSuppliersBarChartSegment />
+              <BiggestSuppliersBarChartSegment />
             </Grid.Column>
           </Grid.Row>
         </Grid>
