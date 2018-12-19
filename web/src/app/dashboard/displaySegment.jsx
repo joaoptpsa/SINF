@@ -1,7 +1,5 @@
 import React from 'react';
-import {
-  Segment, Statistic, Icon,
-} from 'semantic-ui-react';
+import { Segment, Statistic, Icon } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 
 const DisplaySegment = ({
@@ -12,11 +10,11 @@ const DisplaySegment = ({
   let typeIcon;
 
   if (type === '€') {
-    typeIcon = <Icon name="euro" />;
+    typeIcon = '€';
   } else if (type === '%') {
-    typeIcon = <Icon name="percent" />;
+    typeIcon = '%';
   } else {
-    typeIcon = null;
+    typeIcon = '';
   }
 
   if (growth === 0) {
@@ -52,8 +50,7 @@ const DisplaySegment = ({
       <Statistic color={color} size="large">
         <Statistic.Value text>
           {changeIcon}
-          {typeIcon}
-          {formattedNumber}
+          {` ${typeIcon} ${formattedNumber} `}
         </Statistic.Value>
         <Statistic.Label style={{ marginTop: '3px' }}>{text}</Statistic.Label>
       </Statistic>
