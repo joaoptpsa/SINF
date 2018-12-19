@@ -1,5 +1,7 @@
 import React from 'react';
-import { Segment, Statistic, Icon } from 'semantic-ui-react';
+import {
+  Segment, Statistic, Icon,
+} from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 
 const DisplaySegment = ({
@@ -38,14 +40,20 @@ const DisplaySegment = ({
   return (
     <Segment
       loading={loading}
-      textAlign="center"
-      style={{ padding: '20px', height: '100%', paddingTop: '35px' }}
+      style={{
+        padding: '20px',
+        height: '100%',
+        paddingTop: '35px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
     >
       <Statistic color={color} size="large">
         <Statistic.Value text>
           {changeIcon}
-          {formattedNumber}
           {typeIcon}
+          {formattedNumber}
         </Statistic.Value>
         <Statistic.Label style={{ marginTop: '3px' }}>{text}</Statistic.Label>
       </Statistic>
