@@ -47,7 +47,7 @@ const DisplaySegment = ({
           {formattedNumber}
           {typeIcon}
         </Statistic.Value>
-        <Statistic.Label>{text}</Statistic.Label>
+        <Statistic.Label style={{ marginTop: '3px' }}>{text}</Statistic.Label>
       </Statistic>
     </Segment>
   );
