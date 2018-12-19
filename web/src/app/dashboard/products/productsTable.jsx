@@ -45,8 +45,27 @@ class ProductsTable extends React.Component {
     return rows;
   };
 
+  handleSort = clickedColumn => () => {
+    const { column, productsInformationArray, direction } = this.state;
+
+    if (column !== clickedColumn) {
+      this.setState({
+        column: clickedColumn,
+        productsInformationArray: productsInformationArray.sort(
+          (a, b) => a[clickedColumn] < b[clickedColumn],
+        ),
+        direction: 'ascending',
+      });
+    }
+
+    this.setState({
+      productsInformationArray: productsInformationArray.reverse(),
+      direction: direction === 'ascending' ? 'descending' : 'ascending',
+    });
+  };
+
   render() {
-    const { text } = this.state;
+    const { text, column, direction } = this.state;
 
     return (
       <Segment>
@@ -61,9 +80,24 @@ class ProductsTable extends React.Component {
           <Table.Header>
             <Table.Row>
               <Table.HeaderCell>#</Table.HeaderCell>
-              <Table.HeaderCell>Name</Table.HeaderCell>
-              <Table.HeaderCell>Total Stock</Table.HeaderCell>
-              <Table.HeaderCell>PVP</Table.HeaderCell>
+              <Table.HeaderCell
+                sorted={column === 'Descricao' ? direction : null}
+                onClick={this.handleSort('Descricao')}
+              >
+                Name
+              </Table.HeaderCell>
+              <Table.HeaderCell
+                sorted={column === 'Stock' ? direction : null}
+                onClick={this.handleSort('Stock')}
+              >
+                Total Stock
+              </Table.HeaderCell>
+              <Table.HeaderCell
+                sorted={column === 'PVP1' ? direction : null}
+                onClick={this.handleSort('PVP1')}
+              >
+                PVP
+              </Table.HeaderCell>
             </Table.Row>
           </Table.Header>
 
