@@ -28,6 +28,10 @@ const getInvoices = ({ invoices }, fromDate, toDate) => invoices.filter((invoice
     return false;
   }
 
+  if (!(invoice.type === 'FT' || invoice.type === 'NC')) {
+    return false;
+  }
+
   return true;
 });
 
