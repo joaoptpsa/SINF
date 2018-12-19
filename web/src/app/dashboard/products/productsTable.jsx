@@ -10,7 +10,20 @@ class ProductsTable extends React.Component {
   }
 
   changeText = (e, data) => {
-    this.setState({ text: data.value });
+    const { productsInformationArray } = this.state;
+    const text = data.value;
+
+    this.setState({ text });
+
+    if (text !== '') {
+      const regexp = new RegExp(`.*${text}.*`, 'i');
+
+      const newArray = productsInformationArray.filter(value => value.Descricao.match(regexp));
+      
+      this.setState({ productsInformationArray: newArray });
+    } else {
+      this.setState({ productsInformationArray: getProductsInformation() });
+    }
   };
 
   renderTable = () => {
@@ -44,7 +57,7 @@ class ProductsTable extends React.Component {
           onChange={this.changeText}
           value={text}
         />
-        <Table celled>
+        <Table celled sortable>
           <Table.Header>
             <Table.Row>
               <Table.HeaderCell>#</Table.HeaderCell>
