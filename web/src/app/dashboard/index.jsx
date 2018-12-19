@@ -45,9 +45,6 @@ const Dashboard = ({ SAFT, match, location }) => (
             as={Link}
             to="/finances"
           />
-          <Menu.Item>
-            SINF 2018
-          </Menu.Item>
         </Menu>
       </Grid.Column>
       <Grid.Column
