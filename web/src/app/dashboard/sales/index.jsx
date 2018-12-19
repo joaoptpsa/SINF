@@ -119,7 +119,7 @@ const Sales = (props) => {
             text="Number of sales"
             number={numSalesThisPeriod}
             growth={numSalesGrowth}
-            type="€"
+            type=""
           />
         </Grid.Column>
       </Grid.Row>
