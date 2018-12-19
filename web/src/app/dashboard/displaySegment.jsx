@@ -10,11 +10,11 @@ const DisplaySegment = ({
   let typeIcon;
 
   if (type === '€') {
-    typeIcon = <Icon name="euro" />;
+    typeIcon = '€';
   } else if (type === '%') {
-    typeIcon = <Icon name="percent" />;
+    typeIcon = '%';
   } else {
-    typeIcon = null;
+    typeIcon = '';
   }
 
   if (growth === 0) {
@@ -38,14 +38,19 @@ const DisplaySegment = ({
   return (
     <Segment
       loading={loading}
-      textAlign="center"
-      style={{ padding: '20px', height: '100%', paddingTop: '35px' }}
+      style={{
+        padding: '20px',
+        height: '100%',
+        paddingTop: '35px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
     >
       <Statistic color={color} size="large">
         <Statistic.Value text>
           {changeIcon}
-          {formattedNumber}
-          {typeIcon}
+          {` ${typeIcon} ${formattedNumber} `}
         </Statistic.Value>
         <Statistic.Label style={{ marginTop: '3px' }}>{text}</Statistic.Label>
       </Statistic>
