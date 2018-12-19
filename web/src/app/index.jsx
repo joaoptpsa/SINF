@@ -18,7 +18,7 @@ import Dashboard from './dashboard';
 class App extends React.Component {
   state = {
     SAFT: null,
-    url: '',
+    url: 'http://localhost:2018/WebApi',
     companyName: '',
     success: false,
     loading: false,
