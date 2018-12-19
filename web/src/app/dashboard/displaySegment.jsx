@@ -39,7 +39,7 @@ const DisplaySegment = ({
     <Segment
       loading={loading}
       textAlign="center"
-      style={{ padding: '20px', minHeight: '140px', paddingTop: '35px' }}
+      style={{ padding: '20px', height: '100%', paddingTop: '35px' }}
     >
       <Statistic color={color} size="large">
         <Statistic.Value text>
