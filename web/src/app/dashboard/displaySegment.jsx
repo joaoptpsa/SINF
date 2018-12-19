@@ -32,16 +32,19 @@ const DisplaySegment = ({
     changeIcon = null;
   }
 
+  let formattedNumber = Number.isInteger(number) ? number : number.toFixed(2);
+  formattedNumber = formattedNumber.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+
   return (
     <Segment
       loading={loading}
       textAlign="center"
       style={{ padding: '20px', minHeight: '140px', paddingTop: '35px' }}
     >
-      <Statistic size="huge" color={color}>
+      <Statistic color={color} size="large">
         <Statistic.Value text>
           {changeIcon}
-          {` ${number.toFixed(2)} `}
+          {formattedNumber}
           {typeIcon}
         </Statistic.Value>
         <Statistic.Label>{text}</Statistic.Label>
