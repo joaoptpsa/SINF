@@ -19,7 +19,7 @@ class ProductsTable extends React.Component {
       const regexp = new RegExp(`.*${text}.*`, 'i');
 
       const newArray = productsInformationArray.filter(value => value.Descricao.match(regexp));
-      
+
       this.setState({ productsInformationArray: newArray });
     } else {
       this.setState({ productsInformationArray: getProductsInformation() });
