@@ -84,6 +84,7 @@ class App extends React.Component {
         >
           <Segment
             loading={loading}
+            color="blue"
             style={{
               flexDirection: 'column',
               display: 'flex',

@@ -11,20 +11,15 @@ import Purchases from './purchases';
 import Products from './products';
 import Finances from './finances';
 
-const menuStyle = { backgroundColor: '#504249', minHeight: '100%', padding: '25px' }
-
 const Dashboard = ({ SAFT, match, location }) => (
   <Container fluid style={{ height: '100%' }}>
-    <Grid columns={2} style={{ minHeight: '100%' }} stackable>
-      <Grid.Column
-        width={3}
-        style={menuStyle}
-      >
-        <Header style={{ color: 'white' }}>
+    <Grid columns={2} stackable style={{ minHeight: '100%' }}>
+      <Grid.Column width={3} style={{ padding: '25px' }}>
+        <Header style={{ color: '#364f6b' }}>
           <Icon name="dashboard" />
           360 Company Dashboard
         </Header>
-        <Menu secondary vertical>
+        <Menu pointing vertical>
           <Menu.Item
             name="Overview"
             active={match.isExact && location.pathname === '/'}
@@ -50,11 +45,18 @@ const Dashboard = ({ SAFT, match, location }) => (
             as={Link}
             to="/finances"
           />
+          <Menu.Item>
+            SINF 2018
+          </Menu.Item>
         </Menu>
       </Grid.Column>
       <Grid.Column
         width={13}
-        style={{ backgroundColor: '#D8D8D8', paddingTop: '30px', paddingRight: '30px' }}
+        style={{
+          paddingTop: '30px',
+          paddingRight: '30px',
+          paddingBottom: '30px',
+        }}
       >
         {/* Overview page */}
         <Route path="/" exact render={props => <Overview SAFT={SAFT} {...props} />} />
@@ -69,6 +71,19 @@ const Dashboard = ({ SAFT, match, location }) => (
         {/* */}
       </Grid.Column>
     </Grid>
+    <Container
+      fluid
+      style={{
+        height: '40px',
+        display: 'flex',
+        alignItems: 'center',
+        padding: '8px',
+        color: '#f5f5f5',
+        backgroundColor: '#364f6b',
+      }}
+    >
+      SINF 2018
+    </Container>
   </Container>
 );
 
