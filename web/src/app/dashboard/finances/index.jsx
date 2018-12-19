@@ -40,22 +40,11 @@ const getGrossProfit = (SAFT) => {
   return null;
 };
 
-const getQuickRatio = (SAFT) => {
-  const cash1 = getGeneralLedgerAccount(SAFT, 11);
-  const cash2 = getGeneralLedgerAccount(SAFT, 12);
-  const ar = getGeneralLedgerAccount(SAFT, 21);
-
-  // TODO: current liabilities
-
-  return cash1;
-};
-
 const Finances = (props) => {
   const { SAFT } = props;
   const ar = getGeneralLedgerAccount(SAFT, 21);
   const ap = getGeneralLedgerAccount(SAFT, 22);
   const grossProfit = getGrossProfit(SAFT);
-  const quickRatio = getQuickRatio(SAFT);
 
   if (grossProfit) {
     return (

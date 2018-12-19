@@ -8,12 +8,52 @@ import dashboardPage, { InjectedProps } from '../dashboardPage';
 import BarChartSegment from '../barChartSegment';
 import TopProductsPiechartSegment from '../topProductsPiechartSegment';
 
+const getGeneralLedgerAccount = (SAFT, id) => {
+  if (!SAFT.masterFiles.generalLedgerAccounts[`${id}`]) {
+    return null;
+  }
+
+  const Account = {};
+  Account.openingPeriod = Number.parseFloat(SAFT.masterFiles.generalLedgerAccounts[`${id}`].openingDebitBalance)
+    - Number.parseFloat(SAFT.masterFiles.generalLedgerAccounts[`${id}`].openingCreditBalance);
+  Account.closingPeriod = Number.parseFloat(SAFT.masterFiles.generalLedgerAccounts[`${id}`].closingDebitBalance)
+    - Number.parseFloat(SAFT.masterFiles.generalLedgerAccounts[`${id}`].closingCreditBalance);
+  let openingPeriodSign = 1;
+  if (Account.openingPeriod < 0) {
+    openingPeriodSign *= -1;
+  }
+  Account.growth = (Account.closingPeriod / Account.openingPeriod) * 100 * openingPeriodSign;
+  return Account;
+};
+
+const getGrossProfit = (SAFT) => {
+  const netRevenue = getGeneralLedgerAccount(SAFT, 71);
+  const cogs = getGeneralLedgerAccount(SAFT, 61);
+
+  if (netRevenue && cogs) {
+    const gp = {};
+    gp.openingPeriod = netRevenue.openingPeriod - cogs.openingPeriod;
+    gp.closingPeriod = netRevenue.closingPeriod - cogs.closingPeriod;
+    let openingPeriodSign = 1;
+    if (gp.openingPeriod < 0) {
+      openingPeriodSign *= -1;
+    }
+    gp.growth = (gp.closingPeriod / gp.openingPeriod) * 100 * openingPeriodSign;
+    return gp;
+  }
+  return null;
+};
+
 class Overview extends React.Component {
   constructor(props) {
     super(props);
+    const { SAFT } = props;
+
+    const grossProfit = getGrossProfit(SAFT);
     this.state = {
       totalPurchasesCost: getTotalPurchasesCost(),
       totalInventoryValue: getTotalStockValue(),
+      grossProfit,
     };
   }
 
@@ -22,7 +62,7 @@ class Overview extends React.Component {
       netTotalThisPeriod, netTotalGrowth, top5Costumers, top5Products,
     } = this.props;
 
-    const { totalPurchasesCost, totalInventoryValue } = this.state;
+    const { totalPurchasesCost, totalInventoryValue, grossProfit } = this.state;
 
     return (
       <Grid stackable>
@@ -42,7 +82,12 @@ class Overview extends React.Component {
             <DisplaySegment text="Total Inventory Value" number={totalInventoryValue} type="€" />
           </Grid.Column>
           <Grid.Column>
-            <DisplaySegment text="Quick ratio" number={100} type="%" />
+            <DisplaySegment
+              text="Gross Profit"
+              number={grossProfit.closingPeriod}
+              type="€"
+              growth={grossProfit.growth}
+            />
           </Grid.Column>
         </Grid.Row>
         <Grid.Row columns={2}>
