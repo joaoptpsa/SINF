@@ -114,7 +114,7 @@ const queryTotalPurchasesCost = () => dbQuery(
 );
 
 const queryTop5Suppliers = () => dbQuery(
-  "SELECT TOP 5 F.Nome, SUM(CabecCompras.TotalMerc) TotalCompras FROM CabecCompras INNER JOIN CabecComprasStatus ON CabecComprasStatus.IdCabecCompras = CabecCompras.Id INNER JOIN Fornecedores F ON CabecCompras.Entidade = F.Fornecedor WHERE CabecCompras.TipoDoc = 'VFA' OR CabecCompras.TipoDoc = 'VNC' GROUP BY CabecCompras.Entidade, F.Nome ORDER BY TotalCompras ASC",
+  "SELECT TOP 5 F.Nome, ABS(SUM(CabecCompras.TotalMerc)) TotalCompras FROM CabecCompras INNER JOIN CabecComprasStatus ON CabecComprasStatus.IdCabecCompras = CabecCompras.Id INNER JOIN Fornecedores F ON CabecCompras.Entidade = F.Fornecedor WHERE CabecCompras.TipoDoc = 'VFA' OR CabecCompras.TipoDoc = 'VNC' GROUP BY CabecCompras.Entidade, F.Nome ORDER BY TotalCompras DESC",
 );
 
 const queryPurchasesInformation = () => dbQuery(
