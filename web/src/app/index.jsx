@@ -1,6 +1,13 @@
 import * as React from 'react';
 import {
-  Container, Segment, Button, Divider, Input, Label, Icon,
+  Container,
+  Segment,
+  Button,
+  Divider,
+  Input,
+  Label,
+  Icon,
+  Message,
 } from 'semantic-ui-react';
 import parseSAFT from 'saft2js';
 import { getToken, loadDb } from 'primavera-web-api';
@@ -15,6 +22,12 @@ class App extends React.Component {
     companyName: '',
     success: false,
     loading: false,
+    error: undefined,
+  };
+
+  setError = (error) => {
+    console.error(error);
+    this.setState({ error, loading: false, success: false });
   };
 
   handleFile = (text) => {
@@ -24,13 +37,15 @@ class App extends React.Component {
     parseSAFT(text, (err, auditFile) => {
       this.setState({ loading: false });
 
-      if (err) alert(err);
-      else {
-        console.log('Audit file loaded!');
-        console.log(auditFile);
-
-        this.setState({ SAFT: auditFile });
+      if (err) {
+        this.setError(err);
+        return;
       }
+
+      console.log('Audit file loaded!');
+      console.log(auditFile);
+
+      this.setState({ SAFT: auditFile });
     });
   };
 
@@ -48,19 +63,16 @@ class App extends React.Component {
       await loadDb();
       this.setState({ loading: false, success: true });
     } catch (e) {
-      console.error(e.message);
-      alert(e);
-      this.setState({ loading: false });
+      this.setError(e);
     }
   };
 
   render() {
     const {
-      SAFT, companyName, loading, url, success,
+      SAFT, companyName, loading, url, success, error,
     } = this.state;
 
     if (!success) {
-      // if (!SAFT) {
       return (
         <Container
           style={{
@@ -114,6 +126,13 @@ class App extends React.Component {
             />
 
             <Divider />
+
+            {error != null ? (
+              <Message negative>
+                <Message.Header>{error.name}</Message.Header>
+                <p>{error.message}</p>
+              </Message>
+            ) : null}
 
             <Button disabled={companyName === '' || url === '' || !SAFT} onClick={this.handleClick}>
               Submit

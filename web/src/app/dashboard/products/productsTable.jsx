@@ -30,7 +30,7 @@ class ProductsTable extends React.Component {
     const rows = [];
     const { productsInformationArray } = this.state;
 
-    productsInformationArray.forEach((product) => {
+    productsInformationArray.slice(0, 10).forEach((product) => {
       const element = (
         <Table.Row key={product.Artigo}>
           <Table.Cell>{product.Artigo}</Table.Cell>
@@ -76,7 +76,7 @@ class ProductsTable extends React.Component {
           onChange={this.changeText}
           value={text}
         />
-        <Table celled sortable>
+        <Table celled sortable fixed>
           <Table.Header>
             <Table.Row>
               <Table.HeaderCell>#</Table.HeaderCell>
