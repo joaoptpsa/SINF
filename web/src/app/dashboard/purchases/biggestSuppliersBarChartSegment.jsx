@@ -12,7 +12,7 @@ import {
 } from 'recharts';
 import { getTop5Suppliers } from 'primavera-web-api';
 
-class TopSuppliersBarChartSegment extends React.Component {
+class BiggestSuppliersBarChartSegment extends React.Component {
   constructor(props) {
     super(props);
 
@@ -24,7 +24,7 @@ class TopSuppliersBarChartSegment extends React.Component {
 
     return (
       <Segment>
-        <Header>Most Valuable Suppliers</Header>
+        <Header>Biggest Suppliers</Header>
         <ResponsiveContainer height={300} width="90%">
           <BarChart data={top5SuppliersArray}>
             <CartesianGrid strokeDasharray="3 3" />
@@ -40,4 +40,4 @@ class TopSuppliersBarChartSegment extends React.Component {
   }
 }
 
-export default TopSuppliersBarChartSegment;
+export default BiggestSuppliersBarChartSegment;
