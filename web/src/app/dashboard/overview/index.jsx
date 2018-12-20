@@ -64,6 +64,40 @@ class Overview extends React.Component {
 
     const { totalPurchasesCost, totalInventoryValue, grossProfit } = this.state;
 
+    if (grossProfit == null) {
+      return (
+        <Grid stackable>
+          <Grid.Row columns={3}>
+            <Grid.Column>
+              <DisplaySegment
+                text="Net Sales"
+                number={netTotalThisPeriod}
+                growth={netTotalGrowth}
+                type="€"
+              />
+            </Grid.Column>
+            <Grid.Column>
+              <DisplaySegment text="Total Purchases" number={totalPurchasesCost} type="€" />
+            </Grid.Column>
+            <Grid.Column>
+              <DisplaySegment text="Total Inventory Value" number={totalInventoryValue} type="€" />
+            </Grid.Column>
+          </Grid.Row>
+          <Grid.Row columns={2}>
+            <Grid.Column width={10}>
+              <BarChartSegment title="Most Valuable Costumers" infArray={top5Costumers} />
+            </Grid.Column>
+            <Grid.Column width={6}>
+              <TopProductsPiechartSegment
+                title="Best seller products"
+                top5Products={top5Products}
+              />
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+      );
+    }
+
     return (
       <Grid stackable>
         <Grid.Row columns={4}>
