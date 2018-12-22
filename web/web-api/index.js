@@ -50,6 +50,9 @@ export const getToken = async (companyName, url) => {
   URL = url;
 
   console.log(`Connecting to primavera webapi in ${URL}`);
+  
+  // reset access token
+  accessToken = null;
 
   const tokenRequestBody = {
     username: 'FEUP',
