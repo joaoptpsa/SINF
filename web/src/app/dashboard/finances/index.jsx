@@ -1,5 +1,5 @@
 import React from 'react';
-import { Segment, Grid } from 'semantic-ui-react';
+import { Segment, Grid, Message } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 
 import DisplaySegment from '../displaySegment';
@@ -53,54 +53,55 @@ const Finances = (props) => {
 
   const grossProfit = getGrossProfit(SAFT); // gross profit
 
-  if (grossProfit != null && ar != null && ap != null) {
-    return (
-      <Segment>
-        <Grid>
-          <Grid.Row columns={3}>
-            <Grid.Column>
+  return (
+    <Segment>
+      <Grid>
+        <Grid.Row columns={3}>
+          <Grid.Column>
+            {ar != null ? (
               <DisplaySegment
                 text="Accounts Receivable"
                 number={-ar.total}
                 type="€"
                 growth={-ar.growth}
               />
-            </Grid.Column>
-            <Grid.Column>
+            ) : (
+              <Segment>
+                <Message error>
+                  No accounts receivable data in SAFT (probably GeneralLedgerAccounts is missing
+                  from SAFT).
+                </Message>
+              </Segment>
+            )}
+          </Grid.Column>
+          <Grid.Column>
+            {ap != null ? (
               <DisplaySegment
                 text="Accounts Payable"
                 number={-ap.total}
                 type="€"
                 growth={-ap.growth}
               />
-            </Grid.Column>
-            <Grid.Column>
-              <DisplaySegment text="Gross Profit" number={grossProfit} type="€" />
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
-      </Segment>
-    );
-  }
-  return (
-    <Segment>
-      <Grid>
-        <Grid.Row columns={2}>
-          <Grid.Column>
-            <DisplaySegment
-              text="Accounts Receivable"
-              number={ar.closingPeriod}
-              type="€"
-              growth={ar.growth}
-            />
+            ) : (
+              <Segment>
+                <Message error>
+                  No accounts payable data in SAFT (probably GeneralLedgerAccounts is missing from
+                  SAFT).
+                </Message>
+              </Segment>
+            )}
           </Grid.Column>
           <Grid.Column>
-            <DisplaySegment
-              text="Accounts Payable"
-              number={ap.closingPeriod}
-              type="€"
-              growth={ap.growth}
-            />
+            {grossProfit == null ? (
+              <Segment>
+                <Message error>
+                  No growth profit data in SAFT (probably GeneralLedgerAccounts is missing from
+                  SAFT).
+                </Message>
+              </Segment>
+            ) : (
+              <DisplaySegment text="Gross Profit" number={grossProfit} type="€" />
+            )}
           </Grid.Column>
         </Grid.Row>
       </Grid>
