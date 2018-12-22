@@ -42,9 +42,6 @@ class App extends React.Component {
         return;
       }
 
-      console.log('Audit file loaded!');
-      console.log(auditFile);
-
       this.setState({ SAFT: auditFile });
     });
   };
@@ -59,8 +56,8 @@ class App extends React.Component {
     this.setState({ loading: true });
 
     try {
-      //await getToken(companyName, url);
-      //await loadDb();
+      await getToken(companyName, url);
+      await loadDb();
       this.setState({ loading: false, success: true });
     } catch (e) {
       this.setError(e);

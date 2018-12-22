@@ -49,8 +49,6 @@ const makeRequest = async (url, contentType, body) => {
 export const getToken = async (companyName, url) => {
   URL = url;
 
-  console.log(`Connecting to primavera webapi in ${URL}`);
-  
   // reset access token
   accessToken = null;
 
@@ -70,8 +68,6 @@ export const getToken = async (companyName, url) => {
   });
 
   const response = await makeRequest('token', 'application/x-www-form-urlencoded', bodyData);
-
-  console.log('Successfully connected to primavera webapi.');
 
   accessToken = response.access_token;
 
