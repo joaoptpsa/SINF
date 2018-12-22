@@ -18,6 +18,6 @@ Run project in development mode:
 
 `npm start`
 
-You can also generate a production build (static web page), will be generated in the web/build folder:
+You can also generate a production build (static web page), that will be generated in the web/build folder:
 
 `npm run build`
