@@ -18,10 +18,10 @@ const getGeneralLedgerAccount = (SAFT, id) => {
 
   const credit = closingCreditBalance - openingCreditBalance;
   const debit = closingDebitBalance - openingDebitBalance;
-  const total = credit - debit;
+  const total = Math.abs(credit - debit);
   const openingBalance = openingCreditBalance - openingDebitBalance;
   const closingBalance = closingCreditBalance - closingDebitBalance;
-  const growth = closingBalance / openingBalance;
+  const growth = openingBalance !== 0 ? closingBalance / openingBalance : closingBalance;
 
   const account = {
     credit,
@@ -40,10 +40,7 @@ const getGrossProfit = (SAFT) => {
   const cogs = getGeneralLedgerAccount(SAFT, 61);
 
   if (netRevenue && cogs) {
-    const gp = {};
-    
-    console.log()
-    return gp;
+    return netRevenue.total - cogs.total;
   }
   return null;
 };
@@ -51,9 +48,9 @@ const getGrossProfit = (SAFT) => {
 const Finances = (props) => {
   const { SAFT } = props;
   const ar = getGeneralLedgerAccount(SAFT, 21); // accounts receivable
-  
+
   const ap = getGeneralLedgerAccount(SAFT, 22); // accounts payable
-  
+
   const grossProfit = getGrossProfit(SAFT); // gross profit
 
   if (grossProfit != null && ar != null && ap != null) {
@@ -78,12 +75,7 @@ const Finances = (props) => {
               />
             </Grid.Column>
             <Grid.Column>
-              <DisplaySegment
-                text="Gross Profit"
-                number={grossProfit.closingPeriod}
-                type="€"
-                growth={grossProfit.growth}
-              />
+              <DisplaySegment text="Gross Profit" number={grossProfit} type="€" />
             </Grid.Column>
           </Grid.Row>
         </Grid>
