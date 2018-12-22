@@ -66,7 +66,7 @@ class MasterFiles {
     this.costumers = parseCustomers(XMLElement.Customer);
     this.products = parseProducts(XMLElement.Product);
 
-    if (XMLElement.GeneralLedgerAccounts[0]) {
+    if (XMLElement.GeneralLedgerAccounts) {
       this.generalLedgerAccounts = parseGeneralLedgersAccounts(XMLElement.GeneralLedgerAccounts[0]);
     } else this.generalLedgerAccounts = [];
 
