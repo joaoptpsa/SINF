@@ -5,21 +5,34 @@ import PropTypes from 'prop-types';
 import DisplaySegment from '../displaySegment';
 
 const getGeneralLedgerAccount = (SAFT, id) => {
-  if (!SAFT.masterFiles.generalLedgerAccounts[`${id}`]) {
+  const generalLedgerAccount = SAFT.masterFiles.generalLedgerAccounts[id];
+
+  if (!generalLedgerAccount) {
     return null;
   }
 
-  const Account = {};
-  Account.openingPeriod = Number.parseFloat(SAFT.masterFiles.generalLedgerAccounts[`${id}`].openingDebitBalance)
-    - Number.parseFloat(SAFT.masterFiles.generalLedgerAccounts[`${id}`].openingCreditBalance);
-  Account.closingPeriod = Number.parseFloat(SAFT.masterFiles.generalLedgerAccounts[`${id}`].closingDebitBalance)
-    - Number.parseFloat(SAFT.masterFiles.generalLedgerAccounts[`${id}`].closingCreditBalance);
-  let openingPeriodSign = 1;
-  if (Account.openingPeriod < 0) {
-    openingPeriodSign *= -1;
-  }
-  Account.growth = (Account.closingPeriod / Account.openingPeriod) * 100 * openingPeriodSign;
-  return Account;
+  const openingCreditBalance = Number.parseFloat(generalLedgerAccount.openingCreditBalance);
+  const closingCreditBalance = Number.parseFloat(generalLedgerAccount.closingCreditBalance);
+  const openingDebitBalance = Number.parseFloat(generalLedgerAccount.openingDebitBalance);
+  const closingDebitBalance = Number.parseFloat(generalLedgerAccount.closingDebitBalance);
+
+  const credit = closingCreditBalance - openingCreditBalance;
+  const debit = closingDebitBalance - openingDebitBalance;
+  const total = credit - debit;
+  const openingBalance = openingCreditBalance - openingDebitBalance;
+  const closingBalance = closingCreditBalance - closingDebitBalance;
+  const growth = closingBalance / openingBalance;
+
+  const account = {
+    credit,
+    debit,
+    openingBalance,
+    closingBalance,
+    total,
+    growth,
+  };
+
+  return account;
 };
 
 const getGrossProfit = (SAFT) => {
@@ -28,13 +41,8 @@ const getGrossProfit = (SAFT) => {
 
   if (netRevenue && cogs) {
     const gp = {};
-    gp.openingPeriod = netRevenue.openingPeriod - cogs.openingPeriod;
-    gp.closingPeriod = netRevenue.closingPeriod - cogs.closingPeriod;
-    let openingPeriodSign = 1;
-    if (gp.openingPeriod < 0) {
-      openingPeriodSign *= -1;
-    }
-    gp.growth = (gp.closingPeriod / gp.openingPeriod) * 100 * openingPeriodSign;
+    
+    console.log()
     return gp;
   }
   return null;
@@ -42,11 +50,13 @@ const getGrossProfit = (SAFT) => {
 
 const Finances = (props) => {
   const { SAFT } = props;
-  const ar = getGeneralLedgerAccount(SAFT, 21);
-  const ap = getGeneralLedgerAccount(SAFT, 22);
-  const grossProfit = getGrossProfit(SAFT);
+  const ar = getGeneralLedgerAccount(SAFT, 21); // accounts receivable
+  
+  const ap = getGeneralLedgerAccount(SAFT, 22); // accounts payable
+  
+  const grossProfit = getGrossProfit(SAFT); // gross profit
 
-  if (grossProfit) {
+  if (grossProfit != null && ar != null && ap != null) {
     return (
       <Segment>
         <Grid>
@@ -54,17 +64,17 @@ const Finances = (props) => {
             <Grid.Column>
               <DisplaySegment
                 text="Accounts Receivable"
-                number={ar.closingPeriod}
+                number={-ar.total}
                 type="€"
-                growth={ar.growth}
+                growth={-ar.growth}
               />
             </Grid.Column>
             <Grid.Column>
               <DisplaySegment
                 text="Accounts Payable"
-                number={ap.closingPeriod}
+                number={-ap.total}
                 type="€"
-                growth={ap.growth}
+                growth={-ap.growth}
               />
             </Grid.Column>
             <Grid.Column>

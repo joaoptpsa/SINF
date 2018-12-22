@@ -59,8 +59,8 @@ class App extends React.Component {
     this.setState({ loading: true });
 
     try {
-      await getToken(companyName, url);
-      await loadDb();
+      //await getToken(companyName, url);
+      //await loadDb();
       this.setState({ loading: false, success: true });
     } catch (e) {
       this.setError(e);

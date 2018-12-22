@@ -65,7 +65,11 @@ class MasterFiles {
   constructor(XMLElement) {
     this.costumers = parseCustomers(XMLElement.Customer);
     this.products = parseProducts(XMLElement.Product);
-    this.generalLedgerAccounts = parseGeneralLedgersAccounts(XMLElement.GeneralLedgerAccounts[0]);
+
+    if (XMLElement.GeneralLedgerAccounts[0]) {
+      this.generalLedgerAccounts = parseGeneralLedgersAccounts(XMLElement.GeneralLedgerAccounts[0]);
+    } else this.generalLedgerAccounts = [];
+
     this.suppliers = parseSuppliers(XMLElement.Supplier);
     this.taxTables = parseTaxTables(XMLElement.TaxTable);
   }
